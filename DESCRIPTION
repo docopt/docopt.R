@@ -7,3 +7,8 @@ Author: Edwin de Jonge (edwindjonge@gmail.com)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
 Description: docopt
 License: MIT
+Collate:
+    'docopt.R'
+    'docopt2.R'
+    'pkg.R'
+    'test.R'

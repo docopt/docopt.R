@@ -1,6 +1,8 @@
 #' docopt
+#' 
+#' docopt
 #' @export
-docopt <- function(doc=if(exists(".doc") .doc, ...){
+docopt <- function(doc, ...){
 }
          
 # print help

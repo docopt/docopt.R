@@ -20,12 +20,15 @@ Pattern <- setRefClass( "Pattern"
                             children <<- .children
                           },
 #     valueOf: @toString
-                        "valueOf"= function(){
-                          NULL
+                        "valueOf"= toString
                         },
 #     toString: ->
 #         formals = @children.join ', '
 #         "#{@constructor.name}(#{formals})"
+                        toString = function(){
+                          formals = children$join(", ")
+                          paste0(class(.self),"(",formals,")")
+                        }
 
 #     match: -> throw new Error("""classes inheriting from Pattern
 #                                  must overload the match method""")
@@ -267,7 +270,7 @@ AnyOptions <- setRefClass("AnyOptions", contains="Pattern"
 
 # class Required extends Pattern
 Required <- setRefClass("Required", contains="Pattern"
-                        methods=list(
+                       , methods=list(
 #     match: (left, collected=[]) ->
 #         l = left #copy(left)
 #         c = collected #copy(collected)
