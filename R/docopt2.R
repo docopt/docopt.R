@@ -13,24 +13,17 @@
 # 
 # 
 
-Pattern <- setRefClass( "Pattern"
+Pattern <- setRefClass( "Pattern"   
                       , fields=list(children="list")
                       , methods=list(
                         initialize = function(.children=list()){
                             children <<- .children
                           },
-#     valueOf: @toString
-                        "valueOf"= toString,
-#     toString: ->
-#         formals = @children.join ', '
-#         "#{@constructor.name}(#{formals})"
                         toString = function(){
-                          formals = children$join(", ")
+                          formals = paste0(children, collapse=", ")
                           paste0(class(.self),"(",formals,")")
                         },
 
-#     match: -> throw new Error("""classes inheriting from Pattern
-#                                  must overload the match method""")
                         match = function(){
                             stop("classes inheriting from Pattern
                                   must overload the match method")
@@ -184,11 +177,8 @@ Command <- setRefClass("Command", contains="Pattern"
                         name = function(){
                           cmdname
                         },
-# 
-#     toString: ->
-#         "Command(#{@cmdname}, #{@value})"
                         toString = function(){
-                          stop("not implemented")
+                          paste0("Command(",cmdname,",",value,")")
                         },
 #     match: (left, collected=[]) ->
 #         args = (l for l in left when l.constructor is Argument)
@@ -214,9 +204,8 @@ Option <- setRefClass("Options", contains="Pattern"
                          argcount <<- argcount
                          value <<- value
                        },
-#     toString: -> "Option(#{@short}, #{@long}, #{@argcount}, #{@value})"
                        toString = function(){
-                         "Option(#{@short}, #{@long}, #{@argcount}, #{@value})"
+                         paste0("Option(",short,",",long,",",argcount,",", value,")")
                        },
 # 
 #     name: -> @long or @short
@@ -376,6 +365,11 @@ TokenStream <- setRefClass("TokenStream", contains="list"
                               paste(.self, sep=glue)
                             }
 ))
+
+setMethod("as.character", "Pattern", function(x, ...){
+ x$toString() 
+})
+
 # 
 # parse_shorts = (tokens, options) ->
 #     raw = tokens.shift()[1..]
