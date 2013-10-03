@@ -330,42 +330,6 @@ Either <- setRefClass("Either", contains="Pattern"
                            }
                          ))
 
-# 
-# # same as TokenStream in python
-# class TokenStream extends Array
-TokenStream <- setRefClass("TokenStream", contains="list"
-                          , fields = c("error")
-                          , methods = list(
-#     constructor: (source, @error) ->
-#         stream =
-#            if source.constructor is String
-#                source.replace(/^\s+|\s+$/, '').split(/\s+/)
-#            else
-#                source
-#         @push.apply @, stream
-                            initialize = function(source, error){
-                              stop("Not implemented")
-                            },
-# 
-#     shift: -> [].shift.apply(@) or null
-                            shift = function(){
-                              NULL
-                            },
-#     current: -> @[0] or null
-                            current = function(){
-                              if (length(.self)) .self[1]
-                            },
-#     toString: -> ([].slice.apply @).toString()
-                            toString = function(){
-                              stop("Not implemented")
-                            },
-# 
-#     join: (glue) -> ([].join.apply @, glue)
-                            join = function(glue){
-                              paste(.self, sep=glue)
-                            }
-))
-
 setMethod("as.character", "Pattern", function(x, ...){
  x$toString() 
 })
