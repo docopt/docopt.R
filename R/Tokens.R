@@ -1,7 +1,7 @@
 Tokens <- setRefClass( "Tokens"
-                       , fields=list(tokens="character", error="character")
+                       , fields=list(tokens="character", error="function")
                        , methods=list(
-                         initialize = function(tokens=character(), error=""){
+                         initialize = function(tokens=character(), error=print){
                            tokens <<- tokens
                            error <<- error
                          },

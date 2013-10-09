@@ -409,9 +409,17 @@ parse_long <- function(tokens, options){
 #     if tokens.current() is not null
 #         raise tokens.error 'unexpected ending: ' + tokens.join ' '
 #     new Required result
-parse_pattern <- function(source, options){
-  stop("Not implemented")
+parse_pattern <- function(src, options){
+  src <- gsub("([\\(\\)\\|]|\\[|\\]|\\.\\.\\.)", ' \\1 ', src)
+  tokens <- Tokens(src)
+  result <- parse_expr(tokens, options)
+  if (length(tokens$current())){
+    stop("unexpected ending:'", tokens$join(" "),"'")
+  }
+  Required(result)
+  tokens
 }
+
 # 
 # 
 # parse_expr = (tokens, options) ->
@@ -428,7 +436,28 @@ parse_pattern <- function(source, options){
 #         result = result.concat if seq.length > 1 then [new Required seq] else seq
 # 
 #     return if result.length > 1 then [new Either result] else result
-# 
+parse_expr <- function(tokens, options){
+  seq <- parse_seq(tokens, options)
+  if (tokens$current() != "|"){
+    return(seq)
+  }
+  
+  result <- if(length(seq)>1) list(Required(seq)) else seq
+  while(tokens$current() == "|"){
+    tokens$shift()
+    seq <- parse_seq(tokens, options)
+    result <- c(result, if (length(seq)>1)list(Required(seq)) else seq)
+  }
+  
+  if (length(result)>1){
+    list(Either(result))
+  } else result
+}
+
+parse_seq <- function(){
+  
+}
+
 # 
 # parse_seq = (tokens, options) ->
 #     # seq ::= ( atom [ '...' ] )* ;
@@ -478,7 +507,49 @@ parse_pattern <- function(source, options){
 #         [new Argument tokens.shift()]
 #     else
 #         [new Command tokens.shift()]
-# 
+
+parse_atom <- function(tokens, options){
+  # atom ::= '(' expr ')' | '[' expr ']' | '[' 'options' ']' | '--'
+  #        | long | shorts | argument | command ;
+  token <- tokens$current()
+  result <- list()
+  if (token == '('){
+    tokens$shift()
+    result <- list(Required(parse_expr(tokens, options)))
+    if (tokens$shift() != ")"){
+      #tokens$error()...
+      stop("Unmatched '('")
+    }
+    result
+  } else if (token == '['){
+    tokens$shift()
+    if (tokens$current() == 'options'){
+      result = list(Optional(list(AnyOptions())))
+      tokens$shift()
+    } else {
+      result <- list(Optional(parse_expr(tokens, options)))
+    }
+    if (tokens$shift() != "]"){
+      stop("Unmatched '['")
+    }
+    result
+  } else if (substr(token, 1, 2) == )
+  #         if tokens.shift() != ']'
+  #             raise tokens.error "Unmatched '['"
+  #         result
+  #     else if token[0..1] is '--'
+  #         if token is '--'
+  #             [new Command tokens.shift()]
+  #         else
+  #             parse_long tokens, options
+  #     else if token[0] is '-' and token isnt '-'
+  #         parse_shorts tokens, options
+  #     else if (token[0] is '<' and
+  #           token[token.length-1] is '>') or /^[^a-z]*[A-Z]+[^a-z]*$/.test(token)
+  #         [new Argument tokens.shift()]
+  #     else
+  #         [new Command tokens.shift()]
+} 
 # 
 # parse_args = (source, options) ->
 #     tokens = new TokenStream source, DocoptExit
