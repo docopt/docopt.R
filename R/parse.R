@@ -4,8 +4,8 @@ parse_shorts <- function(tokens, options){
   while(nchar(raw) > 0){
     r <- substr(raw, 1, 1)
 #         opt = (o for o in options when o.short isnt null and o.short[1] == raw[0])
-  opt <- Filter( function(o){
-                 !is.null(o$short) && substring(o$short, 2, 1) == r
+    opt <- Filter( function(o){
+                 !is.null(o$short) && substring(o$short, 2, 3) == r
                }
                , options)
   if (length(opt) > 1){
@@ -17,21 +17,21 @@ parse_shorts <- function(tokens, options){
 #             if tokens.error is DocoptExit
 #                 throw new tokens.error "-#{raw[0]} is not recognized"
     tokens$error("-",r," is not recognized")
-  } else {
-#             else
-#                 o = new Option('-' + raw[0], null)
-#                 options.push(o)
-#                 parsed.push(o)
-#                 raw = raw[1..]
-#                 continue
+    #             else
+    #                 o = new Option('-' + raw[0], null)
+    #                 options.push(o)
+    #                 parsed.push(o)
+    #                 raw = raw[1..]
+    #                 continue
     o = Option(paste0("-", r), NULL)
     options <- c(options, o)
     parsed <- c(parsed, o)
     raw <- substring(raw, 2)
     next
-  }
+} 
+
 #         o = opt[0]
-  o = opt[1]
+  o = opt[[1]]
 #         opt = new Option o.short, o.long, o.argcount, o.value
   opt <- Option(o$short, o$long, o$argcount, o$value)
 #         raw = raw[1..]
@@ -48,8 +48,8 @@ parse_shorts <- function(tokens, options){
 #                 raw = tokens.shift()
 #             [value, raw] = [raw, '']
     if (raw == ""){
-      if (is.null(tokens$current())){
-        tokens$error("-", substr(opt$short,1,1)," requires argument")
+      if (length(tokens$current())==0){
+        tokens$error("-", substr(opt$short,2,1)," requires argument")
       }
       raw <- tokens$shift()
       value <- raw

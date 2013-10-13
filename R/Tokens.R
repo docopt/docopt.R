@@ -1,8 +1,9 @@
 Tokens <- setRefClass( "Tokens"
                        , fields=list(tokens="character", error="function")
                        , methods=list(
-                         initialize = function(tokens=character(), error=print){
-                           tokens <<- tokens
+                         initialize = function(tokens=character(), error=stop){
+                           .tokens <- gsub("^\\s+|\\s+$", "", tokens)
+                           tokens <<- strsplit(.tokens, "\\s")[[1]]
                            error <<- error
                          },
                          current = function(){head(tokens,1)},
@@ -10,9 +11,6 @@ Tokens <- setRefClass( "Tokens"
                            h <- head(tokens, 1)
                            tokens <<- tail(tokens, -1)
                            if (length(h)) h else NULL
-                         },
-                         current = function(){
-                           if (length(.self)) .self[1]
                          },
                          #     toString: -> ([].slice.apply @).toString()
                          toString = function(){

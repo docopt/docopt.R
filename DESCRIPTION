@@ -9,6 +9,7 @@ Description: docopt
 License: MIT
 Collate:
     'docopt.R'
-    'docopt2.R'
     'pkg.R'
-    'test.R'
+    'Pattern.R'
+    'Tokens.R'
+    'parse.R'

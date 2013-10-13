@@ -5,8 +5,11 @@ Pattern <- setRefClass( "Pattern"
                             children <<- .children
                           },
                         toString = function(){
-                          formals = paste0(children, collapse=", ")
+                          formals = paste0(sapply(children, as.character), collapse=", ")
                           paste0(class(.self),"(",formals,")")
+                        },
+                        show = function(){
+                          cat(toString())
                         },
 
                         match = function(){
