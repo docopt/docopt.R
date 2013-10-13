@@ -96,24 +96,14 @@ parse_long <- function(tokens, options){
   stop("Not implemented")
 }
 
-# 
-# 
-# parse_pattern = (source, options) ->
-#     tokens = new TokenStream source.replace(/([\[\]\(\)\|]|\.\.\.)/g, ' $1 '),
-#                          DocoptLanguageError
-#     result = parse_expr tokens, options
-#     if tokens.current() is not null
-#         raise tokens.error 'unexpected ending: ' + tokens.join ' '
-#     new Required result
 parse_pattern <- function(src, options){
   src <- gsub("([\\(\\)\\|]|\\[|\\]|\\.\\.\\.)", ' \\1 ', src)
-  tokens <- Tokens(src)
+  tokens <- Tokens(src, cat)
   result <- parse_expr(tokens, options)
-  if (length(tokens$current())){
+  if (tokens$current() != ''){
     stop("unexpected ending:'", tokens$join(" "),"'")
   }
   Required(result)
-  tokens
 }
 
 parse_expr <- function(tokens, options){
@@ -137,9 +127,9 @@ parse_expr <- function(tokens, options){
 parse_seq <- function(tokens, options){ 
 # seq ::= ( atom [ '...' ] )* ;
   result <- list()
-  while(!(tokens$current() %in% c("", "]", ")", "|"))){
+  while(!isTRUE(tokens$current() %in% c("", "]", ")", "|"))){
     atom <- parse_atom(tokens, options)
-    if (tokens$current() == '...'){
+    if (isTRUE(tokens$current() == '...')){
       atom <- OneOrMore(atom)
       tokens$shift()
     }
@@ -208,7 +198,7 @@ parse_args <- function(src, options){
 #     opts = []
   opts = list()
   #     while (token = tokens.current()) isnt null
-  while (!is.null(token <- tokens$current()))
+  while (length(token <- tokens$current()))
     #         if token is '--'
     #             #tokens.shift()
     #             return opts.concat(new Argument null, tokens.shift() while tokens.length)

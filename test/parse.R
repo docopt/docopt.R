@@ -6,4 +6,4 @@ parse_atom(Tokens("[ -a | -b ]"), options)
 parse_atom(Tokens("( -a | -b )"), options)
 parse_atom(Tokens("( -a | -b )"), options)
 
-parse_seq(Tokens("(-a)..."))
+parse_pattern("test", options)

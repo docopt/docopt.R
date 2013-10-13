@@ -3,18 +3,27 @@ Tokens <- setRefClass( "Tokens"
                        , methods=list(
                          initialize = function(tokens=character(), error=stop){
                            .tokens <- gsub("^\\s+|\\s+$", "", tokens)
-                           tokens <<- strsplit(.tokens, "\\s")[[1]]
+                           tokens <<- strsplit(.tokens, "\\s+")[[1]]
                            error <<- error
                          },
-                         current = function(){head(tokens,1)},
+                         current = function(){
+                           if (length(tokens)){
+                             tokens[1]
+                            } else {
+                              ""
+                            }
+                         },
                          shift = function(){
                            h <- head(tokens, 1)
                            tokens <<- tail(tokens, -1)
-                           if (length(h)) h else NULL
+                           if (length(h)) h else ""
                          },
                          #     toString: -> ([].slice.apply @).toString()
                          toString = function(){
                            tokens
+                         },
+                         show = function(){
+                           cat("Tokens:", toString())
                          },
                          # 
                          #     join: (glue) -> ([].join.apply @, glue)
