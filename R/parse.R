@@ -223,9 +223,47 @@ parse_args <- function(src, options){
   return(opts)
 }
 
+parse_option <- function(description){
+#         description = description.replace(/^\s*|\s*$/g, '')
+  # strip whitespaces
+  description <- gsub("^\\s*|\\s*$", "", description)
+#         [_, options,
+#          description] = description.match(/(.*?)  (.*)/) ? [null, description, '']
+  # split on first occurence of 2 consecutive spaces ('  ')
+  options <- description
+#         # replace ',' or '=' with ' '
+#         options = options.replace /,|=/g, ' '
+  options <- gsub(",|=", " ", options)
+#         # set some defaults
+  short <- NULL
+  long <- NULL
+  argcount <- 0 
+  value <- FALSE
+  for (s in strsplit(options, "\\s+")[[1]]){
+    if (substring(s, 1, 2) == "--"){
+      long <- s
+    } else if (substring(s, 1,1) == '-'){
+      short <- s
+    } else {
+      argcount <- 1
+    }
+  }
+#         if argcount is 1
+  if (argcount == 1){
+    matched <- regexec("\\[default:\\s+(.*)\\]")
+    #TODO extract default value
+    value <- FALSE
+#             matched = /\[default:\s+(.*)\]/.exec(description)
+#             value = if matched then matched[1] else false
+  }
+  Option(short, long, argcount, value)
+#         new Option short, long, argcount, value
+}
+
 # parse_doc_options = (doc) ->
 parse_doc_options <- function(doc){
-#     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
-#
-  stop("not implemented")
+  #     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
+  lapply(strsplit(doc, "^\\s*-|\\n\\s*-")[[1]], function(s){
+    parse_option(paste0('-', s))
+  })
 }
