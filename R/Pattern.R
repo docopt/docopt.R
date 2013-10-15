@@ -198,30 +198,6 @@ Option <- setRefClass("Options", contains="Pattern"
                        name = function(){
                          if (!is.null(long)) long else short
                        },
-#     @parse: (description) ->
-#         # strip whitespaces
-#         description = description.replace(/^\s*|\s*$/g, '')
-#         # split on first occurence of 2 consecutive spaces ('  ')
-#         [_, options,
-#          description] = description.match(/(.*?)  (.*)/) ? [null, description, '']
-#         # replace ',' or '=' with ' '
-#         options = options.replace /,|=/g, ' '
-#         # set some defaults
-#         [short, long, argcount, value] = [null, null, 0, false]
-#         for s in options.split /\s+/  # split on spaces
-#             if s[0..1] is '--'
-#                 long = s
-#             else if s[0] is '-'
-#                 short = s
-#             else
-#                 argcount = 1
-#         if argcount is 1
-#             matched = /\[default:\s+(.*)\]/.exec(description)
-#             value = if matched then matched[1] else false
-#         new Option short, long, argcount, value
-                       parse = function(){
-                         stop("Not implemented")
-                       },
 #     match: (left, collected=[]) ->
 #         left_ = (l for l in left when (l.constructor isnt Option \
 #                  or @short isnt l.short or @long isnt l.long))

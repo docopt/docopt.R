@@ -250,7 +250,7 @@ parse_option <- function(description){
   }
 #         if argcount is 1
   if (argcount == 1){
-    matched <- regexec("\\[default:\\s+(.*)\\]")
+    matched <- regexec("\\[default:\\s+(.*)\\]", description)
     #TODO extract default value
     value <- FALSE
 #             matched = /\[default:\s+(.*)\]/.exec(description)

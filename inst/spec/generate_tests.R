@@ -70,4 +70,4 @@ doc <-
 {{/cases}}
 "
 
-writeLines(whisker.render(template), "test_specs.R")
+writeLines(whisker.render(template), "../tests/test_specs.R")
