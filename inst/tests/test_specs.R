@@ -8,19 +8,18 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{}
+      args <- ''
+      expected <- list()
 
-      args <- parse_args('', options)
-      output <- list()
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--xxx" works',{
 		#$ prog --xxx
 		#"user-error"
+      args <- '--xxx'
 
-      args <- parse_args('--xxx', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -32,28 +31,27 @@ Options: -a  All.'
     test_that('parsing "" works',{
 		#$ prog
 		#{"-a": false}
+      args <- ''
+      expected <- list("-a" = FALSE)
 
-      args <- parse_args('', options)
-      output <- list("-a" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true}
+      args <- '-a'
+      expected <- list("-a" = TRUE)
 
-      args <- parse_args('-a', options)
-      output <- list("-a" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-x" works',{
 		#$ prog -x
 		#"user-error"
+      args <- '-x'
 
-      args <- parse_args('-x', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -65,28 +63,27 @@ Options: --all  All.'
     test_that('parsing "" works',{
 		#$ prog
 		#{"--all": false}
+      args <- ''
+      expected <- list("--all" = FALSE)
 
-      args <- parse_args('', options)
-      output <- list("--all" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--all" works',{
 		#$ prog --all
 		#{"--all": true}
+      args <- '--all'
+      expected <- list("--all" = TRUE)
 
-      args <- parse_args('--all', options)
-      output <- list("--all" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--xxx" works',{
 		#$ prog --xxx
 		#"user-error"
+      args <- '--xxx'
 
-      args <- parse_args('--xxx', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -98,28 +95,28 @@ Options: -v, --verbose  Verbose.'
     test_that('parsing "--verbose" works',{
 		#$ prog --verbose
 		#{"--verbose": true}
+      args <- '--verbose'
+      expected <- list("--verbose" = TRUE)
 
-      args <- parse_args('--verbose', options)
-      output <- list("--verbose" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--ver" works',{
 		#$ prog --ver
 		#{"--verbose": true}
+      args <- '--ver'
+      expected <- list("--verbose" = TRUE)
 
-      args <- parse_args('--ver', options)
-      output <- list("--verbose" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"--verbose": true}
+      args <- '-v'
+      expected <- list("--verbose" = TRUE)
 
-      args <- parse_args('-v', options)
-      output <- list("--verbose" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -131,28 +128,27 @@ Options: -p PATH'
     test_that('parsing "-p home/" works',{
 		#$ prog -p home/
 		#{"-p": "home/"}
+      args <- '-p home/'
+      expected <- list("-p" = "home/")
 
-      args <- parse_args('-p home/', options)
-      output <- list("-p" = "home/")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-phome/" works',{
 		#$ prog -phome/
 		#{"-p": "home/"}
+      args <- '-phome/'
+      expected <- list("-p" = "home/")
 
-      args <- parse_args('-phome/', options)
-      output <- list("-p" = "home/")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-p" works',{
 		#$ prog -p
 		#"user-error"
+      args <- '-p'
 
-      args <- parse_args('-p', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -164,46 +160,45 @@ Options: --path <path>'
     test_that('parsing "--path home/" works',{
 		#$ prog --path home/
 		#{"--path": "home/"}
+      args <- '--path home/'
+      expected <- list("--path" = "home/")
 
-      args <- parse_args('--path home/', options)
-      output <- list("--path" = "home/")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--path=home/" works',{
 		#$ prog --path=home/
 		#{"--path": "home/"}
+      args <- '--path=home/'
+      expected <- list("--path" = "home/")
 
-      args <- parse_args('--path=home/', options)
-      output <- list("--path" = "home/")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--pa home/" works',{
 		#$ prog --pa home/
 		#{"--path": "home/"}
+      args <- '--pa home/'
+      expected <- list("--path" = "home/")
 
-      args <- parse_args('--pa home/', options)
-      output <- list("--path" = "home/")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--pa=home/" works',{
 		#$ prog --pa=home/
 		#{"--path": "home/"}
+      args <- '--pa=home/'
+      expected <- list("--path" = "home/")
 
-      args <- parse_args('--pa=home/', options)
-      output <- list("--path" = "home/")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--path" works',{
 		#$ prog --path
 		#"user-error"
+      args <- '--path'
 
-      args <- parse_args('--path', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -215,10 +210,10 @@ Options: -p PATH, --path=<path>  Path to files.'
     test_that('parsing "-proot" works',{
 		#$ prog -proot
 		#{"--path": "root"}
+      args <- '-proot'
+      expected <- list("--path" = "root")
 
-      args <- parse_args('-proot', options)
-      output <- list("--path" = "root")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -230,19 +225,19 @@ Options:    -p --path PATH  Path to files.'
     test_that('parsing "-p root" works',{
 		#$ prog -p root
 		#{"--path": "root"}
+      args <- '-p root'
+      expected <- list("--path" = "root")
 
-      args <- parse_args('-p root', options)
-      output <- list("--path" = "root")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--path root" works',{
 		#$ prog --path root
 		#{"--path": "root"}
+      args <- '--path root'
+      expected <- list("--path" = "root")
 
-      args <- parse_args('--path root', options)
-      output <- list("--path" = "root")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -255,19 +250,19 @@ Options:
     test_that('parsing "" works',{
 		#$ prog
 		#{"-p": "./"}
+      args <- ''
+      expected <- list("-p" = "./")
 
-      args <- parse_args('', options)
-      output <- list("-p" = "./")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-phome" works',{
 		#$ prog -phome
 		#{"-p": "home"}
+      args <- '-phome'
+      expected <- list("-p" = "home")
 
-      args <- parse_args('-phome', options)
-      output <- list("-p" = "home")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -280,19 +275,19 @@ OpTiOnS: --path=<files>  Path to files
     test_that('parsing "" works',{
 		#$ prog
 		#{"--path": "/root"}
+      args <- ''
+      expected <- list("--path" = "/root")
 
-      args <- parse_args('', options)
-      output <- list("--path" = "/root")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--path=home" works',{
 		#$ prog --path=home
 		#{"--path": "home"}
+      args <- '--path=home'
+      expected <- list("--path" = "home")
 
-      args <- parse_args('--path=home', options)
-      output <- list("--path" = "home")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -307,28 +302,28 @@ options:
     test_that('parsing "-a -r -m Hello" works',{
 		#$ prog -a -r -m Hello
 		#{"-a": true, "-r": true, "-m": "Hello"}
+      args <- '-a -r -m Hello'
+      expected <- list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello")
 
-      args <- parse_args('-a -r -m Hello', options)
-      output <- list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-armyourass" works',{
 		#$ prog -armyourass
 		#{"-a": true, "-r": true, "-m": "yourass"}
+      args <- '-armyourass'
+      expected <- list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass")
 
-      args <- parse_args('-armyourass', options)
-      output <- list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a -r" works',{
 		#$ prog -a -r
 		#{"-a": true, "-r": true, "-m": null}
+      args <- '-a -r'
+      expected <- list("-a" = TRUE, "-r" = TRUE, "-m" = NULL)
 
-      args <- parse_args('-a -r', options)
-      output <- list("-a" = TRUE, "-r" = TRUE, "-m" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -341,37 +336,36 @@ Options: --version
     test_that('parsing "--version" works',{
 		#$ prog --version
 		#{"--version": true, "--verbose": false}
+      args <- '--version'
+      expected <- list("--version" = TRUE, "--verbose" = FALSE)
 
-      args <- parse_args('--version', options)
-      output <- list("--version" = TRUE, "--verbose" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--verbose" works',{
 		#$ prog --verbose
 		#{"--version": false, "--verbose": true}
+      args <- '--verbose'
+      expected <- list("--version" = FALSE, "--verbose" = TRUE)
 
-      args <- parse_args('--verbose', options)
-      output <- list("--version" = FALSE, "--verbose" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--ver" works',{
 		#$ prog --ver
 		#"user-error"
+      args <- '--ver'
 
-      args <- parse_args('--ver', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "--verb" works',{
 		#$ prog --verb
 		#{"--version": false, "--verbose": true}
+      args <- '--verb'
+      expected <- list("--version" = FALSE, "--verbose" = TRUE)
 
-      args <- parse_args('--verb', options)
-      output <- list("--version" = FALSE, "--verbose" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -386,10 +380,10 @@ options:
     test_that('parsing "-armyourass" works',{
 		#$ prog -armyourass
 		#{"-a": true, "-r": true, "-m": "yourass"}
+      args <- '-armyourass'
+      expected <- list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass")
 
-      args <- parse_args('-armyourass', options)
-      output <- list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -403,10 +397,10 @@ options: -a        Add
     test_that('parsing "-a -r -m Hello" works',{
 		#$ prog -a -r -m Hello
 		#{"-a": true, "-r": true, "-m": "Hello"}
+      args <- '-a -r -m Hello'
+      expected <- list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello")
 
-      args <- parse_args('-a -r -m Hello', options)
-      output <- list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -420,37 +414,35 @@ options:
     test_that('parsing "-a -b" works',{
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
+      args <- '-a -b'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-a -b', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
+      args <- '-b -a'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-b -a', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#"user-error"
+      args <- '-a'
 
-      args <- parse_args('-a', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -463,37 +455,35 @@ options: -a
     test_that('parsing "-a -b" works',{
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
+      args <- '-a -b'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-a -b', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
+      args <- '-b -a'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-b -a', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#"user-error"
+      args <- '-a'
 
-      args <- parse_args('-a', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -506,46 +496,44 @@ options: -a
     test_that('parsing "-a -b" works',{
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
+      args <- '-a -b'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-a -b', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
+      args <- '-b -a'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-b -a', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#"user-error"
+      args <- '-a'
 
-      args <- parse_args('-a', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "-b" works',{
 		#$ prog -b
 		#{"-a": false, "-b": true}
+      args <- '-b'
+      expected <- list("-a" = FALSE, "-b" = TRUE)
 
-      args <- parse_args('-b', options)
-      output <- list("-a" = FALSE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -558,46 +546,44 @@ options: -a
     test_that('parsing "-a -b" works',{
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
+      args <- '-a -b'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-a -b', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
+      args <- '-b -a'
+      expected <- list("-a" = TRUE, "-b" = TRUE)
 
-      args <- parse_args('-b -a', options)
-      output <- list("-a" = TRUE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#"user-error"
+      args <- '-a'
 
-      args <- parse_args('-a', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "-b" works',{
 		#$ prog -b
 		#"user-error"
+      args <- '-b'
 
-      args <- parse_args('-b', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-a": false, "-b": false}
+      args <- ''
+      expected <- list("-a" = FALSE, "-b" = FALSE)
 
-      args <- parse_args('', options)
-      output <- list("-a" = FALSE, "-b" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -610,37 +596,35 @@ options: -a
     test_that('parsing "-a -b" works',{
 		#$ prog -a -b
 		#"user-error"
+      args <- '-a -b'
 
-      args <- parse_args('-a -b', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true, "-b": false}
+      args <- '-a'
+      expected <- list("-a" = TRUE, "-b" = FALSE)
 
-      args <- parse_args('-a', options)
-      output <- list("-a" = TRUE, "-b" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-b" works',{
 		#$ prog -b
 		#{"-a": false, "-b": true}
+      args <- '-b'
+      expected <- list("-a" = FALSE, "-b" = TRUE)
 
-      args <- parse_args('-b', options)
-      output <- list("-a" = FALSE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -653,37 +637,36 @@ options: -a
     test_that('parsing "-a -b" works',{
 		#$ prog -a -b
 		#"user-error"
+      args <- '-a -b'
 
-      args <- parse_args('-a -b', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-a": false, "-b": false}
+      args <- ''
+      expected <- list("-a" = FALSE, "-b" = FALSE)
 
-      args <- parse_args('', options)
-      output <- list("-a" = FALSE, "-b" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true, "-b": false}
+      args <- '-a'
+      expected <- list("-a" = TRUE, "-b" = FALSE)
 
-      args <- parse_args('-a', options)
-      output <- list("-a" = TRUE, "-b" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-b" works',{
 		#$ prog -b
 		#{"-a": false, "-b": true}
+      args <- '-b'
+      expected <- list("-a" = FALSE, "-b" = TRUE)
 
-      args <- parse_args('-b', options)
-      output <- list("-a" = FALSE, "-b" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -693,28 +676,26 @@ doc <-
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"<arg>": "10"}
+      args <- '10'
+      expected <- list("<arg>" = "10")
 
-      args <- parse_args('10', options)
-      output <- list("<arg>" = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#"user-error"
+      args <- '10 20'
 
-      args <- parse_args('10 20', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -724,28 +705,27 @@ doc <-
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"<arg>": "10"}
+      args <- '10'
+      expected <- list("<arg>" = "10")
 
-      args <- parse_args('10', options)
-      output <- list("<arg>" = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#"user-error"
+      args <- '10 20'
 
-      args <- parse_args('10 20', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<arg>": null}
+      args <- ''
+      expected <- list("<arg>" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("<arg>" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -755,28 +735,26 @@ doc <-
     test_that('parsing "10 20 40" works',{
 		#$ prog 10 20 40
 		#{"<kind>": "10", "<name>": "20", "<type>": "40"}
+      args <- '10 20 40'
+      expected <- list("<kind>" = "10", "<name>" = "20", "<type>" = "40")
 
-      args <- parse_args('10 20 40', options)
-      output <- list("<kind>" = "10", "<name>" = "20", "<type>" = "40")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#"user-error"
+      args <- '10 20'
 
-      args <- parse_args('10 20', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -786,28 +764,27 @@ doc <-
     test_that('parsing "10 20 40" works',{
 		#$ prog 10 20 40
 		#{"<kind>": "10", "<name>": "20", "<type>": "40"}
+      args <- '10 20 40'
+      expected <- list("<kind>" = "10", "<name>" = "20", "<type>" = "40")
 
-      args <- parse_args('10 20 40', options)
-      output <- list("<kind>" = "10", "<name>" = "20", "<type>" = "40")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"<kind>": "10", "<name>": "20", "<type>": null}
+      args <- '10 20'
+      expected <- list("<kind>" = "10", "<name>" = "20", "<type>" = NULL)
 
-      args <- parse_args('10 20', options)
-      output <- list("<kind>" = "10", "<name>" = "20", "<type>" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -817,28 +794,27 @@ doc <-
     test_that('parsing "10 20 40" works',{
 		#$ prog 10 20 40
 		#"user-error"
+      args <- '10 20 40'
 
-      args <- parse_args('10 20 40', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "20 40" works',{
 		#$ prog 20 40
 		#{"<kind>": null, "<name>": "20", "<type>": "40"}
+      args <- '20 40'
+      expected <- list("<kind>" = NULL, "<name>" = "20", "<type>" = "40")
 
-      args <- parse_args('20 40', options)
-      output <- list("<kind>" = NULL, "<name>" = "20", "<type>" = "40")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<kind>": null, "<name>": null, "<type>": null}
+      args <- ''
+      expected <- list("<kind>" = NULL, "<name>" = NULL, "<type>" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("<kind>" = NULL, "<name>" = NULL, "<type>" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -851,28 +827,27 @@ options:
     test_that('parsing "10 --all" works',{
 		#$ prog 10 --all
 		#{"<kind>": "10", "--all": true, "<name>": null}
+      args <- '10 --all'
+      expected <- list("<kind>" = "10", "--all" = TRUE, "<name>" = NULL)
 
-      args <- parse_args('10 --all', options)
-      output <- list("<kind>" = "10", "--all" = TRUE, "<name>" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"<kind>": null, "--all": false, "<name>": "10"}
+      args <- '10'
+      expected <- list("<kind>" = NULL, "--all" = FALSE, "<name>" = "10")
 
-      args <- parse_args('10', options)
-      output <- list("<kind>" = NULL, "--all" = FALSE, "<name>" = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -882,28 +857,28 @@ doc <-
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"<name>": ["10", "20"]}
+      args <- '10 20'
+      expected <- list("<name>" = c("10", "20"))
 
-      args <- parse_args('10 20', options)
-      output <- list("<name>" = c("10", "20"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"<name>": ["10"]}
+      args <- '10'
+      expected <- list("<name>" = "10")
 
-      args <- parse_args('10', options)
-      output <- list("<name>" = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<name>": []}
+      args <- ''
+      expected <- list("<name>" = list())
 
-      args <- parse_args('', options)
-      output <- list("<name>" = list())
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -913,28 +888,27 @@ doc <-
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"<name>": ["10", "20"]}
+      args <- '10 20'
+      expected <- list("<name>" = c("10", "20"))
 
-      args <- parse_args('10 20', options)
-      output <- list("<name>" = c("10", "20"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#"user-error"
+      args <- '10'
 
-      args <- parse_args('10', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<name>": []}
+      args <- ''
+      expected <- list("<name>" = list())
 
-      args <- parse_args('', options)
-      output <- list("<name>" = list())
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -944,28 +918,27 @@ doc <-
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
+      args <- '10 20'
+      expected <- list(NAME = c("10", "20"))
 
-      args <- parse_args('10 20', options)
-      output <- list(NAME = c("10", "20"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
+      args <- '10'
+      expected <- list(NAME = "10")
 
-      args <- parse_args('10', options)
-      output <- list(NAME = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -975,28 +948,28 @@ doc <-
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
+      args <- '10 20'
+      expected <- list(NAME = c("10", "20"))
 
-      args <- parse_args('10 20', options)
-      output <- list(NAME = c("10", "20"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
+      args <- '10'
+      expected <- list(NAME = "10")
 
-      args <- parse_args('10', options)
-      output <- list(NAME = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
+      args <- ''
+      expected <- list(NAME = list())
 
-      args <- parse_args('', options)
-      output <- list(NAME = list())
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1006,28 +979,28 @@ doc <-
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
+      args <- '10 20'
+      expected <- list(NAME = c("10", "20"))
 
-      args <- parse_args('10 20', options)
-      output <- list(NAME = c("10", "20"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
+      args <- '10'
+      expected <- list(NAME = "10")
 
-      args <- parse_args('10', options)
-      output <- list(NAME = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
+      args <- ''
+      expected <- list(NAME = list())
 
-      args <- parse_args('', options)
-      output <- list(NAME = list())
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1037,28 +1010,28 @@ doc <-
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
+      args <- '10 20'
+      expected <- list(NAME = c("10", "20"))
 
-      args <- parse_args('10 20', options)
-      output <- list(NAME = c("10", "20"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
+      args <- '10'
+      expected <- list(NAME = "10")
 
-      args <- parse_args('10', options)
-      output <- list(NAME = "10")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
+      args <- ''
+      expected <- list(NAME = list())
 
-      args <- parse_args('', options)
-      output <- list(NAME = list())
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1070,28 +1043,27 @@ options: --foo'
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": "10", "--foo": false}
+      args <- '10'
+      expected <- list(NAME = "10", "--foo" = FALSE)
 
-      args <- parse_args('10', options)
-      output <- list(NAME = "10", "--foo" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--foo 10" works',{
 		#$ prog --foo 10
 		#{"NAME": "10", "--foo": true}
+      args <- '--foo 10'
+      expected <- list(NAME = "10", "--foo" = TRUE)
 
-      args <- parse_args('--foo 10', options)
-      output <- list(NAME = "10", "--foo" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--foo=10" works',{
 		#$ prog --foo=10
 		#"user-error"
+      args <- '--foo=10'
 
-      args <- parse_args('--foo=10', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -1104,28 +1076,28 @@ options: --bar'
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"], "--foo": false, "--bar": false}
+      args <- '10'
+      expected <- list(NAME = "10", "--foo" = FALSE, "--bar" = FALSE)
 
-      args <- parse_args('10', options)
-      output <- list(NAME = "10", "--foo" = FALSE, "--bar" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"NAME": ["10", "20"], "--foo": false, "--bar": false}
+      args <- '10 20'
+      expected <- list(NAME = c("10", "20"), "--foo" = FALSE, "--bar" = FALSE)
 
-      args <- parse_args('10 20', options)
-      output <- list(NAME = c("10", "20"), "--foo" = FALSE, "--bar" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--foo --bar" works',{
 		#$ prog --foo --bar
 		#{"NAME": [], "--foo": true, "--bar": true}
+      args <- '--foo --bar'
+      expected <- list(NAME = list(), "--foo" = TRUE, "--bar" = TRUE)
 
-      args <- parse_args('--foo --bar', options)
-      output <- list(NAME = list(), "--foo" = TRUE, "--bar" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1150,10 +1122,10 @@ Options:
     test_that('parsing "ship Guardian move 150 300 --speed=20" works',{
 		#$ prog ship Guardian move 150 300 --speed=20
 		#{"--drifting": false, "--help": false, "--moored": false, "--speed": "20", "--version": false, "<name>": ["Guardian"], "<x>": "150", "<y>": "300", "mine": false, "move": true, "new": false, "remove": false, "set": false, "ship": true, "shoot": false}
+      args <- 'ship Guardian move 150 300 --speed=20'
+      expected <- list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, ,    "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", ,    "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, ,    new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE)
 
-      args <- parse_args('ship Guardian move 150 300 --speed=20', options)
-      output <- list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, ,    "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", ,    "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, ,    new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1163,10 +1135,10 @@ doc <-
     test_that('parsing "--hello" works',{
 		#$ prog --hello
 		#{"--hello": true}
+      args <- '--hello'
+      expected <- list("--hello" = TRUE)
 
-      args <- parse_args('--hello', options)
-      output <- list("--hello" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1176,19 +1148,19 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"--hello": null}
+      args <- ''
+      expected <- list("--hello" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("--hello" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--hello wrld" works',{
 		#$ prog --hello wrld
 		#{"--hello": "wrld"}
+      args <- '--hello wrld'
+      expected <- list("--hello" = "wrld")
 
-      args <- parse_args('--hello wrld', options)
-      output <- list("--hello" = "wrld")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1198,19 +1170,19 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"-o": false}
+      args <- ''
+      expected <- list("-o" = FALSE)
 
-      args <- parse_args('', options)
-      output <- list("-o" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-o" works',{
 		#$ prog -o
 		#{"-o": true}
+      args <- '-o'
+      expected <- list("-o" = TRUE)
 
-      args <- parse_args('-o', options)
-      output <- list("-o" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1220,10 +1192,10 @@ doc <-
     test_that('parsing "-op" works',{
 		#$ prog -op
 		#{"-o": true, "-p": true, "-r": false}
+      args <- '-op'
+      expected <- list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE)
 
-      args <- parse_args('-op', options)
-      output <- list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1233,10 +1205,10 @@ doc <-
     test_that('parsing "--aa" works',{
 		#$ prog --aa
 		#{"--aabb": false, "--aa": true}
+      args <- '--aa'
+      expected <- list("--aabb" = FALSE, "--aa" = TRUE)
 
-      args <- parse_args('--aa', options)
-      output <- list("--aabb" = FALSE, "--aa" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1246,10 +1218,10 @@ doc <-
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"-v": true}
+      args <- '-v'
+      expected <- list("-v" = TRUE)
 
-      args <- parse_args('-v', options)
-      output <- list("-v" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1259,28 +1231,28 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"-v": 0}
+      args <- ''
+      expected <- list("-v" = 0)
 
-      args <- parse_args('', options)
-      output <- list("-v" = 0)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"-v": 1}
+      args <- '-v'
+      expected <- list("-v" = 1)
 
-      args <- parse_args('-v', options)
-      output <- list("-v" = 1)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-vv" works',{
 		#$ prog -vv
 		#{"-v": 2}
+      args <- '-vv'
+      expected <- list("-v" = 2)
 
-      args <- parse_args('-vv', options)
-      output <- list("-v" = 2)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1290,37 +1262,36 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#"user-error"
+      args <- ''
 
-      args <- parse_args('', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
 
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"-v": 1}
+      args <- '-v'
+      expected <- list("-v" = 1)
 
-      args <- parse_args('-v', options)
-      output <- list("-v" = 1)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-vv" works',{
 		#$ prog -vv
 		#{"-v": 2}
+      args <- '-vv'
+      expected <- list("-v" = 2)
 
-      args <- parse_args('-vv', options)
-      output <- list("-v" = 2)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-vvvvvv" works',{
 		#$ prog -vvvvvv
 		#{"-v": 6}
+      args <- '-vvvvvv'
+      expected <- list("-v" = 6)
 
-      args <- parse_args('-vvvvvv', options)
-      output <- list("-v" = 6)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1332,37 +1303,36 @@ This one is probably most readable user-friednly variant.'
     test_that('parsing "" works',{
 		#$ prog
 		#{"-v": 0}
+      args <- ''
+      expected <- list("-v" = 0)
 
-      args <- parse_args('', options)
-      output <- list("-v" = 0)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"-v": 1}
+      args <- '-v'
+      expected <- list("-v" = 1)
 
-      args <- parse_args('-v', options)
-      output <- list("-v" = 1)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-vv" works',{
 		#$ prog -vv
 		#{"-v": 2}
+      args <- '-vv'
+      expected <- list("-v" = 2)
 
-      args <- parse_args('-vv', options)
-      output <- list("-v" = 2)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-vvvv" works',{
 		#$ prog -vvvv
 		#"user-error"
+      args <- '-vvvv'
 
-      args <- parse_args('-vvvv', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -1372,10 +1342,10 @@ doc <-
     test_that('parsing "--ver --ver" works',{
 		#$ prog --ver --ver
 		#{"--ver": 2}
+      args <- '--ver --ver'
+      expected <- list("--ver" = 2)
 
-      args <- parse_args('--ver --ver', options)
-      output <- list("--ver" = 2)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1385,10 +1355,10 @@ doc <-
     test_that('parsing "go" works',{
 		#$ prog go
 		#{"go": true}
+      args <- 'go'
+      expected <- list(go = TRUE)
 
-      args <- parse_args('go', options)
-      output <- list(go = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1398,37 +1368,36 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"go": 0}
+      args <- ''
+      expected <- list(go = 0)
 
-      args <- parse_args('', options)
-      output <- list(go = 0)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "go" works',{
 		#$ prog go
 		#{"go": 1}
+      args <- 'go'
+      expected <- list(go = 1)
 
-      args <- parse_args('go', options)
-      output <- list(go = 1)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "go go" works',{
 		#$ prog go go
 		#{"go": 2}
+      args <- 'go go'
+      expected <- list(go = 2)
 
-      args <- parse_args('go go', options)
-      output <- list(go = 2)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "go go go" works',{
 		#$ prog go go go
 		#"user-error"
+      args <- 'go go go'
 
-      args <- parse_args('go go go', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -1444,28 +1413,27 @@ options: -a
     test_that('parsing "go go go go go" works',{
 		#$ prog go go go go go
 		#{"go": 5}
+      args <- 'go go go go go'
+      expected <- list(go = 5)
 
-      args <- parse_args('go go go go go', options)
-      output <- list(go = 5)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true, "-b": false}
+      args <- '-a'
+      expected <- list("-a" = TRUE, "-b" = FALSE)
 
-      args <- parse_args('-a', options)
-      output <- list("-a" = TRUE, "-b" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-aa" works',{
 		#$ prog -aa
 		#"user-error"
+      args <- '-aa'
 
-      args <- parse_args('-aa', options)
-      output <- "user-error"
-      expect_equivalent(args, output)
+      expect_error(parse_args(args,options))
     })
   
 doc <- 
@@ -1478,28 +1446,28 @@ Options:
     test_that('parsing "arg" works',{
 		#$ prog arg
 		#{"A": "arg", "-v": false, "-q": false}
+      args <- 'arg'
+      expected <- list(A = "arg", "-v" = FALSE, "-q" = FALSE)
 
-      args <- parse_args('arg', options)
-      output <- list(A = "arg", "-v" = FALSE, "-q" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-v arg" works',{
 		#$ prog -v arg
 		#{"A": "arg", "-v": true, "-q": false}
+      args <- '-v arg'
+      expected <- list(A = "arg", "-v" = TRUE, "-q" = FALSE)
 
-      args <- parse_args('-v arg', options)
-      output <- list(A = "arg", "-v" = TRUE, "-q" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-q arg" works',{
 		#$ prog -q arg
 		#{"A": "arg", "-v": false, "-q": true}
+      args <- '-q arg'
+      expected <- list(A = "arg", "-v" = FALSE, "-q" = TRUE)
 
-      args <- parse_args('-q arg', options)
-      output <- list(A = "arg", "-v" = FALSE, "-q" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1509,19 +1477,19 @@ doc <-
     test_that('parsing "-" works',{
 		#$ prog -
 		#{"-": true}
+      args <- '-'
+      expected <- list("-" = TRUE)
 
-      args <- parse_args('-', options)
-      output <- list("-" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-": false}
+      args <- ''
+      expected <- list("-" = FALSE)
 
-      args <- parse_args('', options)
-      output <- list("-" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1531,19 +1499,19 @@ doc <-
     test_that('parsing "a b" works',{
 		#$ prog a b
 		#{"NAME": ["a", "b"]}
+      args <- 'a b'
+      expected <- list(NAME = c("a", "b"))
 
-      args <- parse_args('a b', options)
-      output <- list(NAME = c("a", "b"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
+      args <- ''
+      expected <- list(NAME = list())
 
-      args <- parse_args('', options)
-      output <- list(NAME = list())
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1556,10 +1524,10 @@ options:
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-m": null, "-a": true}
+      args <- '-a'
+      expected <- list("-m" = NULL, "-a" = TRUE)
 
-      args <- parse_args('-a', options)
-      output <- list("-m" = NULL, "-a" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1569,10 +1537,10 @@ doc <-
     test_that('parsing "--hello" works',{
 		#$ prog --hello
 		#{"--hello": true}
+      args <- '--hello'
+      expected <- list("--hello" = TRUE)
 
-      args <- parse_args('--hello', options)
-      output <- list("--hello" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1582,19 +1550,19 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"--hello": null}
+      args <- ''
+      expected <- list("--hello" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("--hello" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--hello wrld" works',{
 		#$ prog --hello wrld
 		#{"--hello": "wrld"}
+      args <- '--hello wrld'
+      expected <- list("--hello" = "wrld")
 
-      args <- parse_args('--hello wrld', options)
-      output <- list("--hello" = "wrld")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1604,19 +1572,19 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"-o": false}
+      args <- ''
+      expected <- list("-o" = FALSE)
 
-      args <- parse_args('', options)
-      output <- list("-o" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "-o" works',{
 		#$ prog -o
 		#{"-o": true}
+      args <- '-o'
+      expected <- list("-o" = TRUE)
 
-      args <- parse_args('-o', options)
-      output <- list("-o" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1626,10 +1594,10 @@ doc <-
     test_that('parsing "-op" works',{
 		#$ prog -op
 		#{"-o": true, "-p": true, "-r": false}
+      args <- '-op'
+      expected <- list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE)
 
-      args <- parse_args('-op', options)
-      output <- list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1639,10 +1607,10 @@ doc <-
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"-v": true, "--verbose": false}
+      args <- '-v'
+      expected <- list("-v" = TRUE, "--verbose" = FALSE)
 
-      args <- parse_args('-v', options)
-      output <- list("-v" = TRUE, "--verbose" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1652,10 +1620,10 @@ doc <-
     test_that('parsing "remote -v" works',{
 		#$ prog remote -v
 		#{"remote": true, "-v": true, "--verbose": false}
+      args <- 'remote -v'
+      expected <- list(remote = TRUE, "-v" = TRUE, "--verbose" = FALSE)
 
-      args <- parse_args('remote -v', options)
-      output <- list(remote = TRUE, "-v" = TRUE, "--verbose" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1665,10 +1633,10 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{}
+      args <- ''
+      expected <- list()
 
-      args <- parse_args('', options)
-      output <- list()
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1679,19 +1647,19 @@ doc <-
     test_that('parsing "1 2" works',{
 		#$ prog 1 2
 		#{"<a>": "1", "<b>": "2"}
+      args <- '1 2'
+      expected <- list("<a>" = "1", "<b>" = "2")
 
-      args <- parse_args('1 2', options)
-      output <- list("<a>" = "1", "<b>" = "2")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<a>": null, "<b>": null}
+      args <- ''
+      expected <- list("<a>" = NULL, "<b>" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("<a>" = NULL, "<b>" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1702,10 +1670,10 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"<a>": null, "<b>": null}
+      args <- ''
+      expected <- list("<a>" = NULL, "<b>" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("<a>" = NULL, "<b>" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1715,10 +1683,10 @@ doc <-
     test_that('parsing "" works',{
 		#$ prog
 		#{"--file": null}
+      args <- ''
+      expected <- list("--file" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("--file" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1730,10 +1698,10 @@ options: --file <a>'
     test_that('parsing "" works',{
 		#$ prog
 		#{"--file": null}
+      args <- ''
+      expected <- list("--file" = NULL)
 
-      args <- parse_args('', options)
-      output <- list("--file" = NULL)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1745,10 +1713,10 @@ Options: -a, --address <host:port>  TCP address [default: localhost:6283].'
     test_that('parsing "" works',{
 		#$ prog
 		#{"--address": "localhost:6283"}
+      args <- ''
+      expected <- list("--address" = "localhost:6283")
 
-      args <- parse_args('', options)
-      output <- list("--address" = "localhost:6283")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1758,19 +1726,19 @@ doc <-
     test_that('parsing "--long one" works',{
 		#$ prog --long one
 		#{"--long": ["one"]}
+      args <- '--long one'
+      expected <- list("--long" = "one")
 
-      args <- parse_args('--long one', options)
-      output <- list("--long" = "one")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "--long one --long two" works',{
 		#$ prog --long one --long two
 		#{"--long": ["one", "two"]}
+      args <- '--long one --long two'
+      expected <- list("--long" = c("one", "two"))
 
-      args <- parse_args('--long one --long two', options)
-      output <- list("--long" = c("one", "two"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1780,10 +1748,10 @@ doc <-
     test_that('parsing "go left --speed=5  go right --speed=9" works',{
 		#$ prog  go left --speed=5  go right --speed=9
 		#{"go": 2, "<direction>": ["left", "right"], "--speed": ["5", "9"]}
+      args <- 'go left --speed=5  go right --speed=9'
+      expected <- list(go = 2, "<direction>" = c("left", "right"), "--speed" = c("5", ,"9"))
 
-      args <- parse_args('go left --speed=5  go right --speed=9', options)
-      output <- list(go = 2, "<direction>" = c("left", "right"), "--speed" = c("5", ,"9"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1795,10 +1763,10 @@ options: -a'
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true}
+      args <- '-a'
+      expected <- list("-a" = TRUE)
 
-      args <- parse_args('-a', options)
-      output <- list("-a" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1810,19 +1778,19 @@ options: -o <o>  [default: x]'
     test_that('parsing "-o this -o that" works',{
 		#$ prog -o this -o that
 		#{"-o": ["this", "that"]}
+      args <- '-o this -o that'
+      expected <- list("-o" = c("this", "that"))
 
-      args <- parse_args('-o this -o that', options)
-      output <- list("-o" = c("this", "that"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-o": ["x"]}
+      args <- ''
+      expected <- list("-o" = "x")
 
-      args <- parse_args('', options)
-      output <- list("-o" = "x")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1834,19 +1802,19 @@ options: -o <o>  [default: x y]'
     test_that('parsing "-o this" works',{
 		#$ prog -o this
 		#{"-o": ["this"]}
+      args <- '-o this'
+      expected <- list("-o" = "this")
 
-      args <- parse_args('-o this', options)
-      output <- list("-o" = "this")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-o": ["x", "y"]}
+      args <- ''
+      expected <- list("-o" = c("x", "y"))
 
-      args <- parse_args('', options)
-      output <- list("-o" = c("x", "y"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1858,10 +1826,10 @@ options: -p PATH'
     test_that('parsing "-pHOME" works',{
 		#$ prog -pHOME
 		#{"-p": "HOME"}
+      args <- '-pHOME'
+      expected <- list("-p" = "HOME")
 
-      args <- parse_args('-pHOME', options)
-      output <- list("-p" = "HOME")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1871,10 +1839,10 @@ doc <-
     test_that('parsing "--xx=1 --yy=2" works',{
 		#$ prog --xx=1 --yy=2
 		#{"--xx": ["1"], "--yy": ["2"]}
+      args <- '--xx=1 --yy=2'
+      expected <- list("--xx" = "1", "--yy" = "2")
 
-      args <- parse_args('--xx=1 --yy=2', options)
-      output <- list("--xx" = "1", "--yy" = "2")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1884,10 +1852,10 @@ doc <-
     test_that('parsing "f.txt" works',{
 		#$ prog f.txt
 		#{"<input file>": "f.txt"}
+      args <- 'f.txt'
+      expected <- list("<input file>" = "f.txt")
 
-      args <- parse_args('f.txt', options)
-      output <- list("<input file>" = "f.txt")
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1897,10 +1865,10 @@ doc <-
     test_that('parsing "--input a.txt --input=b.txt" works',{
 		#$ prog --input a.txt --input=b.txt
 		#{"--input": ["a.txt", "b.txt"]}
+      args <- '--input a.txt --input=b.txt'
+      expected <- list("--input" = c("a.txt", "b.txt"))
 
-      args <- parse_args('--input a.txt --input=b.txt', options)
-      output <- list("--input" = c("a.txt", "b.txt"))
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1913,10 +1881,10 @@ options: --loglevel=N'
     test_that('parsing "fail --loglevel 5" works',{
 		#$ prog fail --loglevel 5
 		#{"--loglevel": "5", "fail": true, "good": false}
+      args <- 'fail --loglevel 5'
+      expected <- list("--loglevel" = "5", fail = TRUE, good = FALSE)
 
-      args <- parse_args('fail --loglevel 5', options)
-      output <- list("--loglevel" = "5", fail = TRUE, good = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1926,10 +1894,10 @@ doc <-
     test_that('parsing "--foo" works',{
 		#$ prog --foo
 		#{"--foo": true}
+      args <- '--foo'
+      expected <- list("--foo" = TRUE)
 
-      args <- parse_args('--foo', options)
-      output <- list("--foo" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1939,10 +1907,10 @@ doc <-
     test_that('parsing "--foo" works',{
 		#$ prog --foo
 		#{"--foo": true}
+      args <- '--foo'
+      expected <- list("--foo" = TRUE)
 
-      args <- parse_args('--foo', options)
-      output <- list("--foo" = TRUE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1954,10 +1922,10 @@ NOT PART OF SECTION'
     test_that('parsing "--foo" works',{
 		#$ prog --foo
 		#{"--foo": true, "--bar": false}
+      args <- '--foo'
+      expected <- list("--foo" = TRUE, "--bar" = FALSE)
 
-      args <- parse_args('--foo', options)
-      output <- list("--foo" = TRUE, "--bar" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1971,10 +1939,10 @@ NOT PART OF SECTION'
     test_that('parsing "--foo" works',{
 		#$ prog --foo
 		#{"--foo": true, "--bar": false}
+      args <- '--foo'
+      expected <- list("--foo" = TRUE, "--bar" = FALSE)
 
-      args <- parse_args('--foo', options)
-      output <- list("--foo" = TRUE, "--bar" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 
@@ -1987,10 +1955,10 @@ NOT PART OF SECTION'
     test_that('parsing "--foo" works',{
 		#$ prog --foo
 		#{"--foo": true, "--bar": false}
+      args <- '--foo'
+      expected <- list("--foo" = TRUE, "--bar" = FALSE)
 
-      args <- parse_args('--foo', options)
-      output <- list("--foo" = TRUE, "--bar" = FALSE)
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
     })
   
 doc <- 

@@ -33,11 +33,13 @@ cases <- lapply(cases, function(x){
   case$tests <- apply(tests, 1, function(r){
     if (str_sub(r[3],1,1) == "{"){
       output <- deparse(fromJSON(r[3]), control="keepNA")
+      error <- FALSE
     } else {
       output <- r[3]
+      error <- TRUE
     }
     test <- str_replace_all(str_trim(r[1]), "(^|\n)", "\\1\t\t#")
-    list(test=test, args=str_trim(r[2]), output=output)
+    list(test=test, args=str_trim(r[2]), output=output, error=error)
   })
   case
 })
@@ -61,10 +63,15 @@ doc <-
   {{#tests}}
     test_that('parsing \"{{{args}}}\" works',{
 {{{test}}}
+      args <- '{{{args}}}'
+{{^error}}
+      expected <- {{{output}}}
 
-      args <- parse_args('{{{args}}}', options)
-      output <- {{{output}}}
-      expect_equivalent(args, output)
+      expect_equivalent(parse_args(args,options), expected)
+{{/error}}
+{{#error}}
+      expect_error(parse_args(args,options))
+{{/error}}
     })
   {{/tests}}
 {{/cases}}
