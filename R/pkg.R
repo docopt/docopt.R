@@ -4,5 +4,5 @@
 #' @section Usage
 #' 
 #' @name docopt-package
-#' @docType package
+#' @docType packages
 {}
