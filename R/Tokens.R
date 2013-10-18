@@ -1,9 +1,14 @@
 Tokens <- setRefClass( "Tokens"
                        , fields=list(tokens="character", error="function", strict="logical")
                        , methods=list(
-                         initialize = function(tokens=character(), error=stop, strict=missing(error)){
+                         initialize = function(tokens=character(), error=stop){
                            .tokens <- gsub("^\\s+|\\s+$", "", tokens)
                            tokens <<- strsplit(.tokens, "\\s+")[[1]]
+                           if (missing(error)){
+                             strict <<- TRUE
+                           } else {
+                             strict <<- FALSE
+                           }
                            error <<- error
                          },
                          current = function(){

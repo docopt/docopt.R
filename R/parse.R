@@ -16,18 +16,20 @@ parse_shorts <- function(tokens, options){
 #         if opt.length < 1
 #             if tokens.error is DocoptExit
 #                 throw new tokens.error "-#{raw[0]} is not recognized"
-    tokens$error("-",r," is not recognized")
+    if (tokens$strict){
+      #tokens$error("-",r," is not recognized")
     #             else
     #                 o = new Option('-' + raw[0], null)
     #                 options.push(o)
     #                 parsed.push(o)
     #                 raw = raw[1..]
     #                 continue
-    o = Option(paste0("-", r), NULL)
-    options <- c(options, o)
-    parsed <- c(parsed, o)
-    raw <- substring(raw, 2)
-    next
+      o = Option(paste0("-", r), NULL)
+      options <- c(options, o)
+      parsed <- c(parsed, o)
+      raw <- substring(raw, 2)
+      next
+    }
 } 
 
 #         o = opt[0]

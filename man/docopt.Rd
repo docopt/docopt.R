@@ -2,7 +2,8 @@
 \alias{docopt}
 \title{docopt}
 \usage{
-  docopt(doc, ...)
+  docopt(doc, args, name = NULL, help = TRUE,
+    version = NULL)
 }
 \description{
   docopt

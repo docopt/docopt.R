@@ -49,16 +49,19 @@ extras <- function(help, version=NULL, options, doc){
   opts <- list()
   for (opt in options){
     if (!is.null(opt$value)){
-      opts[opt$name] <- TRUE
+      opts[opt$name()] <- TRUE
     }
   }
   if (help && any(names(opts) %in% c("-h","--help"))){
-    cat(str_replace_all(doc, "^\\s*|\\s*$", ""))
-    quit(save="no")
+    help <- str_replace_all(doc, "^\\s*|\\s*$", "")
+    cat(help)
+    if (interactive()) stop() else {
+      quit(save="no")
+    }
   }
   if (!is.null(version) && any(names(opts) %in% "--version")){
     cat(version)
-    quit(save="no")
+    if (interactive) stop() else quit(save="no")
   }
 }
 
@@ -79,7 +82,9 @@ formal_usage <- function(printable_usage){
 # formal_usage = (printable_usage) ->
 #     pu = printable_usage.split(/\s+/)[1..]  # split and drop "usage:"
 #     ((if s == pu[0] then '|' else s) for s in pu[1..]).join ' '
-  printable_usage
+  formal <- str_replace(printable_usage, "^usage:", "")
+  formal <- str_replace_all(formal, "\\s+", " ")
+  formal
 }
 # 
 # class Dict extends Object

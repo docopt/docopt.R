@@ -1,4 +1,4 @@
-\docType{package}
+\docType{packages}
 \name{docopt-package}
 \alias{docopt-package}
 \title{docopt}
