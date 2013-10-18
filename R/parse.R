@@ -193,7 +193,7 @@ parse_atom <- function(tokens, options){
 # parse_args = (source, options) ->
 parse_args <- function(src, options){
 #     tokens = new TokenStream source, DocoptExit
-  tokens <- Tokens(src, error=stop)
+  tokens <- Tokens(src)
 #     #options = options.slice(0) # shallow copy, not sure if necessary
 #     opts = []
   opts = list()
@@ -250,11 +250,9 @@ parse_option <- function(description){
   }
 #         if argcount is 1
   if (argcount == 1){
-    matched <- regexec("\\[default:\\s+(.*)\\]", description)
-    #TODO extract default value
-    value <- FALSE
-#             matched = /\[default:\s+(.*)\]/.exec(description)
-#             value = if matched then matched[1] else false
+    matched <- str_match(description, "\\[default:\\s+(.*)\\]")
+    value <- matched[,2]
+    if (is.na(value)) value <- FALSE
   }
   Option(short, long, argcount, value)
 #         new Option short, long, argcount, value
@@ -263,7 +261,7 @@ parse_option <- function(description){
 # parse_doc_options = (doc) ->
 parse_doc_options <- function(doc){
   #     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
-  lapply(strsplit(doc, "^\\s*-|\\n\\s*-")[[1]], function(s){
+  lapply(tail(unlist(strsplit(doc, "^\\s*-|\\n\\s*-")),-1), function(s){
     parse_option(paste0('-', s))
   })
 }

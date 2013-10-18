@@ -1,7 +1,7 @@
 Tokens <- setRefClass( "Tokens"
-                       , fields=list(tokens="character", error="function")
+                       , fields=list(tokens="character", error="function", strict="logical")
                        , methods=list(
-                         initialize = function(tokens=character(), error=stop){
+                         initialize = function(tokens=character(), error=stop, strict=missing(error)){
                            .tokens <- gsub("^\\s+|\\s+$", "", tokens)
                            tokens <<- strsplit(.tokens, "\\s+")[[1]]
                            error <<- error
@@ -48,6 +48,8 @@ setMethod("[<-",
             x$tokens[i] <- value
           }
 )
+
+setMethod("as.character", signature(x="Tokens"), function(x, ...){x$tokens})
 
 
 # # testing 1, 2, 3
