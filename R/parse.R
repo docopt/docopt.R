@@ -198,7 +198,7 @@ parse_args <- function(src, options){
 #     opts = []
   opts = list()
   #     while (token = tokens.current()) isnt null
-  while (length(token <- tokens$current()))
+  while ((token <- tokens$current()) != "")
     #         if token is '--'
     #             #tokens.shift()
     #             return opts.concat(new Argument null, tokens.shift() while tokens.length)
@@ -218,7 +218,7 @@ parse_args <- function(src, options){
       shorts = parse_shorts(tokens, options)
       opts <- c(opts, shorts)
     } else {
-      opts <- c(opts, Argument(null, tokens$shift()))
+      opts <- c(opts, Argument(NULL, tokens$shift()))
     }
   return(opts)
 }

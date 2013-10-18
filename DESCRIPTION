@@ -6,6 +6,7 @@ Date: 2013-09-19
 Author: Edwin de Jonge (edwindjonge@gmail.com)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
 Description: docopt
+Imports: stringr
 License: MIT
 Collate:
     'docopt.R'

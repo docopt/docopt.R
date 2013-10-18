@@ -2,7 +2,34 @@
 #' 
 #' docopt
 #' @export
-docopt <- function(doc, ...){
+docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
+  if (missing(args)){
+    args <- commandArgs(trailingOnly=TRUE)
+  }
+  args <- str_c(args, collapse=" ")
+  usage <- printable_usage(doc, name)
+  pot_options <- parse_doc_options(doc)
+  formal_pattern <- parse_pattern(formal_usage(usage), pot_options)
+  
+  args <- parse_args(args, pot_options)
+  extras(help, version, args, doc)
+  #     [matched, left, argums] = formal_pattern.fix().match argv
+  m <- formal_pattern$fix()$match(args)
+  #     if matched and left.length is 0  # better message if left?
+  
+  if (m$matched && m$left == 0){    
+    cl <- sapply(args, class)
+    options <- args[[cl == "Options"]] 
+  #         pot_arguments = (a for a in formal_pattern.flat() \
+  #             when a.constructor in [Argument, Command])
+    a <- formal_pattern$flat()
+    cl <- sapply(a, class)
+    pot_arguments <- a[cl %in% c("Arguments", "Commands")]
+  #         parameters = [].concat pot_options, options, pot_arguments, argums
+    return(c(pot_options, options, pot_arguments))
+  #         return new Dict([a.name(), a.value] for a in parameters)
+  }
+  stop(usage)
 }
          
 # print help
@@ -18,30 +45,42 @@ version <- function(version=NULL){
   }
 }
 
-# parse_doc_options = (doc) ->
-#     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
+extras <- function(help, version=NULL, options, doc){
+  opts <- list()
+  for (opt in options){
+    if (!is.null(opt$value)){
+      opts[opt$name] <- TRUE
+    }
+  }
+  if (help && any(names(opts) %in% c("-h","--help"))){
+    cat(str_replace_all(doc, "^\\s*|\\s*$", ""))
+    quit(save="no")
+  }
+  if (!is.null(version) && any(names(opts) %in% "--version")){
+    cat(version)
+    quit(save="no")
+  }
+}
+
+printable_usage <- function(doc, name){
+  usage_split <- str_split(doc, perl("(?i)usage:"))[[1]]
+  if (length(usage_split) < 2){
+    stop("'usage:' (case-insensitive) not found")
+  } else if (length(usage_split) > 2){
+    stop('More than one "usage:" (case-insensitive).')
+  }
+  usage <- str_split(usage_split[2], "\n\\s*\n")[[1]][1]
+  usage <- str_c("usage:", usage)
+  str_trim(usage)
+}
+
 # 
-# printable_usage = (doc, name) ->
-#     usage_split = doc.split(/(usage:)/i)
-#     if usage_split.length < 3
-#         throw new DocoptLanguageError '"usage:" (case-insensitive) not found.'
-#     else if usage_split.length > 3
-#         throw new DocoptLanguageError 'More than one "usage:" (case-insensitive).'
-#     return usage_split[1..].join('').split(/\n\s*\n/)[0].replace(/^\s+|\s+$/, '')
-# 
+formal_usage <- function(printable_usage){
 # formal_usage = (printable_usage) ->
 #     pu = printable_usage.split(/\s+/)[1..]  # split and drop "usage:"
 #     ((if s == pu[0] then '|' else s) for s in pu[1..]).join ' '
-# 
-# extras = (help, version, options, doc) ->
-#     opts = {}
-#     opts[opt.name()] = true for opt in options when opt.value
-#     if help and (opts['--help'] or opts['-h'])
-#         print doc.replace /^\s*|\s*$/, ''
-#         process.exit()
-#     if version and opts['--version']
-#         print version
-#         process.exit()
+  printable_usage
+}
 # 
 # class Dict extends Object
 # 
@@ -53,31 +92,3 @@ version <- function(version=NULL){
 #         atts.sort()
 #         '{' + (k + ': ' + @[k] for k in atts).join(',\n ') + '}'
 # 
-# docopt = (doc, kwargs={}) ->
-#     allowedargs = ['argv', 'name', 'help', 'version']
-#     throw new Error "unrecognized argument to docopt: " for arg of kwargs \
-#         when arg not in allowedargs
-# 
-#     argv    = if kwargs.argv is undefined \
-#               then process.argv[2..] else kwargs.argv
-#     name    = if kwargs.name is undefined \
-#               then null else kwargs.name
-#     help    = if kwargs.help is undefined \
-#               then true else kwargs.help
-#     version = if kwargs.version is undefined \
-#               then null else kwargs.version
-# 
-#     usage = printable_usage doc, name
-#     pot_options = parse_doc_options doc
-#     formal_pattern   = parse_pattern formal_usage(usage), pot_options
-# 
-#     argv = parse_args argv, pot_options
-#     extras help, version, argv, doc
-#     [matched, left, argums] = formal_pattern.fix().match argv
-#     if matched and left.length is 0  # better message if left?
-#         options = (opt for opt in argv when opt.constructor is Option)
-#         pot_arguments = (a for a in formal_pattern.flat() \
-#             when a.constructor in [Argument, Command])
-#         parameters = [].concat pot_options, options, pot_arguments, argums
-#         return new Dict([a.name(), a.value] for a in parameters)
-#     throw new DocoptExit usage
