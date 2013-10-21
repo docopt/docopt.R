@@ -151,21 +151,22 @@ Argument <- setRefClass("Argument", contains="Pattern"
 # 
 # 
 # class Command extends Pattern
-Command <- setRefClass("Command", contains="Pattern"
-                      , fields = c("cmdname", "value")
-                       , methods=list(
-                        initialize = function(cmdname, value=FALSE){
-                          cmdname <<- cmdname
-                          value <<- value
-                        },
-                         
+Command <- setRefClass("Command"
+    , contains="Pattern"
+    , fields = c("cmdname", "value")
+    , methods=list(
+      initialize = function(cmdname, value=FALSE){
+        cmdname <<- cmdname
+        value <<- value
+      },
+       
 #     name: -> @cmdname
-                        name = function(){
-                          cmdname
-                        },
-                        toString = function(){
-                          paste0("Command(",cmdname,",",value,")")
-                        },
+      name = function(){
+        cmdname
+      },
+      toString = function(){
+        paste0("Command(",cmdname,",",value,")")
+      },
 #     match: (left, collected=[]) ->
 #         args = (l for l in left when l.constructor is Argument)
 #         if not args.length or args[0].value isnt @name()
@@ -173,9 +174,13 @@ Command <- setRefClass("Command", contains="Pattern"
 #         left.splice(left.indexOf(args[0]), 1)
 #         collected.push new Command @name(), true
 #         [true, left, collected]
-                        match = function(left, collected=list()){
-                          stop("Not implemented")
-                        }
+      match = function(left, collected=list()){
+        args <- left[sapply(left, class) == "Arguments"]
+        if (!length(args) || args[[1]]$value != name()){
+          return(list(FALSE, left, collected))
+        }
+        stop("Not implemented")
+      }
 ))
 # 
 # 
