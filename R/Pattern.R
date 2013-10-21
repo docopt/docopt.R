@@ -1,87 +1,114 @@
 Pattern <- setRefClass( "Pattern"   
-                      , fields=list(children="list")
-                      , methods=list(
-                        initialize = function(.children=list()){
-                            children <<- .children
-                          },
-                        toString = function(){
-                          formals = paste0(sapply(children, as.character), collapse=", ")
-                          paste0(class(.self),"(",formals,")")
-                        },
-                        show = function(){
-                          cat(toString())
-                        },
-
-                        match = function(){
-                            stop("classes inheriting from Pattern
-                                  must overload the match method")
-                        },
+      , fields=list(children="list")
+      , methods=list(
+        initialize = function(.children=list()){
+            children <<- .children
+          },
+        toString = function(){
+          formals = paste0(sapply(children, as.character), collapse=", ")
+          paste0(class(.self),"(",formals,")")
+        },
+        show = function(){
+          cat(toString())
+        },
+  
+        match = function(){
+            stop("classes inheriting from Pattern
+                  must overload the match method")
+        },
                           
 #     flat: ->
 #         if not @hasOwnProperty 'children' then return [@]
 #         res = []
 #         res = res.concat child.flat() for child in @children
 #         res 
-                        flat = function(){
-                            if (length(children) == 0){
-                              return(list(.self))
-                            }
-                            lapply(children, flat)
-                          },
-
-                        fix = function(){
-                          fix_identities()
-                          fix_list_arguments()
-                        },
-#     fix_identities: (uniq=null) ->
-#         """Make pattern-tree tips point to same object if they are equal."""
-# 
-#         if not @hasOwnProperty 'children' then return @
-#         if uniq is null
-#             [uniq, flat] = [{}, @flat()]
-#             uniq[k] = k for k in flat
-# 
-#         i = 0
-#         enumerate = ([i++, c] for c in @children)
-#         for [i, c] in enumerate
-#             if not c.hasOwnProperty 'children'
-#                 @children[i] = uniq[c]
-#             else
-#                 c.fix_identities uniq
-#         @
-                        fix_identities = function(uniq=NULL){
-                          stop("not implemented")
-                        },
+        flat = function(){
+            if (length(children) == 0){
+              return(list(.self))
+            }
+            lapply(children, function(child){child$flat()})
+          },
+  
+        fix = function(){
+          fix_identities()
+          fix_list_arguments()
+        },
+        #Make pattern-tree tips point to same object if they are equal.
+        fix_identities = function(uniq=NULL){
+          #         if not @hasOwnProperty 'children' then return @
+          if (length(children) == 0) {
+            return(.self)
+          }
+          if (is.null(uniq)){
+            uniq <- flat()
+            names(uniq) <- uniq
+          }
+          for (i in seq_along(children)){
+            child <- children[[i]]
+            if (length(child$children)){
+              #TODO check what uniq does.
+              child$fix_identities(uniq)
+            } else {
+              children[[i]] <<- uniq[child]
+            }
+          }
+          .self
+        },
 #     fix_list_arguments: ->
 #         """Find arguments that should accumulate values and fix them."""
-#         either = (c.children for c in @either().children)
-#         for child in either
-#             counts = {}
-#             for c in child
-#                 counts[c] = (counts[c] ? 0) + 1
-#             e.value = [] for e in child \
-#                 when counts[e] > 1 and e.constructor is Argument
-#         @
-                        fix_list_arguments = function(){
-                          stop("not implemented")
-                        },
+        fix_list_arguments = function(){
+          #         either = (c.children for c in @either().children)
+          for (eith in either()$children){
+            #         for child in either
+            for (child in eith$children()){
+              counts <- list()
+              for (ci in child){
+                counts[ci] <- sum(counts[ci], 1)
+              }
+              for (e in child){
+                if (counts[e] > 1 && class(e) == "Arguments"){
+                  e$value <- list()
+                }
+              }
+            }
+          }
+          #             counts = {}
+          #             for c in child
+          #                 counts[c] = (counts[c] ? 0) + 1
+          #             e.value = [] for e in child \
+          #                 when counts[e] > 1 and e.constructor is Argument
+          .self
+        },
 #     either: ->
-#         if not @hasOwnProperty 'children'
-#             return new Either [new Required [@]]
+        either = function(){
+          #         if not @hasOwnProperty 'children'
+          #             return new Either [new Required [@]]
+          if (length(children) == 0){
+            return(Either(Required(list(.self))))
+          }
 #         else
-#             ret = []
-#             groups = [[@]]
+          ret <- list()
+          #             groups = [[@]]
+          groups <- list(list(.self))
 #             while groups.length
+          while (length(groups)){
 #                 children = groups.shift()
-#                 [i, indices, types] = [0, {}, {}]
+            .children <- head(groups, 1)
+            groups <- tail(groups, -1)
+            #                 [i, indices, types] = [0, {}, {}]
+            indices <- list(); types <- list()
 #                 zip = ([i++, c] for c in children)
-#                 for [i,c] in zip
+            enum <- seq_along(.children)
+            #                 for [i,c] in zip
+            for (i in seq_along(.children)){
+              ci <- .children[i]
 #                     name = c.constructor.name
 #                     if name not of types
 #                         types[name] = []
 #                     types[name].push c
 #                     if c not of indices
-#                         indices[c] = i
+#                         indices[c] = i 
+            }
 #                 if either = types[Either.name]
 #                     either = either[0]
 #                     children.splice indices[either], 1
@@ -106,10 +133,10 @@ Pattern <- setRefClass( "Pattern"
 #                     groups.push group
 #                 else
 #                     ret.push children
+          }
 #             return new Either(new Required e for e in ret)
-                        either = function(){
-                          stop("Not implemented")
-                        }
+          Either(Required(ret))
+        }
 ))
 
 # class Argument extends Pattern
