@@ -82,8 +82,11 @@ formal_usage <- function(printable_usage){
 # formal_usage = (printable_usage) ->
 #     pu = printable_usage.split(/\s+/)[1..]  # split and drop "usage:"
 #     ((if s == pu[0] then '|' else s) for s in pu[1..]).join ' '
-  formal <- str_replace(printable_usage, "^usage:", "")
-  formal <- str_replace_all(formal, "\\s+", " ")
+  formal <- str_replace(printable_usage, "^usage:\\s*", "")
+  pu <- unlist(str_split(formal, "\\s+"))
+  prog <- pu[1]
+  pu[pu==prog] <- "|"
+  formal <- str_c(tail(pu, -1), collapse=" ")
   formal
 }
 # 

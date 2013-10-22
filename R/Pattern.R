@@ -58,17 +58,14 @@ Pattern <- setRefClass( "Pattern"
 #         """Find arguments that should accumulate values and fix them."""
         fix_list_arguments = function(){
           #         either = (c.children for c in @either().children)
-          for (eith in either()$children){
+          eith <- lapply(either()$children, function(c) c$children)
             #         for child in either
-            for (child in eith$children()){
-              counts <- list()
-              for (ci in child){
-                counts[ci] <- sum(counts[ci], 1)
-              }
-              for (e in child){
-                if (counts[e] > 1 && class(e) == "Arguments"){
-                  e$value <- list()
-                }
+          for (child in eith){
+            nms <- sapply(child, as.character)
+            counts <- table(nms)
+            for (e in child){
+              if (counts[as.character(e)] > 1 && class(e) == "Arguments"){
+                e$value <- list()
               }
             }
           }
@@ -84,7 +81,7 @@ Pattern <- setRefClass( "Pattern"
           #         if not @hasOwnProperty 'children'
           #             return new Either [new Required [@]]
           if (length(children) == 0){
-            return(Either(Required(list(.self))))
+            return(Either(list(Required(list(.self)))))
           }
 #         else
           ret <- list()
@@ -157,23 +154,33 @@ Argument <- setRefClass("Argument", contains="Pattern"
                            paste0("Argument(",argname,",",value,")")
                          },
 #     match: (left, collected=[]) ->
-#         args = (l for l in left when l.constructor is Argument)
-#         if not args.length then return [false, left, collected]
-#         left = (l for l in left when l.toString() isnt args[0].toString())
-#         if @value is null or @value.constructor isnt Array
-#             collected = collected.concat [new Argument @name(), args[0].value]
-#             return [true, left, collected]
-#         same_name = (a for a in collected \
-#             when a.constructor is Argument and a.name() is @name())
-#         if same_name.length > 0
-#             same_name[0].value.push args[0].value
-#             return [true, left, collected]
-#         else
-#             collected = collected.concat [new Argument @name(), [args[0].value]]
-#             return [true, left, collected]
-                         match = function(left, collected=list()){
-                           stop("not implemented")
-                         }
+       match = function(left, collected=list()){
+         #         args = (l for l in left when l.constructor is Argument)
+         argsidx <- which(sapply(left, class) == "Arguments")
+         arg <- head(argsidx,1)         
+         #         if not args.length then return [false, left, collected]
+         if (!length(arg)){
+           return(matched(FALSE, left, collected))
+         }
+         arg <- left[[arg]]
+         #         left = (l for l in left when l.toString() isnt args[0].toString())
+         left <- Filter(left, function(l){!identical(l, arg)})
+         #         if @value is null or @value.constructor isnt Array
+         if (is.null(value) || !is.list(value)){
+         #             collected = collected.concat [new Argument @name(), args[0].value]
+           collected <- c(collected, Argument(name(), arg$value))
+         #             return [true, left, collected]
+           return(matched(TRUE, left, collected))
+         }
+         #         same_name = (a for a in collected \
+         #             when a.constructor is Argument and a.name() is @name())
+         #         if same_name.length > 0
+         #             same_name[0].value.push args[0].value
+         #             return [true, left, collected]
+         #         else
+         #             collected = collected.concat [new Argument @name(), [args[0].value]]
+         #             return [true, left, collected]
+       }
 ))
 # 
 # 
@@ -195,18 +202,21 @@ Command <- setRefClass("Command"
         paste0("Command(",cmdname,",",value,")")
       },
 #     match: (left, collected=[]) ->
-#         args = (l for l in left when l.constructor is Argument)
-#         if not args.length or args[0].value isnt @name()
-#             return [false, left, collected]
-#         left.splice(left.indexOf(args[0]), 1)
-#         collected.push new Command @name(), true
-#         [true, left, collected]
       match = function(left, collected=list()){
-        args <- left[sapply(left, class) == "Arguments"]
-        if (!length(args) || args[[1]]$value != name()){
-          return(list(FALSE, left, collected))
+        argsidx <- which(sapply(left, class) == "Arguments")
+        firstarg <- head(argsidx,1)
+        #         args = (l for l in left when l.constructor is Argument)
+        #         if not args.length or args[0].value isnt @name()
+        if (!length(firstarg) || left[[firstarg]]$value != name()){
+        #             return [false, left, collected]{
+          return(matched(FALSE, left, collected))
         }
-        stop("Not implemented")
+        #         left.splice(left.indexOf(args[0]), 1)
+        left <- left[[-firstarg]]
+        #         collected.push new Command @name(), true
+        collected <- c(collected, Command(name(), TRUE))
+        #         [true, left, collected]
+        matched(TRUE, left, collected)
       }
 ))
 # 
@@ -231,12 +241,15 @@ Option <- setRefClass("Options", contains="Pattern"
                          if (!is.null(long)) long else short
                        },
 #     match: (left, collected=[]) ->
-#         left_ = (l for l in left when (l.constructor isnt Option \
-#                  or @short isnt l.short or @long isnt l.long))
-#         [left.join(', ') isnt left_.join(', '), left_, collected]
-                       match = function(left, collected=list()){
-                         stop("Not implemented")
-                       }
+       match = function(left, collected=list()){
+         #         left_ = (l for l in left when (l.constructor isnt Option \
+         left_ <- Filter(left, function(l){
+           class(l) != "Options" || short != l$short || long != l$long
+         })
+         #                  or @short isnt l.short or @long isnt l.long))
+         #         [left.join(', ') isnt left_.join(', '), left_, collected]
+         matched(!identical(left_, left), left_, collected)
+       }
 ))
 # class AnyOptions extends Pattern
 AnyOptions <- setRefClass("AnyOptions", contains="Pattern"
@@ -253,77 +266,103 @@ AnyOptions <- setRefClass("AnyOptions", contains="Pattern"
 # class Required extends Pattern
 Required <- setRefClass("Required", contains="Pattern"
                        , methods=list(
-#     match: (left, collected=[]) ->
-#         l = left #copy(left)
-#         c = collected #copy(collected)
-#         for p in @children
-#             [matched, l, c] = p.match(l, c)
-#             if not matched
-#                 return [false, left, collected]
-#         [true, l, c]
-                          match = function(left, collected=list()){
-                            stop("Not implemented")
-                          }
+        match = function(left, collected=list()){
+          m <- matched(FALSE, left, collected)
+          for (p in children){
+            m <- p$match(m$left, m$collected)
+            if (!m$matched){
+              return(matched(FALSE, left, collected))
+            }
+          }
+          m
+        }
 ))
 # 
 # class Optional extends Pattern
 Optional <- setRefClass("Optional", contains="Pattern"
                        , methods=list(
-#     match: (left, collected=[]) ->
-#         #left = copy(left)
-#         for p in @children
-#             [m, left, collected] = p.match(left, collected)
-#         [true, left, collected]
-                         match = function(left, collected=list()){
-                           stop("Not implemented")
-                         }
+       match = function(left, collected=list()){
+         m <- matched(FALSE, left, collected)
+         for (p in children){
+           m <- p$match(m$left, m$collected)
+         }
+         m$matched <- TRUE
+         m
+       }
 ))
 # 
 # class OneOrMore extends Pattern
 OneOrMore <- setRefClass("OneOrMore", contains="Pattern"
                         , methods=list(
 #     match: (left, collected=[]) ->
-#         l = left #copy(left)
-#         c = collected #copy(collected)
-#         l_ = []
-#         matched = true
-#         times = 0
-#         while matched
-#             # could it be that something didn't match but changed l or c?
-#             [matched, l, c] = @children[0].match(l, c)
-#             times += if matched then 1 else 0
-#             if l_.join(', ') is l.join(', ') then break
-#             l_ = l #copy(l)
-#         if times >= 1 then return [true, l, c]
-#         [false, left, collected]
-                          match = function(left, collected=list()){
-                            stop("Not implemented")
-                          }
+        match = function(left, collected=list()){
+          m <- matched(TRUE, left, collected)
+          #         l_ = []
+          l_ <- character()
+          #         times = 0
+          times <- 0
+          #         while matched
+          while (m$matched){
+          #             # could it be that something didn't match but changed l or c?
+          #             [matched, l, c] = @children[0].match(l, c)
+            m <- children[[1]]$match(m$left, m$collected)
+          #             times += if matched then 1 else 0
+            if (m$matched){
+              times <- times + 1
+            }
+          #             if l_.join(', ') is l.join(', ') then break
+            if (str_c(l_, sep=", ") == str_c(m$left, sep=", ")){ 
+              break
+            }
+          #             l_ = l #copy(l)
+            l_ <- m$left
+          }
+          #         if times >= 1 then return [true, l, c]
+          if (times >= 1){
+            matched(TRUE, m$left, m$collected)
+          } else {
+            #         [false, left, collected]
+            matched(FALSE, left, collected)
+          }
+        }
 ))
 # 
 # class Either extends Pattern
 Either <- setRefClass("Either", contains="Pattern"
                          , methods=list(
 #     match: (left, collected=[]) ->
-#         outcomes = []
-#         for p in @children
-#             outcome = p.match(left, collected)
-#             if outcome[0] then outcomes.push(outcome)
-#         if outcomes.length > 0
-#             outcomes.sort((a,b) ->
-#                 if a[1].length > b[1].length
-#                     1
-#                 else if a[1].length < b[1].length
-#                     -1
-#                 else
-#                     0)
-#             return outcomes[0]
-#         [false, left, collected]
-                           match = function(left, collected=list()){
-                             stop("Not implemented")
-                           }
-                         ))
+       match = function(left, collected=list()){
+         #         outcomes = []
+         m <- matched(FALSE, left, collected)
+         outcomes <- lapply(children, function(p){
+           p$match(left, collected)
+         })
+         outcomes <- Filter(outcomes, function(p){
+           p$matched
+         })
+         #         if outcomes.length > 0
+         if (length(outcomes)){
+         #             outcomes.sort((a,b) ->
+           sizes <- sapply(outcomes, function(o) length(o$left))
+           #                 if a[1].length > b[1].length
+           #                     1
+           #                 else if a[1].length < b[1].length
+           #                     -1
+           #                 else
+           #                     0)
+           #             return outcomes[0]
+           return(outcomes[[which.max(sizes)]])
+         }
+         #         [false, left, collected]
+         matched(FALSE, left, collected)
+       }
+    ))
 
 setMethod("as.character", "Pattern", function(x, ...){
  x$toString() 
 })
+
+# utility function for returning a tuple of a match
+matched <- function(matched, left, collected){
+  list(matched=matched, left=left, collected=collected)
+}

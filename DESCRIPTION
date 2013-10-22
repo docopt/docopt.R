@@ -9,9 +9,4 @@ Description: docopt
 Depends:
     stringr
 License: MIT
-Collate:
-    'docopt.R'
-    'pkg.R'
-    'Pattern.R'
-    'Tokens.R'
-    'parse.R'
+
