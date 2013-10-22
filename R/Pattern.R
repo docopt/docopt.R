@@ -41,7 +41,7 @@ Pattern <- setRefClass( "Pattern"
           }
           if (is.null(uniq)){
             uniq <- flat()
-            names(uniq) <- uniq
+            names(uniq) <- sapply(uniq, as.character)
           }
           for (i in seq_along(children)){
             child <- children[[i]]
@@ -49,10 +49,10 @@ Pattern <- setRefClass( "Pattern"
               #TODO check what uniq does.
               child$fix_identities(uniq)
             } else {
-              children[[i]] <<- uniq[child]
+              children[[i]] <<- uniq[child$toString()]
             }
           }
-          .self
+          uniq
         },
 #     fix_list_arguments: ->
 #         """Find arguments that should accumulate values and fix them."""
@@ -132,7 +132,7 @@ Pattern <- setRefClass( "Pattern"
 #                     ret.push children
           }
 #             return new Either(new Required e for e in ret)
-          Either(Required(ret))
+          Either(lapply(ret, function(e) Required(e)))
         }
 ))
 
@@ -267,7 +267,7 @@ AnyOptions <- setRefClass("AnyOptions", contains="Pattern"
 Required <- setRefClass("Required", contains="Pattern"
                        , methods=list(
         match = function(left, collected=list()){
-          m <- matched(FALSE, left, collected)
+          m <- matched(TRUE, left, collected)
           for (p in children){
             m <- p$match(m$left, m$collected)
             if (!m$matched){

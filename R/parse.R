@@ -69,33 +69,44 @@ parse_shorts <- function(tokens, options){
 # 
 # 
 # parse_long = (tokens, options) ->
-#     [_, raw, value] = tokens.current().match(/(.*?)=(.*)/) ? [null,
-#                                                 tokens.current(), '']
-#     tokens.shift()
-#     value = if value == '' then null else value
-#     opt = (o for o in options when o.long and o.long[0...raw.length] == raw)
-#     if opt.length > 1
-#         throw new tokens.error "#{raw} is specified ambiguously #{opt.length} times"
-#     if opt.length < 1
-#         if tokens.error is DocoptExit
-#             throw new tokens.error "#{raw} is not recognized"
-#         else
-#             o = new Option(null, raw, +!!value)
-#             options.push(o)
-#             return [o]
-#     o = opt[0]
-#     opt = new Option o.short, o.long, o.argcount, o.value
-#     if opt.argcount == 1
-#         if value is null
-#             if tokens.current() is null
-#                 tokens.error "#{opt.name()} requires argument"
-#             value = tokens.shift()
-#     else if value is not null
-#         tokens.error "#{opt.name()} must not have an argument"
-#     opt.value = value or true
-#     [opt]
 parse_long <- function(tokens, options){
-  stop("Not implemented")
+  #     [_, raw, value] = tokens.current().match(/(.*?)=(.*)/) ? [null,
+  #                                                 tokens.current(), '']
+  m <- str_match(tokens$current(), "(.*?)=(.*)")
+  if (!any(is.na(m))){
+    raw <- m[,2]
+    value <- m[,3]
+  } else {
+    raw <- tokens$current()
+    value <- NULL
+  }
+  #     tokens.shift()
+  tokens$shift()
+  #     value = if value == '' then null else value
+  #     opt = (o for o in options when o.long and o.long[0...raw.length] == raw)
+  opt <- Filter(options, function(o){
+    nchar(o$long) && str_sub(o$long, 1, nchar(raw))
+  })
+  #     if opt.length > 1
+  #         throw new tokens.error "#{raw} is specified ambiguously #{opt.length} times"
+  #     if opt.length < 1
+  #         if tokens.error is DocoptExit
+  #             throw new tokens.error "#{raw} is not recognized"
+  #         else
+  #             o = new Option(null, raw, +!!value)
+  #             options.push(o)
+  #             return [o]
+  #     o = opt[0]
+  #     opt = new Option o.short, o.long, o.argcount, o.value
+  #     if opt.argcount == 1
+  #         if value is null
+  #             if tokens.current() is null
+  #                 tokens.error "#{opt.name()} requires argument"
+  #             value = tokens.shift()
+  #     else if value is not null
+  #         tokens.error "#{opt.name()} must not have an argument"
+  #     opt.value = value or true
+  #     [opt]
 }
 
 parse_pattern <- function(src, options){
@@ -228,10 +239,11 @@ parse_args <- function(src, options){
 parse_option <- function(description){
 #         description = description.replace(/^\s*|\s*$/g, '')
   # strip whitespaces
-  description <- gsub("^\\s*|\\s*$", "", description)
+  description <- str_trim(description)
 #         [_, options,
 #          description] = description.match(/(.*?)  (.*)/) ? [null, description, '']
   # split on first occurence of 2 consecutive spaces ('  ')
+  m <- str_match(description, "(.*?)  (.*)")
   options <- description
 #         # replace ',' or '=' with ' '
 #         options = options.replace /,|=/g, ' '
@@ -263,7 +275,7 @@ parse_option <- function(description){
 # parse_doc_options = (doc) ->
 parse_doc_options <- function(doc){
   #     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
-  lapply(tail(unlist(strsplit(doc, "^\\s*-|\\n\\s*-")),-1), function(s){
+  lapply(tail(unlist(str_split(doc, "^\\s*-|\\n\\s*-|Options:\\s*-")),-1), function(s){
     parse_option(paste0('-', s))
   })
 }

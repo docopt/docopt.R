@@ -14,12 +14,14 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
   args <- parse_args(args, pot_options)
   extras(help, version, args, doc)
   #     [matched, left, argums] = formal_pattern.fix().match argv
+  fp <- formal_pattern$fix()
+  print(fp)
   m <- formal_pattern$fix()$match(args)
   #     if matched and left.length is 0  # better message if left?
   
-  if (m$matched && m$left == 0){    
+  if (m$matched && length(m$left) == 0){    
     cl <- sapply(args, class)
-    options <- args[[cl == "Options"]] 
+    options <- args[cl == "Options"] 
   #         pot_arguments = (a for a in formal_pattern.flat() \
   #             when a.constructor in [Argument, Command])
     a <- formal_pattern$flat()
@@ -72,7 +74,7 @@ printable_usage <- function(doc, name){
   } else if (length(usage_split) > 2){
     stop('More than one "usage:" (case-insensitive).')
   }
-  usage <- str_split(usage_split[2], "\n\\s*\n")[[1]][1]
+  usage <- str_split(usage_split[2], "\n\\s*")[[1]][1]
   usage <- str_c("usage:", usage)
   str_trim(usage)
 }
