@@ -25,7 +25,7 @@ parse_shorts <- function(tokens, options){
     #                 raw = raw[1..]
     #                 continue
       o = Option(paste0("-", r), NULL)
-      options <- c(options, o)
+      options <<- c(options, o)
       parsed <- c(parsed, o)
       raw <- substring(raw, 2)
       next
@@ -104,7 +104,7 @@ parse_long <- function(tokens, options){
   #             options.push(o)
       options <- c(options, o)
   #             return [o]
-      return(o)
+      return(list(o))
   }}
   #     o = opt[0]
   o <- opt[[1]]

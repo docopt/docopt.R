@@ -22,12 +22,12 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
   
   if (m$matched && length(m$left) == 0){    
     cl <- sapply(args, class)
-    options <- args[cl == "Options"] 
+    options <- args[cl == "Option"] 
   #         pot_arguments = (a for a in formal_pattern.flat() \
   #             when a.constructor in [Argument, Command])
     a <- formal_pattern$flat()
     cl <- sapply(a, class)
-    pot_arguments <- a[cl %in% c("Arguments", "Commands")]
+    pot_arguments <- a[cl %in% c("Argument", "Command")]
   #         parameters = [].concat pot_options, options, pot_arguments, argums
     return(c(pot_options, options, pot_arguments))
   #         return new Dict([a.name(), a.value] for a in parameters)

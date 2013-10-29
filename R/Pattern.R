@@ -50,7 +50,7 @@ Pattern <- setRefClass( "Pattern"
               #TODO check what uniq does.
               child$fix_identities(uniq)
             } else {
-              children[[i]] <<- uniq[child$toString()]
+              children[[i]] <<- uniq[[child$toString()]]
             }
           }
           uniq
@@ -66,7 +66,7 @@ Pattern <- setRefClass( "Pattern"
             counts <- table(nms)
             for (e in child){
               if (counts[as.character(e)] > 1 && class(e) == "Arguments"){
-                e$value <<- list()
+                e$value <- list()
               }
             }
           }
@@ -81,7 +81,7 @@ Pattern <- setRefClass( "Pattern"
         either = function(){
           #         if not @hasOwnProperty 'children'
           #             return new Either [new Required [@]]
-          browser()
+          #browser()
           if (length(children) == 0){
             return(Either(list(Required(list(.self)))))
           }
@@ -101,6 +101,8 @@ Pattern <- setRefClass( "Pattern"
             #                 for [i,c] in zip
             for (i in seq_along(.children)){
               ci <- .children[i]
+              type <- class(ci)
+              types[type] <- append(type[type], ci)
 #                     name = c.constructor.name
 #                     if name not of types
 #                         types[name] = []
@@ -158,7 +160,8 @@ Argument <- setRefClass("Argument", contains="Pattern"
 #     match: (left, collected=[]) ->
        match = function(left, collected=list()){
          #         args = (l for l in left when l.constructor is Argument)
-         argsidx <- which(sapply(left, class) == "Arguments")
+         browser()
+         argsidx <- which(sapply(left, class) == "Argument")
          arg <- head(argsidx,1)         
          #         if not args.length then return [false, left, collected]
          if (!length(arg)){
@@ -166,7 +169,7 @@ Argument <- setRefClass("Argument", contains="Pattern"
          }
          arg <- left[[arg]]
          #         left = (l for l in left when l.toString() isnt args[0].toString())
-         left <- Filter(left, function(l){!identical(l, arg)})
+         left <- Filter(function(l){!identical(l, arg)}, left)
          #         if @value is null or @value.constructor isnt Array
          if (is.null(value) || !is.list(value)){
          #             collected = collected.concat [new Argument @name(), args[0].value]
@@ -224,7 +227,7 @@ Command <- setRefClass("Command"
 # 
 # 
 # class Option extends Pattern
-Option <- setRefClass("Options", contains="Pattern"
+Option <- setRefClass("Option", contains="Pattern"
                      , fields = c("short", "long", "argcount", "value")
                      , methods = list(
 #     constructor: (@short=null, @long=null, @argcount=0, @value=false) ->
@@ -245,9 +248,10 @@ Option <- setRefClass("Options", contains="Pattern"
 #     match: (left, collected=[]) ->
        match = function(left, collected=list()){
          #         left_ = (l for l in left when (l.constructor isnt Option \
-         left_ <- Filter(left, function(l){
-           class(l) != "Options" || short != l$short || long != l$long
-         })
+         #browser()
+         left_ <- Filter(function(l){
+           class(l) != "Option" || short != l$short || long != l$long
+         }, left)
          #                  or @short isnt l.short or @long isnt l.long))
          #         [left.join(', ') isnt left_.join(', '), left_, collected]
          matched(!identical(left_, left), left_, collected)
@@ -337,11 +341,13 @@ Either <- setRefClass("Either", contains="Pattern"
          #         outcomes = []
          m <- matched(FALSE, left, collected)
          outcomes <- lapply(children, function(p){
+           #browser()
+           print(p)
            p$match(left, collected)
          })
-         outcomes <- Filter(outcomes, function(p){
+         outcomes <- Filter(function(p){
            p$matched
-         })
+         }, outcomes)
          #         if outcomes.length > 0
          if (length(outcomes)){
          #             outcomes.sort((a,b) ->
@@ -353,7 +359,7 @@ Either <- setRefClass("Either", contains="Pattern"
            #                 else
            #                     0)
            #             return outcomes[0]
-           return(outcomes[[which.max(sizes)]])
+           return(outcomes[[which.min(sizes)]])
          }
          #         [false, left, collected]
          matched(FALSE, left, collected)
@@ -368,3 +374,7 @@ setMethod("as.character", "Pattern", function(x, ...){
 matched <- function(matched, left, collected){
   list(matched=matched, left=left, collected=collected)
 }
+
+
+# utility function for options
+OptionList <- setRefClass("OptionList")
