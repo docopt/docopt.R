@@ -14,9 +14,10 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
   args <- parse_args(args, pot_options)
   extras(help, version, args, doc)
   #     [matched, left, argums] = formal_pattern.fix().match argv
-  fp <- formal_pattern$fix()
-  print(fp)
+  #fp <- formal_pattern$fix()
+  #print(fp)
   m <- formal_pattern$fix()$match(args)
+  #m <- formal_pattern$match(args)
   #     if matched and left.length is 0  # better message if left?
   
   if (m$matched && length(m$left) == 0){    

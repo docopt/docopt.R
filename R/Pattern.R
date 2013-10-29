@@ -26,7 +26,7 @@ Pattern <- setRefClass( "Pattern"
             if (length(children) == 0){
               return(list(.self))
             }
-            lapply(children, function(child){child$flat()})
+            unlist(lapply(children, function(child){child$flat()}))
           },
   
         fix = function(){
@@ -36,6 +36,7 @@ Pattern <- setRefClass( "Pattern"
         #Make pattern-tree tips point to same object if they are equal.
         fix_identities = function(uniq=NULL){
           #         if not @hasOwnProperty 'children' then return @
+          # browser()
           if (length(children) == 0) {
             return(.self)
           }
@@ -65,7 +66,7 @@ Pattern <- setRefClass( "Pattern"
             counts <- table(nms)
             for (e in child){
               if (counts[as.character(e)] > 1 && class(e) == "Arguments"){
-                e$value <- list()
+                e$value <<- list()
               }
             }
           }
@@ -80,6 +81,7 @@ Pattern <- setRefClass( "Pattern"
         either = function(){
           #         if not @hasOwnProperty 'children'
           #             return new Either [new Required [@]]
+          browser()
           if (length(children) == 0){
             return(Either(list(Required(list(.self)))))
           }

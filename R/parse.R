@@ -30,7 +30,7 @@ parse_shorts <- function(tokens, options){
       raw <- substring(raw, 2)
       next
     }
-} 
+  }
 
 #         o = opt[0]
   o = opt[[1]]
@@ -84,29 +84,53 @@ parse_long <- function(tokens, options){
   tokens$shift()
   #     value = if value == '' then null else value
   #     opt = (o for o in options when o.long and o.long[0...raw.length] == raw)
-  opt <- Filter(options, function(o){
-    nchar(o$long) && str_sub(o$long, 1, nchar(raw))
-  })
+  opt <- Filter(function(o){
+    (nchar(o$long) && str_sub(o$long, 1, nchar(raw)) == raw)
+  }, options)
   #     if opt.length > 1
-  #         throw new tokens.error "#{raw} is specified ambiguously #{opt.length} times"
+  if (length(opt) > 1){
+    tokens$error(raw, " is specified ambigously")
+  }
   #     if opt.length < 1
+  if (length(opt) < 1){
   #         if tokens.error is DocoptExit
+    if (tokens$strict){
   #             throw new tokens.error "#{raw} is not recognized"
+      tokens$error(raw, " is not recognized")
+    } else {
   #         else
   #             o = new Option(null, raw, +!!value)
+      o <- Option(NULL, raw, as.logical(value))
   #             options.push(o)
+      options <- c(options, o)
   #             return [o]
+      return(o)
+  }}
   #     o = opt[0]
+  o <- opt[[1]]
   #     opt = new Option o.short, o.long, o.argcount, o.value
+  opt <- Option(o$short, o$long, o$argcount, O$vaue)
   #     if opt.argcount == 1
+  if (opt$argcount == 1){
   #         if value is null
+    if (is.null(value)){
   #             if tokens.current() is null
+      if (tokens$current == ""){
   #                 tokens.error "#{opt.name()} requires argument"
+        tokens$error(opt$name(), " requires argument")
+      }
   #             value = tokens.shift()
+      value <- tokens$shift()
+    }
+  } else if (!is.null(value)){
   #     else if value is not null
   #         tokens.error "#{opt.name()} must not have an argument"
+    tokens$error(opt$name(), " must not have an argument")
+  }
   #     opt.value = value or true
+  opt$value <- value # TRUE?
   #     [opt]
+  list(opt)
 }
 
 parse_pattern <- function(src, options){
@@ -275,7 +299,7 @@ parse_option <- function(description){
 # parse_doc_options = (doc) ->
 parse_doc_options <- function(doc){
   #     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
-  lapply(tail(unlist(str_split(doc, "^\\s*-|\\n\\s*-|Options:\\s*-")),-1), function(s){
+  lapply(tail(unlist(str_split(doc, perl("(?i)^\\s*-|\\n\\s*-|Options:\\s*-"))),-1), function(s){
     parse_option(paste0('-', s))
   })
 }
