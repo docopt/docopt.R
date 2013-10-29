@@ -377,4 +377,13 @@ matched <- function(matched, left, collected){
 
 
 # utility function for options
-OptionList <- setRefClass("OptionList")
+OptionList <- setRefClass( "OptionList"
+                          , fields = list(options="list")
+                          , methods=list(
+  initialize = function(.options=list()){
+    options <<- .options
+  },
+  push = function(o){
+    options <<- append(options, o)
+  }
+))

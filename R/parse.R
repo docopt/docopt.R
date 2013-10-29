@@ -1,4 +1,4 @@
-parse_shorts <- function(tokens, options){
+parse_shorts <- function(tokens, optionlist){
   raw <- substring(tokens$shift(), 2)
   parsed <- list()
   while(nchar(raw) > 0){
@@ -7,7 +7,7 @@ parse_shorts <- function(tokens, options){
     opt <- Filter( function(o){
                  !is.null(o$short) && substring(o$short, 2, 3) == r
                }
-               , options)
+               , optionlist$options)
   if (length(opt) > 1){
 #         if opt.length > 1
 #             tokens.error "-#{raw[0]} is specified ambiguously #{opt.length} times"
@@ -25,8 +25,8 @@ parse_shorts <- function(tokens, options){
     #                 raw = raw[1..]
     #                 continue
       o = Option(paste0("-", r), NULL)
-      options <<- c(options, o)
-      parsed <- c(parsed, o)
+      optionlist$push(o)
+      parsed <- append(parsed, o)
       raw <- substring(raw, 2)
       next
     }
@@ -69,7 +69,7 @@ parse_shorts <- function(tokens, options){
 # 
 # 
 # parse_long = (tokens, options) ->
-parse_long <- function(tokens, options){
+parse_long <- function(tokens, optionlist){
   #     [_, raw, value] = tokens.current().match(/(.*?)=(.*)/) ? [null,
   #                                                 tokens.current(), '']
   m <- str_match(tokens$current(), "(.*?)=(.*)")
@@ -86,7 +86,7 @@ parse_long <- function(tokens, options){
   #     opt = (o for o in options when o.long and o.long[0...raw.length] == raw)
   opt <- Filter(function(o){
     (nchar(o$long) && str_sub(o$long, 1, nchar(raw)) == raw)
-  }, options)
+  }, optionlist$options)
   #     if opt.length > 1
   if (length(opt) > 1){
     tokens$error(raw, " is specified ambigously")
@@ -102,7 +102,7 @@ parse_long <- function(tokens, options){
   #             o = new Option(null, raw, +!!value)
       o <- Option(NULL, raw, as.logical(value))
   #             options.push(o)
-      options <- c(options, o)
+      optionlist$push(o)
   #             return [o]
       return(list(o))
   }}
@@ -133,18 +133,18 @@ parse_long <- function(tokens, options){
   list(opt)
 }
 
-parse_pattern <- function(src, options){
+parse_pattern <- function(src, optionlist){
   src <- gsub("([\\(\\)\\|]|\\[|\\]|\\.\\.\\.)", ' \\1 ', src)
   tokens <- Tokens(src, cat)
-  result <- parse_expr(tokens, options)
+  result <- parse_expr(tokens, optionlist)
   if (tokens$current() != ''){
     stop("unexpected ending:'", tokens$join(" "),"'")
   }
   Required(result)
 }
 
-parse_expr <- function(tokens, options){
-  seq <- parse_seq(tokens, options)
+parse_expr <- function(tokens, optionlist){
+  seq <- parse_seq(tokens, optionlist)
   if (tokens$current() != "|"){
     return(seq)
   }
@@ -152,7 +152,7 @@ parse_expr <- function(tokens, options){
   result <- if(length(seq)>1) list(Required(seq)) else seq
   while(tokens$current() == "|"){
     tokens$shift()
-    seq <- parse_seq(tokens, options)
+    seq <- parse_seq(tokens, optionlist)
     result <- c(result, if (length(seq)>1)list(Required(seq)) else seq)
   }
   
@@ -161,11 +161,11 @@ parse_expr <- function(tokens, options){
   } else result
 }
 
-parse_seq <- function(tokens, options){ 
+parse_seq <- function(tokens, optionlist){ 
 # seq ::= ( atom [ '...' ] )* ;
   result <- list()
   while(!isTRUE(tokens$current() %in% c("", "]", ")", "|"))){
-    atom <- parse_atom(tokens, options)
+    atom <- parse_atom(tokens, optionlist)
     if (isTRUE(tokens$current() == '...')){
       atom <- OneOrMore(atom)
       tokens$shift()
@@ -176,14 +176,14 @@ parse_seq <- function(tokens, options){
 }
  
 
-parse_atom <- function(tokens, options){
+parse_atom <- function(tokens, optionlist){
   # atom ::= '(' expr ')' | '[' expr ']' | '[' 'options' ']' | '--'
   #        | long | shorts | argument | command ;
   token <- tokens$current()
   result <- list()
   if (token == '('){
     tokens$shift()
-    result <- list(Required(parse_expr(tokens, options)))
+    result <- list(Required(parse_expr(tokens, optionlist)))
     if (tokens$shift() != ")"){
       tokens$error("Unmatched '('")
     }
@@ -194,7 +194,7 @@ parse_atom <- function(tokens, options){
       result = list(Optional(list(AnyOptions())))
       tokens$shift()
     } else {
-      result <- list(Optional(parse_expr(tokens, options)))
+      result <- list(Optional(parse_expr(tokens, optionlist)))
     }
     if (tokens$shift() != "]"){
       tokens$error("Unmatched '['")
@@ -209,12 +209,12 @@ parse_atom <- function(tokens, options){
     if (token == '--'){
       list(Command(tokens$shift()))
     } else {
-      parse_long(tokens, options)
+      parse_long(tokens, optionlist)
     }
   } else if (substr(token,1,1) == '-' && token != '-'){
   #     else if token[0] is '-' and token isnt '-'
   #         parse_shorts tokens, options
-    parse_shorts(tokens, options)
+    parse_shorts(tokens, optionlist)
   } else if (grepl("^<.+>$", token) || grepl("^[^a-z]*[A-Z]+[^a-z]*$", token)){
     #     else if (token[0] is '<' and
     #           token[token.length-1] is '>') or /^[^a-z]*[A-Z]+[^a-z]*$/.test(token)
@@ -228,7 +228,7 @@ parse_atom <- function(tokens, options){
 
 # 
 # parse_args = (source, options) ->
-parse_args <- function(src, options){
+parse_args <- function(src, optionlist){
 #     tokens = new TokenStream source, DocoptExit
   tokens <- Tokens(src)
 #     #options = options.slice(0) # shallow copy, not sure if necessary
@@ -246,13 +246,13 @@ parse_args <- function(src, options){
       #         else if token[0...2] is '--'
       #             long = parse_long tokens, options
       #             opts = opts.concat long
-      long <- parse_long(tokens, options)
+      long <- parse_long(tokens, optionlist)
       opts <- c(opts, long)
     } else if (grepl("^-.+", token)){
       #         else if token[0] is '-' and token isnt '-'
       #             shorts = parse_shorts tokens, options
       #             opts = opts.concat shorts
-      shorts = parse_shorts(tokens, options)
+      shorts = parse_shorts(tokens, optionlist)
       opts <- c(opts, shorts)
     } else {
       opts <- c(opts, Argument(NULL, tokens$shift()))
@@ -299,7 +299,7 @@ parse_option <- function(description){
 # parse_doc_options = (doc) ->
 parse_doc_options <- function(doc){
   #     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
-  lapply(tail(unlist(str_split(doc, perl("(?i)^\\s*-|\\n\\s*-|Options:\\s*-"))),-1), function(s){
+  OptionList(lapply(tail(unlist(str_split(doc, perl("(?i)^\\s*-|\\n\\s*-|Options:\\s*-"))),-1), function(s){
     parse_option(paste0('-', s))
-  })
+  }))
 }
