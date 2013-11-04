@@ -17,6 +17,8 @@ parse_shorts <- function(tokens, optionlist){
 #             if tokens.error is DocoptExit
 #                 throw new tokens.error "-#{raw[0]} is not recognized"
     if (tokens$strict){
+      tokens$error("-", r, " is not recognized")
+    } else {
       #tokens$error("-",r," is not recognized")
     #             else
     #                 o = new Option('-' + raw[0], null)
@@ -268,7 +270,7 @@ parse_option <- function(description){
 #          description] = description.match(/(.*?)  (.*)/) ? [null, description, '']
   # split on first occurence of 2 consecutive spaces ('  ')
   m <- str_match(description, "(.*?)  (.*)")
-  options <- description
+  options <- m[,2]
 #         # replace ',' or '=' with ' '
 #         options = options.replace /,|=/g, ' '
   options <- gsub(",|=", " ", options)
