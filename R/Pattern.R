@@ -65,7 +65,7 @@ Pattern <- setRefClass( "Pattern"
             nms <- sapply(child, as.character)
             counts <- table(nms)
             for (e in child){
-              if (counts[as.character(e)] > 1 && class(e) == "Arguments"){
+              if (counts[as.character(e)] > 1 && class(e) == "Argument"){
                 e$value <- list()
               }
             }
@@ -102,7 +102,7 @@ Pattern <- setRefClass( "Pattern"
             for (i in seq_along(.children)){
               ci <- .children[i]
               type <- class(ci)
-              types[type] <- append(type[type], ci)
+              types[[type]] <- append(type[type], ci)
 #                     name = c.constructor.name
 #                     if name not of types
 #                         types[name] = []
@@ -341,8 +341,6 @@ Either <- setRefClass("Either", contains="Pattern"
          #         outcomes = []
          m <- matched(FALSE, left, collected)
          outcomes <- lapply(children, function(p){
-           #browser()
-           print(p)
            p$match(left, collected)
          })
          outcomes <- Filter(function(p){
