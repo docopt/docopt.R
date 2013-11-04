@@ -111,7 +111,7 @@ parse_long <- function(tokens, optionlist){
   #     o = opt[0]
   o <- opt[[1]]
   #     opt = new Option o.short, o.long, o.argcount, o.value
-  opt <- Option(o$short, o$long, o$argcount, O$vaue)
+  opt <- Option(o$short, o$long, o$argcount, o$value)
   #     if opt.argcount == 1
   if (opt$argcount == 1){
   #         if value is null
@@ -130,7 +130,7 @@ parse_long <- function(tokens, optionlist){
     tokens$error(opt$name(), " must not have an argument")
   }
   #     opt.value = value or true
-  opt$value <- value # TRUE?
+  opt$value <- if (is.null(value) || identical(value, FALSE)) TRUE else value
   #     [opt]
   list(opt)
 }

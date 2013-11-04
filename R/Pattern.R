@@ -160,7 +160,6 @@ Argument <- setRefClass("Argument", contains="Pattern"
 #     match: (left, collected=[]) ->
        match = function(left, collected=list()){
          #         args = (l for l in left when l.constructor is Argument)
-         browser()
          argsidx <- which(sapply(left, class) == "Argument")
          arg <- head(argsidx,1)         
          #         if not args.length then return [false, left, collected]
@@ -259,13 +258,14 @@ Option <- setRefClass("Option", contains="Pattern"
 ))
 # class AnyOptions extends Pattern
 AnyOptions <- setRefClass("AnyOptions", contains="Pattern"
-                         , methods = list(
+     , methods = list(
 #     match: (left, collected=[]) ->
 #         left_ = (l for l in left when l.constructor isnt Option)
 #         [left.join(', ') isnt left_.join(', '), left_, collected]
-                           match = function(left, collected=list()){
-                            stop("Not implemented") 
-                           }                         
+       match = function(left, collected=list()){
+         left_ = Filter(function(l){class(l) != "Option"}, left)
+         matched(!identical(left, left_), left_, collected)
+       }                         
 ))
 
 
@@ -317,7 +317,7 @@ OneOrMore <- setRefClass("OneOrMore", contains="Pattern"
               times <- times + 1
             }
           #             if l_.join(', ') is l.join(', ') then break
-            if (str_c(l_, sep=", ") == str_c(m$left, sep=", ")){ 
+            if (identical(str_c(l_, sep=", "), str_c(m$left, sep=", "))){ 
               break
             }
           #             l_ = l #copy(l)

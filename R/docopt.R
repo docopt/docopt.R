@@ -29,8 +29,13 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
     cl <- sapply(a, class)
     pot_arguments <- a[cl %in% c("Argument", "Command")]
   #         parameters = [].concat pot_options, options, pot_arguments, argums
-    return(c(pot_options$options, options, pot_arguments))
+    dict <- list()
+    for(kv in c(pot_options$options, options, pot_arguments)){
+      value <- kv$value
+      dict[kv$name()] <- if (is.null(value)) list(NULL) else value
+    }
   #         return new Dict([a.name(), a.value] for a in parameters)
+    return(dict)
   }
   stop(usage)
 }
