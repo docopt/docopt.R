@@ -70,14 +70,12 @@ doc <-
   {{#tests}}
     test_that('parsing \"{{{args}}}\" works',{
 {{{test}}}
-      args <- '{{{args}}}'
 {{^error}}
-      expected <- {{{output}}}
-
-      expect_equivalent(docopt(doc, args), expected)
+      res <- docopt(doc, '{{{args}}}')
+      expect_equivalent(res, {{{output}}})
 {{/error}}
 {{#error}}
-      expect_error(docopt(doc, args))
+      expect_error(docopt(doc, '{{{args}}}'))
 {{/error}}
     })
   {{/tests}}

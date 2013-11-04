@@ -56,9 +56,9 @@ parse_shorts <- function(tokens, optionlist){
         tokens$error("-", substr(opt$short,2,1)," requires argument")
       }
       raw <- tokens$shift()
-      value <- raw
-      raw <- ''
     }
+    value <- raw
+    raw <- ''
   }
 #         opt.value = value
   opt$value <- value
@@ -117,7 +117,7 @@ parse_long <- function(tokens, optionlist){
   #         if value is null
     if (is.null(value)){
   #             if tokens.current() is null
-      if (tokens$current == ""){
+      if (tokens$current() == ""){
   #                 tokens.error "#{opt.name()} requires argument"
         tokens$error(opt$name(), " requires argument")
       }
@@ -270,7 +270,11 @@ parse_option <- function(description){
 #          description] = description.match(/(.*?)  (.*)/) ? [null, description, '']
   # split on first occurence of 2 consecutive spaces ('  ')
   m <- str_match(description, "(.*?)  (.*)")
+  if (any(is.na(m))){
+    options <- description
+  } else {
   options <- m[,2]
+  }
 #         # replace ',' or '=' with ' '
 #         options = options.replace /,|=/g, ' '
   options <- gsub(",|=", " ", options)
