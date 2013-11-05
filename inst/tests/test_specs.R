@@ -12,7 +12,10 @@ doc <-
 		#$ prog
 		#{}
       res <- docopt(doc, '')
-      expect_equivalent(res, list())
+      expect_equivalent(length(res), 0)
+      expect_equivalent( res[NULL]
+                       , list()
+                       )
     })
 
     test_that('parsing "--xxx" works',{
@@ -35,14 +38,20 @@ Options: -a  All.'
 		#$ prog
 		#{"-a": false}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-a" = FALSE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-a"]
+                       , list("-a" = FALSE)
+                       )
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true}
       res <- docopt(doc, '-a')
-      expect_equivalent(res, list("-a" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-a"]
+                       , list("-a" = TRUE)
+                       )
     })
 
     test_that('parsing "-x" works',{
@@ -65,14 +74,20 @@ Options: --all  All.'
 		#$ prog
 		#{"--all": false}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("--all" = FALSE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--all"]
+                       , list("--all" = FALSE)
+                       )
     })
 
     test_that('parsing "--all" works',{
 		#$ prog --all
 		#{"--all": true}
       res <- docopt(doc, '--all')
-      expect_equivalent(res, list("--all" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--all"]
+                       , list("--all" = TRUE)
+                       )
     })
 
     test_that('parsing "--xxx" works',{
@@ -95,21 +110,30 @@ Options: -v, --verbose  Verbose.'
 		#$ prog --verbose
 		#{"--verbose": true}
       res <- docopt(doc, '--verbose')
-      expect_equivalent(res, list("--verbose" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--verbose"]
+                       , list("--verbose" = TRUE)
+                       )
     })
 
     test_that('parsing "--ver" works',{
 		#$ prog --ver
 		#{"--verbose": true}
       res <- docopt(doc, '--ver')
-      expect_equivalent(res, list("--verbose" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--verbose"]
+                       , list("--verbose" = TRUE)
+                       )
     })
 
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"--verbose": true}
       res <- docopt(doc, '-v')
-      expect_equivalent(res, list("--verbose" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--verbose"]
+                       , list("--verbose" = TRUE)
+                       )
     })
 
 #####################
@@ -125,14 +149,20 @@ Options: -p PATH'
 		#$ prog -p home/
 		#{"-p": "home/"}
       res <- docopt(doc, '-p home/')
-      expect_equivalent(res, list("-p" = "home/"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-p"]
+                       , list("-p" = "home/")
+                       )
     })
 
     test_that('parsing "-phome/" works',{
 		#$ prog -phome/
 		#{"-p": "home/"}
       res <- docopt(doc, '-phome/')
-      expect_equivalent(res, list("-p" = "home/"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-p"]
+                       , list("-p" = "home/")
+                       )
     })
 
     test_that('parsing "-p" works',{
@@ -155,28 +185,40 @@ Options: --path <path>'
 		#$ prog --path home/
 		#{"--path": "home/"}
       res <- docopt(doc, '--path home/')
-      expect_equivalent(res, list("--path" = "home/"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "home/")
+                       )
     })
 
     test_that('parsing "--path=home/" works',{
 		#$ prog --path=home/
 		#{"--path": "home/"}
       res <- docopt(doc, '--path=home/')
-      expect_equivalent(res, list("--path" = "home/"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "home/")
+                       )
     })
 
     test_that('parsing "--pa home/" works',{
 		#$ prog --pa home/
 		#{"--path": "home/"}
       res <- docopt(doc, '--pa home/')
-      expect_equivalent(res, list("--path" = "home/"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "home/")
+                       )
     })
 
     test_that('parsing "--pa=home/" works',{
 		#$ prog --pa=home/
 		#{"--path": "home/"}
       res <- docopt(doc, '--pa=home/')
-      expect_equivalent(res, list("--path" = "home/"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "home/")
+                       )
     })
 
     test_that('parsing "--path" works',{
@@ -199,7 +241,10 @@ Options: -p PATH, --path=<path>  Path to files.'
 		#$ prog -proot
 		#{"--path": "root"}
       res <- docopt(doc, '-proot')
-      expect_equivalent(res, list("--path" = "root"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "root")
+                       )
     })
 
 #####################
@@ -215,14 +260,20 @@ Options:    -p --path PATH  Path to files.'
 		#$ prog -p root
 		#{"--path": "root"}
       res <- docopt(doc, '-p root')
-      expect_equivalent(res, list("--path" = "root"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "root")
+                       )
     })
 
     test_that('parsing "--path root" works',{
 		#$ prog --path root
 		#{"--path": "root"}
       res <- docopt(doc, '--path root')
-      expect_equivalent(res, list("--path" = "root"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "root")
+                       )
     })
 
 #####################
@@ -239,14 +290,20 @@ Options:
 		#$ prog
 		#{"-p": "./"}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-p" = "./"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-p"]
+                       , list("-p" = "./")
+                       )
     })
 
     test_that('parsing "-phome" works',{
 		#$ prog -phome
 		#{"-p": "home"}
       res <- docopt(doc, '-phome')
-      expect_equivalent(res, list("-p" = "home"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-p"]
+                       , list("-p" = "home")
+                       )
     })
 
 #####################
@@ -263,14 +320,20 @@ OpTiOnS: --path=<files>  Path to files
 		#$ prog
 		#{"--path": "/root"}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("--path" = "/root"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "/root")
+                       )
     })
 
     test_that('parsing "--path=home" works',{
 		#$ prog --path=home
 		#{"--path": "home"}
       res <- docopt(doc, '--path=home')
-      expect_equivalent(res, list("--path" = "home"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--path"]
+                       , list("--path" = "home")
+                       )
     })
 
 #####################
@@ -289,21 +352,30 @@ options:
 		#$ prog -a -r -m Hello
 		#{"-a": true, "-r": true, "-m": "Hello"}
       res <- docopt(doc, '-a -r -m Hello')
-      expect_equivalent(res, list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("-a", "-r", "-m")]
+                       , list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello")
+                       )
     })
 
     test_that('parsing "-armyourass" works',{
 		#$ prog -armyourass
 		#{"-a": true, "-r": true, "-m": "yourass"}
       res <- docopt(doc, '-armyourass')
-      expect_equivalent(res, list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("-a", "-r", "-m")]
+                       , list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass")
+                       )
     })
 
     test_that('parsing "-a -r" works',{
 		#$ prog -a -r
 		#{"-a": true, "-r": true, "-m": null}
       res <- docopt(doc, '-a -r')
-      expect_equivalent(res, list("-a" = TRUE, "-r" = TRUE, "-m" = NULL))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("-a", "-r", "-m")]
+                       , list("-a" = TRUE, "-r" = TRUE, "-m" = NULL)
+                       )
     })
 
 #####################
@@ -320,14 +392,20 @@ Options: --version
 		#$ prog --version
 		#{"--version": true, "--verbose": false}
       res <- docopt(doc, '--version')
-      expect_equivalent(res, list("--version" = TRUE, "--verbose" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--version", "--verbose")]
+                       , list("--version" = TRUE, "--verbose" = FALSE)
+                       )
     })
 
     test_that('parsing "--verbose" works',{
 		#$ prog --verbose
 		#{"--version": false, "--verbose": true}
       res <- docopt(doc, '--verbose')
-      expect_equivalent(res, list("--version" = FALSE, "--verbose" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--version", "--verbose")]
+                       , list("--version" = FALSE, "--verbose" = TRUE)
+                       )
     })
 
     test_that('parsing "--ver" works',{
@@ -341,7 +419,10 @@ Options: --version
 		#$ prog --verb
 		#{"--version": false, "--verbose": true}
       res <- docopt(doc, '--verb')
-      expect_equivalent(res, list("--version" = FALSE, "--verbose" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--version", "--verbose")]
+                       , list("--version" = FALSE, "--verbose" = TRUE)
+                       )
     })
 
 #####################
@@ -360,7 +441,10 @@ options:
 		#$ prog -armyourass
 		#{"-a": true, "-r": true, "-m": "yourass"}
       res <- docopt(doc, '-armyourass')
-      expect_equivalent(res, list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("-a", "-r", "-m")]
+                       , list("-a" = TRUE, "-r" = TRUE, "-m" = "yourass")
+                       )
     })
 
 #####################
@@ -378,7 +462,10 @@ options: -a        Add
 		#$ prog -a -r -m Hello
 		#{"-a": true, "-r": true, "-m": "Hello"}
       res <- docopt(doc, '-a -r -m Hello')
-      expect_equivalent(res, list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("-a", "-r", "-m")]
+                       , list("-a" = TRUE, "-r" = TRUE, "-m" = "Hello")
+                       )
     })
 
 #####################
@@ -396,14 +483,20 @@ options:
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-a -b')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-b -a')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-a" works',{
@@ -434,14 +527,20 @@ options: -a
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-a -b')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-b -a')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-a" works',{
@@ -472,14 +571,20 @@ options: -a
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-a -b')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-b -a')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-a" works',{
@@ -493,7 +598,10 @@ options: -a
 		#$ prog -b
 		#{"-a": false, "-b": true}
       res <- docopt(doc, '-b')
-      expect_equivalent(res, list("-a" = FALSE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = FALSE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "" works',{
@@ -517,14 +625,20 @@ options: -a
 		#$ prog -a -b
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-a -b')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-b -a" works',{
 		#$ prog -b -a
 		#{"-a": true, "-b": true}
       res <- docopt(doc, '-b -a')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = TRUE)
+                       )
     })
 
     test_that('parsing "-a" works',{
@@ -545,7 +659,10 @@ options: -a
 		#$ prog
 		#{"-a": false, "-b": false}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-a" = FALSE, "-b" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = FALSE, "-b" = FALSE)
+                       )
     })
 
 #####################
@@ -576,14 +693,20 @@ options: -a
 		#$ prog -a
 		#{"-a": true, "-b": false}
       res <- docopt(doc, '-a')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = FALSE)
+                       )
     })
 
     test_that('parsing "-b" works',{
 		#$ prog -b
 		#{"-a": false, "-b": true}
       res <- docopt(doc, '-b')
-      expect_equivalent(res, list("-a" = FALSE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = FALSE, "-b" = TRUE)
+                       )
     })
 
 #####################
@@ -607,21 +730,30 @@ options: -a
 		#$ prog
 		#{"-a": false, "-b": false}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-a" = FALSE, "-b" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = FALSE, "-b" = FALSE)
+                       )
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true, "-b": false}
       res <- docopt(doc, '-a')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = FALSE)
+                       )
     })
 
     test_that('parsing "-b" works',{
 		#$ prog -b
 		#{"-a": false, "-b": true}
       res <- docopt(doc, '-b')
-      expect_equivalent(res, list("-a" = FALSE, "-b" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = FALSE, "-b" = TRUE)
+                       )
     })
 
 #####################
@@ -635,7 +767,10 @@ doc <-
 		#$ prog 10
 		#{"<arg>": "10"}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list("<arg>" = "10"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<arg>"]
+                       , list("<arg>" = "10")
+                       )
     })
 
     test_that('parsing "10 20" works',{
@@ -663,7 +798,10 @@ doc <-
 		#$ prog 10
 		#{"<arg>": "10"}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list("<arg>" = "10"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<arg>"]
+                       , list("<arg>" = "10")
+                       )
     })
 
     test_that('parsing "10 20" works',{
@@ -677,7 +815,10 @@ doc <-
 		#$ prog
 		#{"<arg>": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("<arg>" = NULL))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<arg>"]
+                       , list("<arg>" = NULL)
+                       )
     })
 
 #####################
@@ -691,7 +832,10 @@ doc <-
 		#$ prog 10 20 40
 		#{"<kind>": "10", "<name>": "20", "<type>": "40"}
       res <- docopt(doc, '10 20 40')
-      expect_equivalent(res, list("<kind>" = "10", "<name>" = "20", "<type>" = "40"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("<kind>", "<name>", "<type>")]
+                       , list("<kind>" = "10", "<name>" = "20", "<type>" = "40")
+                       )
     })
 
     test_that('parsing "10 20" works',{
@@ -719,14 +863,20 @@ doc <-
 		#$ prog 10 20 40
 		#{"<kind>": "10", "<name>": "20", "<type>": "40"}
       res <- docopt(doc, '10 20 40')
-      expect_equivalent(res, list("<kind>" = "10", "<name>" = "20", "<type>" = "40"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("<kind>", "<name>", "<type>")]
+                       , list("<kind>" = "10", "<name>" = "20", "<type>" = "40")
+                       )
     })
 
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"<kind>": "10", "<name>": "20", "<type>": null}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list("<kind>" = "10", "<name>" = "20", "<type>" = NULL))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("<kind>", "<name>", "<type>")]
+                       , list("<kind>" = "10", "<name>" = "20", "<type>" = NULL)
+                       )
     })
 
     test_that('parsing "" works',{
@@ -754,14 +904,20 @@ doc <-
 		#$ prog 20 40
 		#{"<kind>": null, "<name>": "20", "<type>": "40"}
       res <- docopt(doc, '20 40')
-      expect_equivalent(res, list("<kind>" = NULL, "<name>" = "20", "<type>" = "40"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("<kind>", "<name>", "<type>")]
+                       , list("<kind>" = NULL, "<name>" = "20", "<type>" = "40")
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<kind>": null, "<name>": null, "<type>": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("<kind>" = NULL, "<name>" = NULL, "<type>" = NULL))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("<kind>", "<name>", "<type>")]
+                       , list("<kind>" = NULL, "<name>" = NULL, "<type>" = NULL)
+                       )
     })
 
 #####################
@@ -778,14 +934,20 @@ options:
 		#$ prog 10 --all
 		#{"<kind>": "10", "--all": true, "<name>": null}
       res <- docopt(doc, '10 --all')
-      expect_equivalent(res, list("<kind>" = "10", "--all" = TRUE, "<name>" = NULL))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("<kind>", "--all", "<name>")]
+                       , list("<kind>" = "10", "--all" = TRUE, "<name>" = NULL)
+                       )
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"<kind>": null, "--all": false, "<name>": "10"}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list("<kind>" = NULL, "--all" = FALSE, "<name>" = "10"))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("<kind>", "--all", "<name>")]
+                       , list("<kind>" = NULL, "--all" = FALSE, "<name>" = "10")
+                       )
     })
 
     test_that('parsing "" works',{
@@ -806,21 +968,30 @@ doc <-
 		#$ prog 10 20
 		#{"<name>": ["10", "20"]}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list("<name>" = c("10", "20")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<name>"]
+                       , list("<name>" = c("10", "20"))
+                       )
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"<name>": ["10"]}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list("<name>" = "10"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<name>"]
+                       , list("<name>" = "10")
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<name>": []}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("<name>" = list()))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<name>"]
+                       , list("<name>" = list())
+                       )
     })
 
 #####################
@@ -834,7 +1005,10 @@ doc <-
 		#$ prog 10 20
 		#{"<name>": ["10", "20"]}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list("<name>" = c("10", "20")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<name>"]
+                       , list("<name>" = c("10", "20"))
+                       )
     })
 
     test_that('parsing "10" works',{
@@ -848,7 +1022,10 @@ doc <-
 		#$ prog
 		#{"<name>": []}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("<name>" = list()))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<name>"]
+                       , list("<name>" = list())
+                       )
     })
 
 #####################
@@ -862,14 +1039,20 @@ doc <-
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list(NAME = c("10", "20")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = c("10", "20"))
+                       )
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list(NAME = "10"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = "10")
+                       )
     })
 
     test_that('parsing "" works',{
@@ -890,21 +1073,30 @@ doc <-
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list(NAME = c("10", "20")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = c("10", "20"))
+                       )
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list(NAME = "10"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = "10")
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
       res <- docopt(doc, '')
-      expect_equivalent(res, list(NAME = list()))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = list())
+                       )
     })
 
 #####################
@@ -918,21 +1110,30 @@ doc <-
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list(NAME = c("10", "20")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = c("10", "20"))
+                       )
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list(NAME = "10"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = "10")
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
       res <- docopt(doc, '')
-      expect_equivalent(res, list(NAME = list()))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = list())
+                       )
     })
 
 #####################
@@ -946,21 +1147,30 @@ doc <-
 		#$ prog 10 20
 		#{"NAME": ["10", "20"]}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list(NAME = c("10", "20")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = c("10", "20"))
+                       )
     })
 
     test_that('parsing "10" works',{
 		#$ prog 10
 		#{"NAME": ["10"]}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list(NAME = "10"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = "10")
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
       res <- docopt(doc, '')
-      expect_equivalent(res, list(NAME = list()))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = list())
+                       )
     })
 
 #####################
@@ -976,14 +1186,20 @@ options: --foo'
 		#$ prog 10
 		#{"NAME": "10", "--foo": false}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list(NAME = "10", "--foo" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("NAME", "--foo")]
+                       , list(NAME = "10", "--foo" = FALSE)
+                       )
     })
 
     test_that('parsing "--foo 10" works',{
 		#$ prog --foo 10
 		#{"NAME": "10", "--foo": true}
       res <- docopt(doc, '--foo 10')
-      expect_equivalent(res, list(NAME = "10", "--foo" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("NAME", "--foo")]
+                       , list(NAME = "10", "--foo" = TRUE)
+                       )
     })
 
     test_that('parsing "--foo=10" works',{
@@ -1007,21 +1223,30 @@ options: --bar'
 		#$ prog 10
 		#{"NAME": ["10"], "--foo": false, "--bar": false}
       res <- docopt(doc, '10')
-      expect_equivalent(res, list(NAME = "10", "--foo" = FALSE, "--bar" = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("NAME", "--foo", "--bar")]
+                       , list(NAME = "10", "--foo" = FALSE, "--bar" = FALSE)
+                       )
     })
 
     test_that('parsing "10 20" works',{
 		#$ prog 10 20
 		#{"NAME": ["10", "20"], "--foo": false, "--bar": false}
       res <- docopt(doc, '10 20')
-      expect_equivalent(res, list(NAME = c("10", "20"), "--foo" = FALSE, "--bar" = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("NAME", "--foo", "--bar")]
+                       , list(NAME = c("10", "20"), "--foo" = FALSE, "--bar" = FALSE)
+                       )
     })
 
     test_that('parsing "--foo --bar" works',{
 		#$ prog --foo --bar
 		#{"NAME": [], "--foo": true, "--bar": true}
       res <- docopt(doc, '--foo --bar')
-      expect_equivalent(res, list(NAME = list(), "--foo" = TRUE, "--bar" = TRUE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("NAME", "--foo", "--bar")]
+                       , list(NAME = list(), "--foo" = TRUE, "--bar" = TRUE)
+                       )
     })
 
 #####################
@@ -1050,7 +1275,10 @@ Options:
 		#$ prog ship Guardian move 150 300 --speed=20
 		#{"--drifting": false, "--help": false, "--moored": false, "--speed": "20", "--version": false, "<name>": ["Guardian"], "<x>": "150", "<y>": "300", "mine": false, "move": true, "new": false, "remove": false, "set": false, "ship": true, "shoot": false}
       res <- docopt(doc, 'ship Guardian move 150 300 --speed=20')
-      expect_equivalent(res, list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, ,    "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", ,    "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, ,    new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE))
+      expect_equivalent(length(res), 15)
+      expect_equivalent( res[c("--drifting", "--help", "--moored", "--speed", "--version", ,"<name>", "<x>", "<y>", "mine", "move", "new", "remove", "set", ,"ship", "shoot")]
+                       , list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, ,    "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", ,    "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, ,    new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE)
+                       )
     })
 
 #####################
@@ -1064,7 +1292,10 @@ doc <-
 		#$ prog --hello
 		#{"--hello": true}
       res <- docopt(doc, '--hello')
-      expect_equivalent(res, list("--hello" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--hello"]
+                       , list("--hello" = TRUE)
+                       )
     })
 
 #####################
@@ -1078,14 +1309,20 @@ doc <-
 		#$ prog
 		#{"--hello": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("--hello" = NULL))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--hello"]
+                       , list("--hello" = NULL)
+                       )
     })
 
     test_that('parsing "--hello wrld" works',{
 		#$ prog --hello wrld
 		#{"--hello": "wrld"}
       res <- docopt(doc, '--hello wrld')
-      expect_equivalent(res, list("--hello" = "wrld"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--hello"]
+                       , list("--hello" = "wrld")
+                       )
     })
 
 #####################
@@ -1099,14 +1336,20 @@ doc <-
 		#$ prog
 		#{"-o": false}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-o" = FALSE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = FALSE)
+                       )
     })
 
     test_that('parsing "-o" works',{
 		#$ prog -o
 		#{"-o": true}
       res <- docopt(doc, '-o')
-      expect_equivalent(res, list("-o" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = TRUE)
+                       )
     })
 
 #####################
@@ -1120,7 +1363,10 @@ doc <-
 		#$ prog -op
 		#{"-o": true, "-p": true, "-r": false}
       res <- docopt(doc, '-op')
-      expect_equivalent(res, list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("-o", "-p", "-r")]
+                       , list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE)
+                       )
     })
 
 #####################
@@ -1134,7 +1380,10 @@ doc <-
 		#$ prog --aa
 		#{"--aabb": false, "--aa": true}
       res <- docopt(doc, '--aa')
-      expect_equivalent(res, list("--aabb" = FALSE, "--aa" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--aabb", "--aa")]
+                       , list("--aabb" = FALSE, "--aa" = TRUE)
+                       )
     })
 
 #####################
@@ -1148,7 +1397,10 @@ doc <-
 		#$ prog -v
 		#{"-v": true}
       res <- docopt(doc, '-v')
-      expect_equivalent(res, list("-v" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = TRUE)
+                       )
     })
 
 #####################
@@ -1162,21 +1414,30 @@ doc <-
 		#$ prog
 		#{"-v": 0}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-v" = 0))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 0)
+                       )
     })
 
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"-v": 1}
       res <- docopt(doc, '-v')
-      expect_equivalent(res, list("-v" = 1))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 1)
+                       )
     })
 
     test_that('parsing "-vv" works',{
 		#$ prog -vv
 		#{"-v": 2}
       res <- docopt(doc, '-vv')
-      expect_equivalent(res, list("-v" = 2))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 2)
+                       )
     })
 
 #####################
@@ -1197,21 +1458,30 @@ doc <-
 		#$ prog -v
 		#{"-v": 1}
       res <- docopt(doc, '-v')
-      expect_equivalent(res, list("-v" = 1))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 1)
+                       )
     })
 
     test_that('parsing "-vv" works',{
 		#$ prog -vv
 		#{"-v": 2}
       res <- docopt(doc, '-vv')
-      expect_equivalent(res, list("-v" = 2))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 2)
+                       )
     })
 
     test_that('parsing "-vvvvvv" works',{
 		#$ prog -vvvvvv
 		#{"-v": 6}
       res <- docopt(doc, '-vvvvvv')
-      expect_equivalent(res, list("-v" = 6))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 6)
+                       )
     })
 
 #####################
@@ -1227,21 +1497,30 @@ This one is probably most readable user-friednly variant.'
 		#$ prog
 		#{"-v": 0}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-v" = 0))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 0)
+                       )
     })
 
     test_that('parsing "-v" works',{
 		#$ prog -v
 		#{"-v": 1}
       res <- docopt(doc, '-v')
-      expect_equivalent(res, list("-v" = 1))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 1)
+                       )
     })
 
     test_that('parsing "-vv" works',{
 		#$ prog -vv
 		#{"-v": 2}
       res <- docopt(doc, '-vv')
-      expect_equivalent(res, list("-v" = 2))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-v"]
+                       , list("-v" = 2)
+                       )
     })
 
     test_that('parsing "-vvvv" works',{
@@ -1262,7 +1541,10 @@ doc <-
 		#$ prog --ver --ver
 		#{"--ver": 2}
       res <- docopt(doc, '--ver --ver')
-      expect_equivalent(res, list("--ver" = 2))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--ver"]
+                       , list("--ver" = 2)
+                       )
     })
 
 #####################
@@ -1276,7 +1558,10 @@ doc <-
 		#$ prog go
 		#{"go": true}
       res <- docopt(doc, 'go')
-      expect_equivalent(res, list(go = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["go"]
+                       , list(go = TRUE)
+                       )
     })
 
 #####################
@@ -1290,21 +1575,30 @@ doc <-
 		#$ prog
 		#{"go": 0}
       res <- docopt(doc, '')
-      expect_equivalent(res, list(go = 0))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["go"]
+                       , list(go = 0)
+                       )
     })
 
     test_that('parsing "go" works',{
 		#$ prog go
 		#{"go": 1}
       res <- docopt(doc, 'go')
-      expect_equivalent(res, list(go = 1))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["go"]
+                       , list(go = 1)
+                       )
     })
 
     test_that('parsing "go go" works',{
 		#$ prog go go
 		#{"go": 2}
       res <- docopt(doc, 'go go')
-      expect_equivalent(res, list(go = 2))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["go"]
+                       , list(go = 2)
+                       )
     })
 
     test_that('parsing "go go go" works',{
@@ -1331,14 +1625,20 @@ options: -a
 		#$ prog go go go go go
 		#{"go": 5}
       res <- docopt(doc, 'go go go go go')
-      expect_equivalent(res, list(go = 5))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["go"]
+                       , list(go = 5)
+                       )
     })
 
     test_that('parsing "-a" works',{
 		#$ prog -a
 		#{"-a": true, "-b": false}
       res <- docopt(doc, '-a')
-      expect_equivalent(res, list("-a" = TRUE, "-b" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-a", "-b")]
+                       , list("-a" = TRUE, "-b" = FALSE)
+                       )
     })
 
     test_that('parsing "-aa" works',{
@@ -1362,21 +1662,30 @@ Options:
 		#$ prog arg
 		#{"A": "arg", "-v": false, "-q": false}
       res <- docopt(doc, 'arg')
-      expect_equivalent(res, list(A = "arg", "-v" = FALSE, "-q" = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("A", "-v", "-q")]
+                       , list(A = "arg", "-v" = FALSE, "-q" = FALSE)
+                       )
     })
 
     test_that('parsing "-v arg" works',{
 		#$ prog -v arg
 		#{"A": "arg", "-v": true, "-q": false}
       res <- docopt(doc, '-v arg')
-      expect_equivalent(res, list(A = "arg", "-v" = TRUE, "-q" = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("A", "-v", "-q")]
+                       , list(A = "arg", "-v" = TRUE, "-q" = FALSE)
+                       )
     })
 
     test_that('parsing "-q arg" works',{
 		#$ prog -q arg
 		#{"A": "arg", "-v": false, "-q": true}
       res <- docopt(doc, '-q arg')
-      expect_equivalent(res, list(A = "arg", "-v" = FALSE, "-q" = TRUE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("A", "-v", "-q")]
+                       , list(A = "arg", "-v" = FALSE, "-q" = TRUE)
+                       )
     })
 
 #####################
@@ -1390,14 +1699,20 @@ doc <-
 		#$ prog -
 		#{"-": true}
       res <- docopt(doc, '-')
-      expect_equivalent(res, list("-" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-"]
+                       , list("-" = TRUE)
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-": false}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-" = FALSE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-"]
+                       , list("-" = FALSE)
+                       )
     })
 
 #####################
@@ -1411,14 +1726,20 @@ doc <-
 		#$ prog a b
 		#{"NAME": ["a", "b"]}
       res <- docopt(doc, 'a b')
-      expect_equivalent(res, list(NAME = c("a", "b")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = c("a", "b"))
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"NAME": []}
       res <- docopt(doc, '')
-      expect_equivalent(res, list(NAME = list()))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["NAME"]
+                       , list(NAME = list())
+                       )
     })
 
 #####################
@@ -1435,7 +1756,10 @@ options:
 		#$ prog -a
 		#{"-m": null, "-a": true}
       res <- docopt(doc, '-a')
-      expect_equivalent(res, list("-m" = NULL, "-a" = TRUE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-m", "-a")]
+                       , list("-m" = NULL, "-a" = TRUE)
+                       )
     })
 
 #####################
@@ -1449,7 +1773,10 @@ doc <-
 		#$ prog --hello
 		#{"--hello": true}
       res <- docopt(doc, '--hello')
-      expect_equivalent(res, list("--hello" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--hello"]
+                       , list("--hello" = TRUE)
+                       )
     })
 
 #####################
@@ -1463,14 +1790,20 @@ doc <-
 		#$ prog
 		#{"--hello": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("--hello" = NULL))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--hello"]
+                       , list("--hello" = NULL)
+                       )
     })
 
     test_that('parsing "--hello wrld" works',{
 		#$ prog --hello wrld
 		#{"--hello": "wrld"}
       res <- docopt(doc, '--hello wrld')
-      expect_equivalent(res, list("--hello" = "wrld"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--hello"]
+                       , list("--hello" = "wrld")
+                       )
     })
 
 #####################
@@ -1484,14 +1817,20 @@ doc <-
 		#$ prog
 		#{"-o": false}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-o" = FALSE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = FALSE)
+                       )
     })
 
     test_that('parsing "-o" works',{
 		#$ prog -o
 		#{"-o": true}
       res <- docopt(doc, '-o')
-      expect_equivalent(res, list("-o" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = TRUE)
+                       )
     })
 
 #####################
@@ -1505,7 +1844,10 @@ doc <-
 		#$ prog -op
 		#{"-o": true, "-p": true, "-r": false}
       res <- docopt(doc, '-op')
-      expect_equivalent(res, list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("-o", "-p", "-r")]
+                       , list("-o" = TRUE, "-p" = TRUE, "-r" = FALSE)
+                       )
     })
 
 #####################
@@ -1519,7 +1861,10 @@ doc <-
 		#$ prog -v
 		#{"-v": true, "--verbose": false}
       res <- docopt(doc, '-v')
-      expect_equivalent(res, list("-v" = TRUE, "--verbose" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("-v", "--verbose")]
+                       , list("-v" = TRUE, "--verbose" = FALSE)
+                       )
     })
 
 #####################
@@ -1533,7 +1878,10 @@ doc <-
 		#$ prog remote -v
 		#{"remote": true, "-v": true, "--verbose": false}
       res <- docopt(doc, 'remote -v')
-      expect_equivalent(res, list(remote = TRUE, "-v" = TRUE, "--verbose" = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("remote", "-v", "--verbose")]
+                       , list(remote = TRUE, "-v" = TRUE, "--verbose" = FALSE)
+                       )
     })
 
 #####################
@@ -1547,7 +1895,10 @@ doc <-
 		#$ prog
 		#{}
       res <- docopt(doc, '')
-      expect_equivalent(res, list())
+      expect_equivalent(length(res), 0)
+      expect_equivalent( res[NULL]
+                       , list()
+                       )
     })
 
 #####################
@@ -1562,14 +1913,20 @@ doc <-
 		#$ prog 1 2
 		#{"<a>": "1", "<b>": "2"}
       res <- docopt(doc, '1 2')
-      expect_equivalent(res, list("<a>" = "1", "<b>" = "2"))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("<a>", "<b>")]
+                       , list("<a>" = "1", "<b>" = "2")
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"<a>": null, "<b>": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("<a>" = NULL, "<b>" = NULL))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("<a>", "<b>")]
+                       , list("<a>" = NULL, "<b>" = NULL)
+                       )
     })
 
 #####################
@@ -1584,7 +1941,10 @@ doc <-
 		#$ prog
 		#{"<a>": null, "<b>": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("<a>" = NULL, "<b>" = NULL))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("<a>", "<b>")]
+                       , list("<a>" = NULL, "<b>" = NULL)
+                       )
     })
 
 #####################
@@ -1598,7 +1958,10 @@ doc <-
 		#$ prog
 		#{"--file": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("--file" = NULL))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--file"]
+                       , list("--file" = NULL)
+                       )
     })
 
 #####################
@@ -1614,7 +1977,10 @@ options: --file <a>'
 		#$ prog
 		#{"--file": null}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("--file" = NULL))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--file"]
+                       , list("--file" = NULL)
+                       )
     })
 
 #####################
@@ -1630,7 +1996,10 @@ Options: -a, --address <host:port>  TCP address [default: localhost:6283].'
 		#$ prog
 		#{"--address": "localhost:6283"}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("--address" = "localhost:6283"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--address"]
+                       , list("--address" = "localhost:6283")
+                       )
     })
 
 #####################
@@ -1644,14 +2013,20 @@ doc <-
 		#$ prog --long one
 		#{"--long": ["one"]}
       res <- docopt(doc, '--long one')
-      expect_equivalent(res, list("--long" = "one"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--long"]
+                       , list("--long" = "one")
+                       )
     })
 
     test_that('parsing "--long one --long two" works',{
 		#$ prog --long one --long two
 		#{"--long": ["one", "two"]}
       res <- docopt(doc, '--long one --long two')
-      expect_equivalent(res, list("--long" = c("one", "two")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--long"]
+                       , list("--long" = c("one", "two"))
+                       )
     })
 
 #####################
@@ -1665,7 +2040,10 @@ doc <-
 		#$ prog  go left --speed=5  go right --speed=9
 		#{"go": 2, "<direction>": ["left", "right"], "--speed": ["5", "9"]}
       res <- docopt(doc, 'go left --speed=5  go right --speed=9')
-      expect_equivalent(res, list(go = 2, "<direction>" = c("left", "right"), "--speed" = c("5", ,"9")))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("go", "<direction>", "--speed")]
+                       , list(go = 2, "<direction>" = c("left", "right"), "--speed" = c("5", ,"9"))
+                       )
     })
 
 #####################
@@ -1681,7 +2059,10 @@ options: -a'
 		#$ prog -a
 		#{"-a": true}
       res <- docopt(doc, '-a')
-      expect_equivalent(res, list("-a" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-a"]
+                       , list("-a" = TRUE)
+                       )
     })
 
 #####################
@@ -1697,14 +2078,20 @@ options: -o <o>  [default: x]'
 		#$ prog -o this -o that
 		#{"-o": ["this", "that"]}
       res <- docopt(doc, '-o this -o that')
-      expect_equivalent(res, list("-o" = c("this", "that")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = c("this", "that"))
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-o": ["x"]}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-o" = "x"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = "x")
+                       )
     })
 
 #####################
@@ -1720,14 +2107,20 @@ options: -o <o>  [default: x y]'
 		#$ prog -o this
 		#{"-o": ["this"]}
       res <- docopt(doc, '-o this')
-      expect_equivalent(res, list("-o" = "this"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = "this")
+                       )
     })
 
     test_that('parsing "" works',{
 		#$ prog
 		#{"-o": ["x", "y"]}
       res <- docopt(doc, '')
-      expect_equivalent(res, list("-o" = c("x", "y")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-o"]
+                       , list("-o" = c("x", "y"))
+                       )
     })
 
 #####################
@@ -1743,7 +2136,10 @@ options: -p PATH'
 		#$ prog -pHOME
 		#{"-p": "HOME"}
       res <- docopt(doc, '-pHOME')
-      expect_equivalent(res, list("-p" = "HOME"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["-p"]
+                       , list("-p" = "HOME")
+                       )
     })
 
 #####################
@@ -1757,7 +2153,10 @@ doc <-
 		#$ prog --xx=1 --yy=2
 		#{"--xx": ["1"], "--yy": ["2"]}
       res <- docopt(doc, '--xx=1 --yy=2')
-      expect_equivalent(res, list("--xx" = "1", "--yy" = "2"))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--xx", "--yy")]
+                       , list("--xx" = "1", "--yy" = "2")
+                       )
     })
 
 #####################
@@ -1771,7 +2170,10 @@ doc <-
 		#$ prog f.txt
 		#{"<input file>": "f.txt"}
       res <- docopt(doc, 'f.txt')
-      expect_equivalent(res, list("<input file>" = "f.txt"))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["<input file>"]
+                       , list("<input file>" = "f.txt")
+                       )
     })
 
 #####################
@@ -1785,7 +2187,10 @@ doc <-
 		#$ prog --input a.txt --input=b.txt
 		#{"--input": ["a.txt", "b.txt"]}
       res <- docopt(doc, '--input a.txt --input=b.txt')
-      expect_equivalent(res, list("--input" = c("a.txt", "b.txt")))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--input"]
+                       , list("--input" = c("a.txt", "b.txt"))
+                       )
     })
 
 #####################
@@ -1802,7 +2207,10 @@ options: --loglevel=N'
 		#$ prog fail --loglevel 5
 		#{"--loglevel": "5", "fail": true, "good": false}
       res <- docopt(doc, 'fail --loglevel 5')
-      expect_equivalent(res, list("--loglevel" = "5", fail = TRUE, good = FALSE))
+      expect_equivalent(length(res), 3)
+      expect_equivalent( res[c("--loglevel", "fail", "good")]
+                       , list("--loglevel" = "5", fail = TRUE, good = FALSE)
+                       )
     })
 
 #####################
@@ -1816,7 +2224,10 @@ doc <-
 		#$ prog --foo
 		#{"--foo": true}
       res <- docopt(doc, '--foo')
-      expect_equivalent(res, list("--foo" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--foo"]
+                       , list("--foo" = TRUE)
+                       )
     })
 
 #####################
@@ -1830,7 +2241,10 @@ doc <-
 		#$ prog --foo
 		#{"--foo": true}
       res <- docopt(doc, '--foo')
-      expect_equivalent(res, list("--foo" = TRUE))
+      expect_equivalent(length(res), 1)
+      expect_equivalent( res["--foo"]
+                       , list("--foo" = TRUE)
+                       )
     })
 
 #####################
@@ -1846,7 +2260,10 @@ NOT PART OF SECTION'
 		#$ prog --foo
 		#{"--foo": true, "--bar": false}
       res <- docopt(doc, '--foo')
-      expect_equivalent(res, list("--foo" = TRUE, "--bar" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--foo", "--bar")]
+                       , list("--foo" = TRUE, "--bar" = FALSE)
+                       )
     })
 
 #####################
@@ -1864,7 +2281,10 @@ NOT PART OF SECTION'
 		#$ prog --foo
 		#{"--foo": true, "--bar": false}
       res <- docopt(doc, '--foo')
-      expect_equivalent(res, list("--foo" = TRUE, "--bar" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--foo", "--bar")]
+                       , list("--foo" = TRUE, "--bar" = FALSE)
+                       )
     })
 
 #####################
@@ -1881,7 +2301,10 @@ NOT PART OF SECTION'
 		#$ prog --foo
 		#{"--foo": true, "--bar": false}
       res <- docopt(doc, '--foo')
-      expect_equivalent(res, list("--foo" = TRUE, "--bar" = FALSE))
+      expect_equivalent(length(res), 2)
+      expect_equivalent( res[c("--foo", "--bar")]
+                       , list("--foo" = TRUE, "--bar" = FALSE)
+                       )
     })
 
 #####################
@@ -1903,7 +2326,10 @@ other options:
 		#$ prog --baz --egg
 		#{"--foo": false, "--baz": true, "--bar": false, "--egg": true, "--spam": false}
       res <- docopt(doc, '--baz --egg')
-      expect_equivalent(res, list("--foo" = FALSE, "--baz" = TRUE, "--bar" = FALSE, "--egg" = TRUE, ,    "--spam" = FALSE))
+      expect_equivalent(length(res), 5)
+      expect_equivalent( res[c("--foo", "--baz", "--bar", "--egg", "--spam")]
+                       , list("--foo" = FALSE, "--baz" = TRUE, "--bar" = FALSE, "--egg" = TRUE, ,    "--spam" = FALSE)
+                       )
     })
 
 
