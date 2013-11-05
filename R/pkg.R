@@ -1,8 +1,11 @@
-#' docopt
+#' docopt command line specification
 #' 
-#' TODO description of docopt
-#' @section Usage
+#' docopt helps you to define an interface for your command-line app, and
+#' automatically generate a parser for it.
+#' 
+#' For more information see \link{http://docopt.org}
+#' 
 #' 
 #' @name docopt-package
-#' @docType packages
+#' @docType package
 {}

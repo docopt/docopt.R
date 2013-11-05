@@ -1,11 +1,13 @@
-\docType{packages}
+\docType{package}
 \name{docopt-package}
 \alias{docopt-package}
-\title{docopt}
+\title{docopt command line specification}
 \description{
-  TODO description of docopt
+  docopt helps you to define an interface for your
+  command-line app, and automatically generate a parser for
+  it.
 }
-\section{Usage}{
-
+\details{
+  For more information see \link{http://docopt.org}
 }
 

@@ -1,11 +1,28 @@
 \name{docopt}
 \alias{docopt}
-\title{docopt}
+\title{docopt commandline parser}
 \usage{
   docopt(doc, args, name = NULL, help = TRUE,
     version = NULL)
 }
+\arguments{
+  \item{doc}{\code{character} vector with command line
+  specification}
+
+  \item{args}{\code{character} vector of commandline
+  arguments. If \code{args} is missing
+  \code{commandArgs(trailingOnly=TRUE)} will be used.}
+
+  \item{name}{Currently not used}
+
+  \item{help}{\code{logical} should "-h" or "--help"
+  generate a usage string?}
+
+  \item{version}{\code{character}. If supplied the option
+  "-v" generates the given version number and stops.}
+}
 \description{
-  docopt
+  docopt helps you to specify a command line interface and
+  generates a parser for it.
 }
 
