@@ -6,9 +6,9 @@ docopt.R
 - define interface for your command-line app, and
 - automatically generate parser for it.
 
-For more information see [docopt.org]
+For more information see [docopt.org](http://docopt.org)
 
-docopt.R is an implementation of docopt in the R language.
+docopt.R is an implementation of [docopt](http://docopt.org) in the R language.
 
 Install
 -------
@@ -40,10 +40,24 @@ options:
  -m <msg>  Message' -> doc
 
 library(docopt)
+```
+
+```
+## Loading required package: stringr
+```
+
+```r
 docopt(doc, "-m Hello")
 ```
 
 ```
-## NULL
+## $`-a`
+## [1] FALSE
+## 
+## $`-r`
+## [1] FALSE
+## 
+## $`-m`
+## [1] "Hello"
 ```
 
