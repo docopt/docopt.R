@@ -36,7 +36,7 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
     dict <- list()
     for(kv in c(pot_options$options, options, pot_arguments, arguments)){
       value <- kv$value
-      dict[kv$name()] <- if (is.null(value)) list(NULL) else value
+      dict[kv$name()] <- list(value)
     }
   #         return new Dict([a.name(), a.value] for a in parameters)
     return(dict)
