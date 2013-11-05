@@ -25,7 +25,8 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
     options <- args[cl == "Option"] 
   #         pot_arguments = (a for a in formal_pattern.flat() \
   #             when a.constructor in [Argument, Command])
-    a <- formal_pattern$flat()
+    #a <- formal_pattern$flat()
+    a <- m$collected
     cl <- sapply(a, class)
     pot_arguments <- a[cl %in% c("Argument", "Command")]
   #         parameters = [].concat pot_options, options, pot_arguments, argums

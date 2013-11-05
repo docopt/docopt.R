@@ -294,7 +294,7 @@ parse_option <- function(description){
   }
 #         if argcount is 1
   if (argcount == 1){
-    matched <- str_match(description, "\\[default:\\s+(.*)\\]")
+    matched <- str_match(description, "(?i)\\[default:\\s+(.*)\\]")
     value <- matched[,2]
     if (is.na(value)) value <- NULL
   }

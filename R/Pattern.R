@@ -178,12 +178,19 @@ Argument <- setRefClass("Argument", contains="Pattern"
          }
          #         same_name = (a for a in collected \
          #             when a.constructor is Argument and a.name() is @name())
+         same_name <- Filter(function(a){
+                               class(a) == "Argument" && identical(a$name(), name())
+                             }
+                            , collected)
          #         if same_name.length > 0
-         #             same_name[0].value.push args[0].value
-         #             return [true, left, collected]
-         #         else
+         if (length(same_name)){
+           same_name[[1]]$value <- c(same_name[[1]]$value, arg$value)
+           return(matched(TRUE, left, collected))
+         } else{
          #             collected = collected.concat [new Argument @name(), [args[0].value]]
-         #             return [true, left, collected]
+           collected <- c(collected, Argument(name(), arg$value))
+           return(matched(TRUE, left, collected))
+         }
        }
 ))
 # 
