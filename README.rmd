@@ -30,7 +30,7 @@ Usage
 docopt uses the description of the commandline interface to parse command line
 arguments.
 
-```{r, tidy=FALSE}
+```{r, tidy=FALSE, message=FALSE}
 'usage: prog [-a -r -m <msg>]
 
 options:
@@ -38,6 +38,14 @@ options:
  -r        Remote
  -m <msg>  Message' -> doc
 
+# load the docopt library
 library(docopt)
-docopt(doc, "-m Hello")
+
+# retrieve the command line arguments
+opts <- docopt(doc)
+str(opts)
+
+# or set them manually
+opts <- docopt(doc, "-m Hello")
+str(opts)
 ```

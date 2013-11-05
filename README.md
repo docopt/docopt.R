@@ -39,25 +39,32 @@ options:
  -r        Remote
  -m <msg>  Message' -> doc
 
+# load the docopt library
 library(docopt)
+
+# retrieve the command line arguments
+opts <- docopt(doc)
+str(opts)
 ```
 
 ```
-## Loading required package: stringr
+## List of 3
+##  $ -a: logi FALSE
+##  $ -r: logi FALSE
+##  $ -m: NULL
 ```
 
 ```r
-docopt(doc, "-m Hello")
+
+# or set them manually
+opts <- docopt(doc, "-m Hello")
+str(opts)
 ```
 
 ```
-## $`-a`
-## [1] FALSE
-## 
-## $`-r`
-## [1] FALSE
-## 
-## $`-m`
-## [1] "Hello"
+## List of 3
+##  $ -a: logi FALSE
+##  $ -r: logi FALSE
+##  $ -m: chr "Hello"
 ```
 
