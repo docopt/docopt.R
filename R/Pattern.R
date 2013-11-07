@@ -81,59 +81,67 @@ Pattern <- setRefClass( "Pattern"
         either = function(){
           #         if not @hasOwnProperty 'children'
           #             return new Either [new Required [@]]
-          #browser()
           if (length(children) == 0){
             return(Either(list(Required(list(.self)))))
           }
-#         else
-          ret <- list()
+          #browser()
+         ret <- list()
           #             groups = [[@]]
           groups <- list(list(.self))
 #             while groups.length
           while (length(groups)){
 #                 children = groups.shift()
-            .children <- head(groups, 1)
+            .children <- head(groups, 1)[[1]]
             groups <- tail(groups, -1)
-            #                 [i, indices, types] = [0, {}, {}]
-            indices <- list(); types <- list()
-#                 zip = ([i++, c] for c in children)
-            enum <- seq_along(.children)
-            #                 for [i,c] in zip
-            for (i in seq_along(.children)){
-              ci <- .children[i]
-              type <- class(ci)
-              types[[type]] <- append(type[type], ci)
-#                     name = c.constructor.name
-#                     if name not of types
-#                         types[name] = []
-#                     types[name].push c
-#                     if c not of indices
-#                         indices[c] = i 
-            }
-#                 if either = types[Either.name]
-#                     either = either[0]
+            type <- c("Either", "Required","Optional", "OneOrMore")
+            childtype <- sapply(.children, class)
+            m <- base::match(type, childtype, nomatch=0)
+            names(m) <- type
+            #print(m)
+            if (idx <- m["Either"]){
 #                     children.splice indices[either], 1
+              either <- .children[[idx]]
+              .children <- .children[-idx]
 #                     for c in either.children
+              for (ci in either$children){
 #                         group = [c].concat children
+                group <- append(list(ci), .children)
 #                         groups.push group
-#                 else if required = types[Required.name]
+                groups[[length(groups)+1]] <- group
+              }
+            } else if (idx <- m["Required"]){
 #                     required = required[0]
 #                     children.splice indices[required], 1
+              required <- .children[[idx]]
+              .children <- .children[-idx]
 #                     group = required.children.concat children
-#                     groups.push group
-#                 else if optional = types[Optional.name]
+              group <- append(required$children, .children)
+#                     groups.push group              
+              groups[[length(groups)+1]] <- group
+            } else if (idx <- m["Optional"]){
 #                     optional = optional[0]
+              optional <- .children[[idx]]
 #                     children.splice indices[optional], 1
+              .children <- .children[-idx]
 #                     group = optional.children.concat children
+              group <- append(optional$children, .children)
 #                     groups.push group
-#                 else if oneormore = types[OneOrMore.name]
+              groups[[length(groups)+1]] <- group
+            } else if (idx <- m["OneOrMore"]){
 #                     oneormore = oneormore[0]
+              oneormore <- .children[[idx]]
 #                     children.splice indices[oneormore], 1
+              .children <- .children[-idx]
 #                     group = oneormore.children
+              group <- append(onemore$children, .children)
 #                     group = group.concat group, children
 #                     groups.push group
+              groups[[length(groups)+1]] <- group
+            } else{
 #                 else
 #                     ret.push children
+              ret[[length(ret)+1]] <- .children
+            }
           }
 #             return new Either(new Required e for e in ret)
           Either(lapply(ret, function(e) Required(e)))
