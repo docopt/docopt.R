@@ -102,7 +102,7 @@ parse_long <- function(tokens, optionlist){
     } else {
   #         else
   #             o = new Option(null, raw, +!!value)
-      o <- Option(NULL, raw, as.logical(value))
+      o <- Option(NULL, raw, if (is.null(value)) 0 else 1)
   #             options.push(o)
       optionlist$push(o)
   #             return [o]
