@@ -250,7 +250,9 @@ Option <- setRefClass("Option", contains="Pattern"
                          short <<- short
                          long <<- long
                          argcount <<- argcount
-                         value <<- value
+                         if (argcount && missing(value)){
+                           value <<- NULL
+                         } else value <<- value
                        },
                        toString = function(){
                          paste0("Option(",short,",",long,",",argcount,",", value,")")
