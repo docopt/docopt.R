@@ -13,7 +13,7 @@ docopt.R is an implementation of [docopt](http://docopt.org) in the R language.
 Install
 -------
 
-`docopt.R` is currently in heavy development and not available on CRAN.
+`docopt.R` is currently in development and not available on CRAN.
 To test it out use
 ```
 library(devtools)
@@ -21,7 +21,11 @@ install_github("docopt.R", "edwindj")
 ```
 
 It is tested against the tests defined for the reference implementation.
-Currently it fails many tests. 
+It passes most tests. It currently fails tests that 
+
+- count arguments: `prog -v -v` should return `list(v=2)`
+- multiple prog statement: i.e. `prog -a \n prog -b`
+
 The tests can be run using devtools `test()` and can be found in "inst/tests"
 
 Usage
