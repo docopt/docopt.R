@@ -95,7 +95,7 @@ printable_usage <- function(doc, name){
   }
   usage <- str_split(usage_split[2], "\n.+?:")[[1]][1]
   usage <- str_c(usage, collapse="\n")
-  usage <- str_c("usage:", usage)
+  usage <- str_c("usage: ", usage)
   str_trim(usage)
 }
 

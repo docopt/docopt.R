@@ -162,16 +162,26 @@ parse_expr <- function(tokens, optionlist){
     return(seq)
   }
   
+  optional <- FALSE
   result <- if(length(seq)>1) list(Required(seq)) else seq
+  if (length(seq) == 0) optional <- TRUE
+  
   while(tokens$current() == "|"){
     tokens$shift()
     seq <- parse_seq(tokens, optionlist)
+    if (length(seq) == 0) optional <- TRUE    
     result <- c(result, if (length(seq)>1)list(Required(seq)) else seq)
   }
   
   if (length(result)>1){
-    list(Either(result))
-  } else result
+    result <- list(Either(result))
+  }
+  
+  if (optional){
+    result <- list(Optional(result))
+  }
+  
+  result
 }
 
 parse_seq <- function(tokens, optionlist){ 
