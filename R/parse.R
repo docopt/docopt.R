@@ -68,6 +68,11 @@ parse_shorts <- function(tokens, optionlist){
   parsed
 #     return parsed
 }
+
+starts_with <- function(x, start){
+  identical(str_sub(x, 1, nchar(start)), start)
+}
+
 # 
 # 
 # parse_long = (tokens, options) ->
@@ -86,12 +91,18 @@ parse_long <- function(tokens, optionlist){
   tokens$shift()
   #     value = if value == '' then null else value
   #     opt = (o for o in options when o.long and o.long[0...raw.length] == raw)
+  check <- if (tokens$strict) starts_with else identical
   opt <- Filter(function(o){
-    (nchar(o$long) && str_sub(o$long, 1, nchar(raw)) == raw)
+    (nchar(o$long) && check(o$long, raw))
   }, optionlist$options)
   #     if opt.length > 1
   if (length(opt) > 1){
-    tokens$error(raw, " is specified ambigously")
+    opt <- Filter(function(o){
+      identical(o$long, raw)
+    }, opt)
+    if (length(opt) != 1){
+      tokens$error(raw, " is specified ambigously")
+    }
   }
   #     if opt.length < 1
   if (length(opt) < 1){
