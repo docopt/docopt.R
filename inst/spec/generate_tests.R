@@ -14,7 +14,7 @@ cases <- unlist(str_split(cases, "\nr"))
 
 #case1 <- cases[1]
 
-p_usage <- 'r?\\"\\"\\"(.*)\\"\\"\\"\n\\$ '
+p_usage <- 'r?\\"\\"\\"(.*?)\\"\\"\\"\n'
 p_test <- '^([^\n]+)\n(.+?)\n\n'
 p_prog <- '\\$ prog([^\n]*)\n([^\n]*)\n'
 
@@ -35,14 +35,18 @@ cases <- lapply(cases, function(x){
   
   case$tests <- apply(tests, 1, function(r){
     if (str_sub(r[3],1,1) == "{"){
-      output <- deparse(fromJSON(r[3]), control="keepNA")
+      json <- fromJSON(r[3])
+      output <- deparse(json, control="keepNA")
       error <- FALSE
     } else {
+      json <- list()
       output <- r[3]
       error <- TRUE
     }
     test <- str_replace_all(str_trim(r[1]), "(^|\n)", "\\1\t\t#")
-    list(test=test, args=str_trim(r[2]), output=output, error=error)
+    keys <- deparse(names(json))
+    list(test=test, args=str_trim(r[2]), output=output, error=error, keys=keys
+        , len=length(json))
   })
   case
 })
@@ -72,7 +76,8 @@ doc <-
 {{{test}}}
 {{^error}}
       res <- docopt(doc, '{{{args}}}')
-      expect_equivalent(res, {{{output}}})
+      expect_equivalent(length(res), {{{len}}})
+      expect_equivalent(res[{{{keys}}}], {{{output}}})
 {{/error}}
 {{#error}}
       expect_error(docopt(doc, '{{{args}}}'))

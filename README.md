@@ -35,7 +35,7 @@ docopt uses the description of the commandline interface to parse command line
 arguments.
 
 
-```r
+```S
 'usage: prog [-a -r -m <msg>]
 
 options:
@@ -58,7 +58,7 @@ str(opts)
 ##  $ -m: NULL
 ```
 
-```r
+```S
 
 # or set them manually
 opts <- docopt(doc, "-m Hello")
