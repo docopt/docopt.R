@@ -223,6 +223,7 @@ Command <- setRefClass("Command"
       },
 #     match: (left, collected=[]) ->
       match = function(left, collected=list()){
+        #browser()
         argsidx <- which(sapply(left, class) == "Argument")
         firstarg <- head(argsidx,1)
         #         args = (l for l in left when l.constructor is Argument)
@@ -232,7 +233,7 @@ Command <- setRefClass("Command"
           return(matched(FALSE, left, collected))
         }
         #         left.splice(left.indexOf(args[0]), 1)
-        left <- left[[-firstarg]]
+        left <- left[-firstarg]
         #         collected.push new Command @name(), true
         collected <- c(collected, Command(name(), TRUE))
         #         [true, left, collected]
