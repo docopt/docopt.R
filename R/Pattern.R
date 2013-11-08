@@ -105,7 +105,7 @@ Pattern <- setRefClass( "Pattern"
 #                     for c in either.children
               for (ci in either$children){
 #                         group = [c].concat children
-                group <- append(list(ci), .children)
+                group <- c(ci, .children)
 #                         groups.push group
                 groups[[length(groups)+1]] <- group
               }
@@ -133,7 +133,7 @@ Pattern <- setRefClass( "Pattern"
 #                     children.splice indices[oneormore], 1
               .children <- .children[-idx]
 #                     group = oneormore.children
-              group <- append(onemore$children, .children)
+              group <- c(oneormore$children, oneormore$children, .children)
 #                     group = group.concat group, children
 #                     groups.push group
               groups[[length(groups)+1]] <- group
@@ -169,7 +169,8 @@ Argument <- setRefClass("Argument", contains="Pattern"
        match = function(left, collected=list()){
          #         args = (l for l in left when l.constructor is Argument)
          argsidx <- which(sapply(left, class) == "Argument")
-         arg <- head(argsidx,1)         
+         arg <- head(argsidx,1)       
+         #browser()
          #         if not args.length then return [false, left, collected]
          if (!length(arg)){
            return(matched(FALSE, left, collected))
@@ -180,7 +181,7 @@ Argument <- setRefClass("Argument", contains="Pattern"
          #         if @value is null or @value.constructor isnt Array
          if (is.null(value) || !is.list(value)){
          #             collected = collected.concat [new Argument @name(), args[0].value]
-           collected <- c(collected, Argument(name(), arg$value))
+           collected <- c(collected, list(Argument(name(), arg$value)))
          #             return [true, left, collected]
            return(matched(TRUE, left, collected))
          }
@@ -222,7 +223,7 @@ Command <- setRefClass("Command"
       },
 #     match: (left, collected=[]) ->
       match = function(left, collected=list()){
-        argsidx <- which(sapply(left, class) == "Arguments")
+        argsidx <- which(sapply(left, class) == "Argument")
         firstarg <- head(argsidx,1)
         #         args = (l for l in left when l.constructor is Argument)
         #         if not args.length or args[0].value isnt @name()
@@ -332,7 +333,7 @@ OneOrMore <- setRefClass("OneOrMore", contains="Pattern"
               times <- times + 1
             }
           #             if l_.join(', ') is l.join(', ') then break
-            if (identical(str_c(l_, sep=", "), str_c(m$left, sep=", "))){ 
+            if (identical(paste0(l_, collapse=", "), paste0(m$left, collapse=", "))){ 
               break
             }
           #             l_ = l #copy(l)
