@@ -1,10 +1,10 @@
 docopt.R
 ========================================================
 
-`docopt` helps you:
+`docopt` helps you to:
 
-- define interface for your command-line app, and
-- automatically generate parser for it.
+- define an interface for your command-line app, and
+- automatically generate a parser for it.
 
 For more information see [docopt.org](http://docopt.org)
 
@@ -35,7 +35,7 @@ docopt uses the description of the commandline interface to parse command line
 arguments.
 
 
-```S
+```r
 'usage: prog [-a -r -m <msg>]
 
 options:
@@ -58,7 +58,7 @@ str(opts)
 ##  $ -m: NULL
 ```
 
-```S
+```r
 
 # or set them manually
 opts <- docopt(doc, "-m Hello")

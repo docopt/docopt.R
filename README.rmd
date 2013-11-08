@@ -1,10 +1,10 @@
 docopt.R
 ========================================================
 
-`docopt` helps you:
+`docopt` helps you to:
 
-- define interface for your command-line app, and
-- automatically generate parser for it.
+- define an interface for your command-line app, and
+- automatically generate a parser for it.
 
 For more information see [docopt.org](http://docopt.org)
 
