@@ -93,7 +93,8 @@ printable_usage <- function(doc, name){
   } else if (length(usage_split) > 2){
     stop('More than one "usage:" (case-insensitive).')
   }
-  usage <- str_split(usage_split[2], "\n\\s*")[[1]][1]
+  usage <- str_split(usage_split[2], "\n.+?:")[[1]][1]
+  usage <- str_c(usage, collapse="\n")
   usage <- str_c("usage:", usage)
   str_trim(usage)
 }
