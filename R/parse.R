@@ -52,7 +52,7 @@ parse_shorts <- function(tokens, optionlist){
 #                 raw = tokens.shift()
 #             [value, raw] = [raw, '']
     if (raw == ""){
-      if (length(tokens$current())==0){
+      if (tokens$current()==""){
         tokens$error("-", substr(opt$short,2,1)," requires argument")
       }
       raw <- tokens$shift()
