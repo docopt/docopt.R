@@ -1,5 +1,5 @@
 Tokens <- setRefClass( "Tokens"
-                       , fields=list(tokens="character", error="function", strict="logical")
+                       , fields=list(tokens="character", error="function", strict="logical", building="logical")
                        , methods=list(
                          initialize = function(tokens=character(), error=stop){
                            .tokens <- gsub("^\\s+|\\s+$", "", tokens)
@@ -9,6 +9,7 @@ Tokens <- setRefClass( "Tokens"
                            } else {
                              strict <<- FALSE
                            }
+                           building <<- !strict
                            error <<- error
                          },
                          current = function(){
