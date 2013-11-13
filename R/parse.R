@@ -35,14 +35,21 @@ parse_shorts <- function(tokens, optionlist){
   }
 
 #         o = opt[0]
-  o = opt[[1]]
-#         opt = new Option o.short, o.long, o.argcount, o.value
+  o = tail(opt, 1)[[1]]
   opt <- Option(o$short, o$long, o$argcount, o$value)
-#         raw = raw[1..]
   raw <- substring(raw, 2)
-#         if opt.argcount == 0
+    
+  if (tokens$building){
+    if (is.logical(o$value)){
+      o$value <- 0L
+      opt$value <- 0L
+    }
+    return(c(parsed, opt))
+  }
+
+  #         if opt.argcount == 0
   if (opt$argcount == 0){
-    value <- TRUE
+    value <- if (is.logical(opt$value)){ TRUE} else opt$value + 1
   } else {
 #             value = true
 #         else
@@ -61,7 +68,11 @@ parse_shorts <- function(tokens, optionlist){
     raw <- ''
   }
 #         opt.value = value
-  opt$value <- value
+  if (is.list(value)){
+  } else {
+    o$value <- value
+    opt$value <- value
+  }
 #         parsed.push opt
   parsed <- c(parsed, opt)
   }
