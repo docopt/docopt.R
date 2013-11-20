@@ -5,6 +5,7 @@
 #' 
 #' For more information see \link{http://docopt.org}
 #' 
+#'
 #' 
 #' @name docopt-package
 #' @docType package
