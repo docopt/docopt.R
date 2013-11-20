@@ -87,15 +87,16 @@ extras <- function(help, version=NULL, options, doc){
 }
 
 printable_usage <- function(doc, name){
-  usage_split <- str_split(doc, perl("(?i)usage:"))[[1]]
+  usage_split <- str_split(doc, perl("(?i)usage:\\s*"))[[1]]
   if (length(usage_split) < 2){
     stop("'usage:' (case-insensitive) not found")
   } else if (length(usage_split) > 2){
     stop('More than one "usage:" (case-insensitive).')
   }
-  usage <- str_split(usage_split[2], "\n.+?:")[[1]][1]
-  usage <- str_c(usage, collapse="\n")
-  usage <- str_c("usage: ", usage)
+  usage <- str_split(usage_split[2], "\n\\s*")[[1]]
+  firstword <- str_extract(usage, "^\\w+")
+  progs <- which(firstword == firstword[1])
+  usage <- str_c("usage: ", usage[progs])
   str_trim(usage)
 }
 
