@@ -1,42 +1,45 @@
 Tokens <- setRefClass( "Tokens"
-                       , fields=list(tokens="character", error="function", strict="logical", building="logical")
-                       , methods=list(
-                         initialize = function(tokens=character(), error=stop){
-                           .tokens <- gsub("^\\s+|\\s+$", "", tokens)
-                           tokens <<- strsplit(.tokens, "\\s+")[[1]]
-                           if (missing(error)){
-                             strict <<- TRUE
-                           } else {
-                             strict <<- FALSE
-                           }
-                           building <<- !strict
-                           error <<- error
-                         },
-                         current = function(){
-                           if (length(tokens)){
-                             tokens[1]
-                            } else {
-                              ""
-                            }
-                         },
-                         shift = function(){
-                           h <- head(tokens, 1)
-                           tokens <<- tail(tokens, -1)
-                           if (length(h)) h else ""
-                         },
-                         #     toString: -> ([].slice.apply @).toString()
-                         toString = function(){
-                           tokens
-                         },
-                         show = function(){
-                           cat("Tokens:", toString())
-                         },
-                         # 
-                         #     join: (glue) -> ([].join.apply @, glue)
-                         join = function(glue){
-                           paste0(tokens, collapse=glue)
-                         }
-        )
+   , fields=list( tokens="character"
+                , error="function"
+                , strict="logical"
+                , defining=function(){!strict}
+                )
+   , methods=list(
+     initialize = function(tokens=character(), error=stop){
+       .tokens <- gsub("^\\s+|\\s+$", "", tokens)
+       tokens <<- strsplit(.tokens, "\\s+")[[1]]
+       if (missing(error)){
+         strict <<- TRUE
+       } else {
+         strict <<- FALSE
+       }
+       error <<- error
+     },
+     current = function(){
+       if (length(tokens)){
+         tokens[1]
+        } else {
+          ""
+        }
+     },
+     shift = function(){
+       h <- head(tokens, 1)
+       tokens <<- tail(tokens, -1)
+       if (length(h)) h else ""
+     },
+     #     toString: -> ([].slice.apply @).toString()
+     toString = function(){
+       tokens
+     },
+     show = function(){
+       cat("Tokens:", toString())
+     },
+     # 
+     #     join: (glue) -> ([].join.apply @, glue)
+     join = function(glue){
+       paste0(tokens, collapse=glue)
+     }
+  )
 )
 
 setMethod("[",

@@ -2,31 +2,25 @@ parse_shorts <- function(tokens, optionlist){
   raw <- substring(tokens$shift(), 2)
   parsed <- list()
   while(nchar(raw) > 0){
-    r <- substr(raw, 1, 1)
-#         opt = (o for o in options when o.short isnt null and o.short[1] == raw[0])
+    r <- paste0("-", substr(raw, 1, 1))
     opt <- Filter( function(o){
-                 !is.null(o$short) && substring(o$short, 2, 3) == r
+                 !is.null(o$short) && substring(o$short, 1, 3) == r
                }
                , optionlist$options)
   if (length(opt) > 1){
 #         if opt.length > 1
 #             tokens.error "-#{raw[0]} is specified ambiguously #{opt.length} times"
-    tokens$error("-", r, " is specified ambiguously ", length(opt), "times")
-  } else if (length(opt) < 1){
+    tokens$error(r, " is specified ambiguously ", length(opt), "times")
+  }
+  
+  if (length(opt) < 1){
 #         if opt.length < 1
 #             if tokens.error is DocoptExit
 #                 throw new tokens.error "-#{raw[0]} is not recognized"
     if (tokens$strict){
-      tokens$error("-", r, " is not recognized")
+      tokens$error(r, " is not recognized")
     } else {
-      #tokens$error("-",r," is not recognized")
-    #             else
-    #                 o = new Option('-' + raw[0], null)
-    #                 options.push(o)
-    #                 parsed.push(o)
-    #                 raw = raw[1..]
-    #                 continue
-      o = Option(paste0("-", r), NULL)
+      o = Option(r, NULL)
       optionlist$push(o)
       parsed <- append(parsed, o)
       raw <- substring(raw, 2)
@@ -38,7 +32,6 @@ parse_shorts <- function(tokens, optionlist){
   o = tail(opt, 1)[[1]]
   opt <- Option(o$short, o$long, o$argcount, o$value)
   raw <- substring(raw, 2)
-    
   #         if opt.argcount == 0
   if (opt$argcount == 0){
     value <- if (is.logical(opt$value)){ TRUE} else opt$value + 1
@@ -60,11 +53,8 @@ parse_shorts <- function(tokens, optionlist){
     raw <- ''
   }
 #         opt.value = value
-  if (is.list(value)){
-  } else {
-    o$value <- value
-    opt$value <- value
-  }
+  o$value <- value
+  opt$value <- value
 #         parsed.push opt
   parsed <- c(parsed, opt)
   }

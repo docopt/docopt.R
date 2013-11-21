@@ -244,9 +244,8 @@ Command <- setRefClass("Command"
 # 
 # class Option extends Pattern
 Option <- setRefClass("Option", contains="Pattern"
-                     , fields = c("short", "long", "argcount", "value")
+                     , fields = c("short", "long", "argcount", "value", "cardinality")
                      , methods = list(
-#     constructor: (@short=null, @long=null, @argcount=0, @value=false) ->
                        initialize= function(short=NULL, long=NULL, argcount=0, value=FALSE){
                          short <<- short
                          long <<- long
@@ -254,6 +253,7 @@ Option <- setRefClass("Option", contains="Pattern"
                          if (argcount && missing(value)){
                            value <<- NULL
                          } else value <<- value
+                         cardinality <<- 1
                        },
                        toString = function(){
                          paste0("Option(",short,",",long,",",argcount,",", value,")")
