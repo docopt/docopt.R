@@ -15,9 +15,9 @@ Install
 
 `docopt.R` is currently in development and not available on CRAN.
 To test it out use
-```
-library(devtools)
-install_github("docopt.R", "edwindj")
+```S
+library(devtools) # make sure to have devtools 1.4!
+install_github("edwindj/docopt")
 ```
 
 It is tested against the tests defined for the reference implementation.
@@ -71,4 +71,3 @@ str(opts)
 ##  $ -r: logi FALSE
 ##  $ -m: chr "Hello"
 ```
-
