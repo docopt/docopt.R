@@ -47,45 +47,30 @@ options:
 
 # load the docopt library
 library(docopt)
-```
-
-```
-## Error: there is no package called 'docopt'
-```
-
-```S
 
 # retrieve the command line arguments
 opts <- docopt(doc)
-```
-
-```
-## Error: could not find function "docopt"
-```
-
-```S
 str(opts)
 ```
 
 ```
-## Error: object 'opts' not found
+## List of 3
+##  $ -a: logi TRUE
+##  $ -r: logi TRUE
+##  $ -m: chr "<msg>"
 ```
 
 ```S
 
 # or set them manually
 opts <- docopt(doc, "-m Hello")
-```
-
-```
-## Error: could not find function "docopt"
-```
-
-```S
 str(opts)
 ```
 
 ```
-## Error: object 'opts' not found
+## List of 3
+##  $ -a: logi TRUE
+##  $ -r: logi TRUE
+##  $ -m: chr "Hello"
 ```
 
