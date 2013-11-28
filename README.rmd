@@ -17,7 +17,7 @@ Install
 To test it out use
 ```S
 library(devtools) # make sure to have devtools 1.4!
-install_github("edwindj/docopt")
+install_github("edwindj/docopt.R")
 ```
 
 It is tested against the tests defined for the reference implementation.
