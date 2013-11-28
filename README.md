@@ -1,4 +1,4 @@
-docopt.R
+docopt
 ========================================================
 
 `docopt` helps you to:
@@ -8,17 +8,19 @@ docopt.R
 
 For more information see [docopt.org](http://docopt.org)
 
-docopt.R is an implementation of [docopt](http://docopt.org) in the R language.
+R package `docopt` is an implementation of [docopt](http://docopt.org) in the R language.
 
 Install
 -------
 
-`docopt.R` is currently in development and not available on CRAN.
+`docopt` is currently in development and not available on CRAN.
 To test it out use
+
 ```S
-library(devtools) # make sure to have devtools 1.4!
+library(devtools)  # make sure to have devtools 1.4!
 install_github("edwindj/docopt.R")
 ```
+
 
 It is tested against the tests defined for the reference implementation.
 It passes most tests. It currently fails tests that 
@@ -45,29 +47,45 @@ options:
 
 # load the docopt library
 library(docopt)
+```
+
+```
+## Error: there is no package called 'docopt'
+```
+
+```S
 
 # retrieve the command line arguments
 opts <- docopt(doc)
+```
+
+```
+## Error: could not find function "docopt"
+```
+
+```S
 str(opts)
 ```
 
 ```
-## List of 3
-##  $ -a: logi FALSE
-##  $ -r: logi FALSE
-##  $ -m: NULL
+## Error: object 'opts' not found
 ```
 
 ```S
 
 # or set them manually
 opts <- docopt(doc, "-m Hello")
+```
+
+```
+## Error: could not find function "docopt"
+```
+
+```S
 str(opts)
 ```
 
 ```
-## List of 3
-##  $ -a: logi FALSE
-##  $ -r: logi FALSE
-##  $ -m: chr "Hello"
+## Error: object 'opts' not found
 ```
+

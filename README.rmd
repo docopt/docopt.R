@@ -1,4 +1,4 @@
-docopt.R
+docopt
 ========================================================
 
 `docopt` helps you to:
@@ -8,14 +8,14 @@ docopt.R
 
 For more information see [docopt.org](http://docopt.org)
 
-docopt.R is an implementation of [docopt](http://docopt.org) in the R language.
+R package `docopt` is an implementation of [docopt](http://docopt.org) in the R language.
 
 Install
 -------
 
-`docopt.R` is currently in development and not available on CRAN.
+`docopt` is currently in development and not available on CRAN.
 To test it out use
-```S
+```{r, eval=FALSE}
 library(devtools) # make sure to have devtools 1.4!
 install_github("edwindj/docopt.R")
 ```
