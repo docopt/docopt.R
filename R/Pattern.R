@@ -17,11 +17,6 @@ Pattern <- setRefClass( "Pattern"
                   must overload the match method")
         },
                           
-#     flat: ->
-#         if not @hasOwnProperty 'children' then return [@]
-#         res = []
-#         res = res.concat child.flat() for child in @children
-#         res 
         flat = function(){
             if (length(children) == 0){
               return(list(.self))
@@ -147,6 +142,55 @@ Pattern <- setRefClass( "Pattern"
           Either(lapply(ret, function(e) Required(e)))
         }
 ))
+
+LeafPattern <- setRefClass( "LeafPattern"   
+  , fields=c("name", "value")
+  , methods=list(
+      flat = function(...){
+        types <- list(...)
+        if (length(l)==0 || class(.self) %in% types){
+          return(list(.self))
+        }
+        list()
+      },
+      match = function(){
+        #   collected = [] if collected is None else collected
+        # pos, match = self.single_match(left)
+        # if match is None:
+        #   return False, left, collected
+        # left_ = left[:pos] + left[pos + 1:]
+        # same_name = [a for a in collected if a.name == self.name]
+        # if type(self.value) in (int, list):
+        #   if type(self.value) is int:
+        #   increment = 1
+        # else:
+        #   increment = ([match.value] if type(match.value) is str
+        #                else match.value)
+        # if not same_name:
+        #   match.value = increment
+        # return True, left_, collected + [match]
+        # same_name[0].value += increment
+        # return True, left_, collected
+        # return True, left_, collected + [match]        
+      }
+    )
+  )
+# 
+# class BranchPattern(Pattern):
+#   
+#   """Branch/inner node of a pattern tree."""
+# 
+# def __init__(self, *children):
+#   self.children = list(children)
+# 
+# def __repr__(self):
+#   return '%s(%s)' % (self.__class__.__name__,
+#                      ', '.join(repr(a) for a in self.children))
+# 
+# def flat(self, *types):
+#   if type(self) in types:
+#   return [self]
+# return sum([child.flat(*types) for child in self.children], [])
 
 # class Argument extends Pattern
 Argument <- setRefClass("Argument", contains="Pattern"
