@@ -26,7 +26,7 @@ Pattern <- setRefClass( "Pattern"
   
         fix = function(){
           fix_identities()
-          fix_list_arguments()
+          fix_repeating_arguments()
         },
         #Make pattern-tree tips point to same object if they are equal.
         fix_identities = function(uniq=NULL){
@@ -52,30 +52,33 @@ Pattern <- setRefClass( "Pattern"
         },
 #     fix_list_arguments: ->
 #         """Find arguments that should accumulate values and fix them."""
-        fix_list_arguments = function(){
+        fix_repeating_arguments = function(){
           #         either = (c.children for c in @either().children)
           eith <- lapply(either()$children, function(c) c$children)
             #         for child in either
           for (child in eith){
-            nms <- sapply(child, as.character)
+            nms <- as.character(sapply(child, as.character))
+            #browser()
             counts <- table(nms)
             for (e in child){
-              if (counts[as.character(e)] > 1 && class(e) == "Argument"){
-                e$value <- list()
-              }
-            }
+              if (counts[as.character(e)] > 1){
+                if (class(e)=="Argument" ||(class(e)=="Option" && e$argcount>0)){
+                  if (e$value == NULL){
+                    e$value <- list()
+                  } else if (class(e$value) != "list"){
+                    e$value <- as.list(e$value)
+                  }
+                }
+                if ( class(e) == "Command" 
+                  || (class(e) == "Option" && e$argcount == 0)){
+                   e$value <- 0
+                }
+              } 
+            } 
           }
-          #             counts = {}
-          #             for c in child
-          #                 counts[c] = (counts[c] ? 0) + 1
-          #             e.value = [] for e in child \
-          #                 when counts[e] > 1 and e.constructor is Argument
           .self
         },
-#     either: ->
         either = function(){
-          #         if not @hasOwnProperty 'children'
-          #             return new Either [new Required [@]]
           if (length(children) == 0){
             return(Either(list(Required(list(.self)))))
           }
@@ -88,57 +91,31 @@ Pattern <- setRefClass( "Pattern"
 #                 children = groups.shift()
             .children <- head(groups, 1)[[1]]
             groups <- tail(groups, -1)
-            type <- c("Either", "Required","Optional", "OneOrMore")
+            type <- c("Either", "Required","Optional", "OneOrMore", "AnyOptions")
             childtype <- sapply(.children, class)
-            m <- base::match(type, childtype, nomatch=0)
-            names(m) <- type
-            #print(m)
-            if (idx <- m["Either"]){
-#                     children.splice indices[either], 1
-              either <- .children[[idx]]
+            m <- base::match(childtype, type, nomatch=0)
+            
+            if (any(m > 0)){
+              # take first child bigger than zero
+              idx <- which(m > 0)[1]
+              child <- .children[[idx]]
               .children <- .children[-idx]
-#                     for c in either.children
-              for (ci in either$children){
-#                         group = [c].concat children
-                group <- c(ci, .children)
-#                         groups.push group
+              if (class(child) == "Either"){
+                for (ci in child$children){
+                  group <- c(ci, .children)
+                  groups[[length(groups)+1]] <- group
+                }
+              } else if (class(child) == "OneOrMore"){
+                group <- c(child$children, child$children, .children)
                 groups[[length(groups)+1]] <- group
+              } else {
+                group <- c(child$children, .children)
+                groups[[length(groups)+1]] <- group                
               }
-            } else if (idx <- m["Required"]){
-#                     required = required[0]
-#                     children.splice indices[required], 1
-              required <- .children[[idx]]
-              .children <- .children[-idx]
-#                     group = required.children.concat children
-              group <- append(required$children, .children)
-#                     groups.push group              
-              groups[[length(groups)+1]] <- group
-            } else if (idx <- m["Optional"]){
-#                     optional = optional[0]
-              optional <- .children[[idx]]
-#                     children.splice indices[optional], 1
-              .children <- .children[-idx]
-#                     group = optional.children.concat children
-              group <- append(optional$children, .children)
-#                     groups.push group
-              groups[[length(groups)+1]] <- group
-            } else if (idx <- m["OneOrMore"]){
-#                     oneormore = oneormore[0]
-              oneormore <- .children[[idx]]
-#                     children.splice indices[oneormore], 1
-              .children <- .children[-idx]
-#                     group = oneormore.children
-              group <- c(oneormore$children, oneormore$children, .children)
-#                     group = group.concat group, children
-#                     groups.push group
-              groups[[length(groups)+1]] <- group
             } else{
-#                 else
-#                     ret.push children
               ret[[length(ret)+1]] <- .children
             }
           }
-#             return new Either(new Required e for e in ret)
           Either(lapply(ret, function(e) Required(e)))
         }
 ))
@@ -153,28 +130,63 @@ LeafPattern <- setRefClass( "LeafPattern"
         }
         list()
       },
-      match = function(){
-        #   collected = [] if collected is None else collected
-        # pos, match = self.single_match(left)
+      match = function(left, collected=list()){
+        m <- single_match(left)
         # if match is None:
         #   return False, left, collected
+        if (is.null(m$match)){
+          return(matched(FALSE, left, collected))
+        }
         # left_ = left[:pos] + left[pos + 1:]
+        left_ <- left[-m$pos]
         # same_name = [a for a in collected if a.name == self.name]
+        same_name <- Filter(function(a){a$name == name}, collected)
         # if type(self.value) in (int, list):
+        if (class(value) %in% c("integer", "list")){
         #   if type(self.value) is int:
+          if (is.integer(value)){
         #   increment = 1
+            increment <- 1
+          } else {
         # else:
         #   increment = ([match.value] if type(match.value) is str
         #                else match.value)
-        # if not same_name:
-        #   match.value = increment
-        # return True, left_, collected + [match]
-        # same_name[0].value += increment
-        # return True, left_, collected
+            increment <- m$match$value
+            if (is.character(increment)){
+              increment <- list(increment)
+            }
+          }
+          # if not same_name:
+          if (length(same_name)==0){
+            #   match.value = increment
+            match$value <- increment
+            # return True, left_, collected + [match]
+            return(matched(TRUE, left_, c(collected, match)))
+          }
+          val <- same_name[[1]]$value
+          # same_name[0].value += increment
+          # return True, left_, collected
+          same_name[[1]]$value <- if (is.integer(val)) val + increment else c(val, increment)
+          return(matched(TRUE, left_, collected))
+        }
         # return True, left_, collected + [match]        
+        return(matched(TRUE, left_, c(collected, match)))
       }
     )
   )
+BranchPattern <- setRefClass("BranchPattern", contains="Pattern"
+    , methods=list(
+      initialize = function(children){
+        children <<- children
+      },
+      flat=function(){
+        if (length(children) == 0){
+          return(list(.self))
+        }
+        unlist(lapply(children, function(child){child$flat()}))
+      }
+    )
+)
 # 
 # class BranchPattern(Pattern):
 #   
@@ -437,7 +449,7 @@ matched <- function(matched, left, collected){
 }
 
 
-# utility function for options
+# utility function for collecting options
 OptionList <- setRefClass( "OptionList"
                           , fields = list(options="list")
                           , methods=list(
