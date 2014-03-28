@@ -41,12 +41,17 @@ $^\star$Contact author: \href{mailto:e.dejonge@cbs.nl}{e.dejonge@cbs.nl}\\
 \vskip 0.8cm
 
 With its increasing popularity \proglang{R} scripts are more and more executed in batch mode from the command line. 
-When a script matures and becomes more generic it is desirable to add command line options to your script.
-Starting simple you may use \code{cmdArgs} to parse the extra options given to the script, but it quickly becomes complicated. \pkg{getopt}~\ci and \pkg{optparse}
+When a script matures and becomes more generic it often is desirable to add command line options to 
+your script. Starting simple you may use \code{cmdArgs} to parse the extra options given to the script, but it quickly 
+becomes complicated. The packages \pkg{getopt}~\cite{getopt} and \pkg{optparse}~\cite{optparse} can be of great help for parsing the options, but it \pkg{docopt} makes it even easier.
 
-The package \pkg{docopt}
+The package \pkg{docopt} is a R port of the \proglang{Python} package \code{docopt}.
+Docopt is a command-line interface description language, and help you to formulate a 
+command-line interface and automatically generate a parser for it. 
+The definition of the command line interface is also its documentation.
 
-Some suggestions and rules: if you mention a programming language like \proglang{R}, typeset the language name with the {\tt \textbackslash proglang\{\}} macro. If you mention an \proglang{R} function \code{foo}, typeset the function name with the with the {\tt\textbackslash code\{\}} macro. If you mention an \proglang{R} package \pkg{fooPkg}, typeset the package name with the {\tt\textbackslash pkg\{\}} macro. Textual ({\it e.g.}, \citet{ref1} jumped over the fence.) and parenthetical ({\it e.g.}, The fence was jumped \citep{ref1}.) citations may appear within the abstract. Itemized lists are allowed in abstracts, but may be wasteful of space, which is {\it strictly limited}. Avoid itemized lists if possible, but gracefully. {\bf Abstracts should not exceed one US letter (8.5 x 11 inches) page}. The page should not be numbered. 
+
+
 
 %% The \proglang, \code, and \pkg macros may be reused
 
