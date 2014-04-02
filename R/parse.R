@@ -34,7 +34,11 @@ parse_shorts <- function(tokens, optionlist){
   raw <- substring(raw, 2)
   #         if opt.argcount == 0
   if (opt$argcount == 0){
-    value <- if (is.logical(opt$value)){ TRUE} else opt$value + 1
+    if (tokens$defining){
+      value <- opt$value
+    } else {
+      value <- if (is.logical(opt$value)){ TRUE} else opt$value + 1
+    }
   } else {
 #             value = true
 #         else

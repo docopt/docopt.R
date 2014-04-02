@@ -25,7 +25,7 @@
 \begin{document}
 \pagestyle{empty}
 
-\title{DocOpt, super easy command line options in \proglang{R}}
+\title{docopt, add beautiful command line options to \proglang{R} scripts}
 
 \begin{center}
   {\bf Edwin de Jonge$^{1,^\star}$}
@@ -36,22 +36,26 @@
 $^\star$Contact author: \href{mailto:e.dejonge@cbs.nl}{e.dejonge@cbs.nl}\\
 \end{affiliations}
 
-\keywords Options, Rscript, docopt
+\keywords Options, Rscript, docopt, programming
 
 \vskip 0.8cm
 
 With its increasing popularity \proglang{R} scripts are more and more executed in batch mode from the command line. 
-When a script matures and becomes more generic it often is desirable to add command line options to 
-your script. Starting simple you may use \code{cmdArgs} to parse the extra options given to the script, but it quickly 
-becomes complicated. The packages \pkg{getopt}~\cite{getopt} and \pkg{optparse}~\cite{optparse} can be of great help for parsing the options, but it \pkg{docopt} makes it even easier.
+When a script matures and becomes more generic it often is desirable to add command-line options to 
+it. Starting simple you may use \code{cmdArgs} to parse the extra options given to the script, but it quickly 
+becomes complicated: parsing multiple options, long and short names for options, default values for options, 
+generating sensible information when incorrect input is given and documenting all options for usage can take 
+quite some code and time. The packages \pkg{getopt}~\cite{getopt} and \pkg{optparse}~\cite{optparse} can be of 
+great help for parsing command-line arguments, but \pkg{docopt} makes it super easy.
 
-The package \pkg{docopt} is a R port of the \proglang{Python} package \code{docopt}.
-Docopt is a command-line interface description language, and help you to formulate a 
-command-line interface and automatically generate a parser for it. 
-The definition of the command line interface is also its documentation.
+The R-package \pkg{docopt}~\citep{docoptR} is a port of the \proglang{Python} package \code{docopt}.
+Docopt is a command-line interface description language, and helps you to formulate a 
+command-line interface and automatically generate a parser for it, that will parse the command-line arguments automatically for you. The nice part is that the documentation given to the user is equal to its definition.
 
+As an appetizer: \code{docopt("Usage: prog [-a -b=value]")} will generate a parser and test if \code{a} and \code{b} were set in the command line. It returns a list in which the values for \code{a} and \code{b} 
+are included.
 
-
+The presentation will introduce \pkg{docopt}, describe its usage, specification format and some of its implementation details.
 
 %% The \proglang, \code, and \pkg macros may be reused
 
