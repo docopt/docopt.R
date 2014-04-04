@@ -16,7 +16,7 @@ Install
 `docopt` is currently in development and not available on CRAN.
 To test it out use
 
-```S
+```r
 library(devtools)  # make sure to have devtools 1.4!
 install_github("edwindj/docopt.R")
 ```
@@ -37,7 +37,7 @@ docopt uses the description of the commandline interface to parse command line
 arguments.
 
 
-```S
+```r
 'usage: prog [-a -r -m <msg>]
 
 options:
@@ -47,6 +47,13 @@ options:
 
 # load the docopt library
 library(docopt)
+```
+
+```
+## Warning: package 'docopt' was built under R version 3.0.3
+```
+
+```r
 
 # retrieve the command line arguments
 opts <- docopt(doc)
@@ -55,12 +62,12 @@ str(opts)
 
 ```
 ## List of 3
-##  $ -a: logi TRUE
-##  $ -r: logi TRUE
+##  $ -a: logi FALSE
+##  $ -r: logi FALSE
 ##  $ -m: chr "<msg>"
 ```
 
-```S
+```r
 
 # or set them manually
 opts <- docopt(doc, "-m Hello")
@@ -69,8 +76,8 @@ str(opts)
 
 ```
 ## List of 3
-##  $ -a: logi TRUE
-##  $ -r: logi TRUE
+##  $ -a: logi FALSE
+##  $ -r: logi FALSE
 ##  $ -m: chr "Hello"
 ```
 
