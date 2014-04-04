@@ -47,12 +47,9 @@ options:
 
 # load the docopt library
 library(docopt)
-```
-
-```S
-
 # retrieve the command line arguments
 opts <- docopt(doc)
+# what are the options?
 str(opts)
 ```
 
