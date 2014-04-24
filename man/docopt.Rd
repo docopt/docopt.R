@@ -2,8 +2,7 @@
 \alias{docopt}
 \title{docopt commandline parser}
 \usage{
-  docopt(doc, args, name = NULL, help = TRUE,
-    version = NULL)
+docopt(doc, args, name = NULL, help = TRUE, version = NULL)
 }
 \arguments{
   \item{doc}{\code{character} vector with command line
@@ -22,7 +21,7 @@
   "-v" generates the given version number and stops.}
 }
 \description{
-  docopt helps you to specify a command line interface and
-  generates a parser for it.
+docopt helps you to specify a command line interface and
+generates a parser for it.
 }
 
