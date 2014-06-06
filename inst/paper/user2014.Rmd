@@ -1,9 +1,8 @@
 ---
-title: Docopt
+title: "Docopt, UseR!2014, "
 author: "Edwin de Jonge"
-date: "Friday, June 06, 2014"
+date: "July 2014"
 output:
-  ioslides_presentation: default
   beamer_presentation:
     theme: Warsaw
 ---
@@ -22,9 +21,8 @@ print(coef(my_model))
 ```
 
 ## Typical usage
-\tiny
 
-```R
+```{r, eval=FALSE}
 #!/usr/bin/Rscript
 
 my_data <- iris
@@ -35,6 +33,37 @@ f <- as.formula(paste0(dep, " ~ ", indep))
 my_model <- lm(data=my_data, f)
 print(coef(my_model))
 ```
+## Standard 
+- Work with commandArgs
+- Use `getopt` (primitive)
+- `argparse`, `Python` dependency
+- **optparse** quite nice, Python inspired
+- `docopt`
+
+## 
+## Options
+
+- Parse positional arguments
+- Default values
+- Descriptions
+- Short/Long option parsing
+- Self describing
+
 ## Getopt
 
-## test
+
+## Implementation
+
+- Docopt is implemented using Reference classes (R5) in pure R.
+- It is kind-of-port of the original Python project: http://docopt.org
+- Available from: https://github.com/edwindj/docopt.R
+- Very functional, except for:
+   - multiple identical arguments -vvv
+   - multiple prog statements.
+
+## Loose ends
+
+
+## Thanks
+
+Thanks!
