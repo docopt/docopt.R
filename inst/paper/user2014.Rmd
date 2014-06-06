@@ -1,0 +1,40 @@
+---
+title: Docopt
+author: "Edwin de Jonge"
+date: "Friday, June 06, 2014"
+output:
+  ioslides_presentation: default
+  beamer_presentation:
+    theme: Warsaw
+---
+
+## Command line
+
+ - R is used more and more
+ - So also for executing R-scripts
+
+## Typical usage
+
+```R
+#!/usr/bin/Rscript
+my_model <- lm(data=iris, Sepal.Width ~ Sepal.Length)
+print(coef(my_model))
+```
+
+## Typical usage
+\tiny
+
+```R
+#!/usr/bin/Rscript
+
+my_data <- iris
+dep <- "Sepal.Width"
+indep <- "Sepal.Length"
+
+f <- as.formula(paste0(dep, " ~ ", indep))
+my_model <- lm(data=my_data, f)
+print(coef(my_model))
+```
+## Getopt
+
+## test
