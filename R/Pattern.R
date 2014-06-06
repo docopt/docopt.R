@@ -63,7 +63,7 @@ Pattern <- setRefClass( "Pattern"
             for (e in child){
               if (counts[as.character(e)] > 1){
                 if (class(e)=="Argument" ||(class(e)=="Option" && e$argcount>0)){
-                  if (e$value == NULL){
+                  if (is.null(e$value)){
                     e$value <- list()
                   } else if (class(e$value) != "list"){
                     e$value <- as.list(e$value)

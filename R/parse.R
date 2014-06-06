@@ -9,7 +9,6 @@ parse_shorts <- function(tokens, optionlist){
                }
                , optionlist$options)
     if (length(opt) > 1){
-      tokens$error(r, " is specified ambiguously ", length(opt), "times")
     }
     
     if (length(opt) < 1){
@@ -196,24 +195,14 @@ parse_atom <- function(tokens, optionlist){
     }
     result
   } else if (substr(token, 1, 2) == '--' ){
-    #     else if token[0..1] is '--'
-    #         if token is '--'
-    #             [new Command tokens.shift()]
-    #         else
-    #             parse_long tokens, options
     if (token == '--'){
       list(Command(tokens$shift()))
     } else {
       parse_long(tokens, optionlist)
     }
   } else if (substr(token,1,1) == '-' && token != '-'){
-  #     else if token[0] is '-' and token isnt '-'
-  #         parse_shorts tokens, options
     parse_shorts(tokens, optionlist)
   } else if (grepl("^<.+>$", token) || grepl("^[^a-z]*[A-Z]+[^a-z]*$", token)){
-    #     else if (token[0] is '<' and
-    #           token[token.length-1] is '>') or /^[^a-z]*[A-Z]+[^a-z]*$/.test(token)
-    #         [new Argument tokens.shift()]
     list(Argument(tokens$shift()))
   } else{
     #         [new Command tokens.shift()]
