@@ -3,6 +3,7 @@ parse_shorts <- function(tokens, optionlist){
   parsed <- list()
   while(nchar(left) > 0){
     r <- paste0("-", substr(left, 1, 1))
+    left <- substring(left, 2)
     opt <- Filter( function(o){
                  !is.null(o$short) && substring(o$short, 1, 3) == r
                }
@@ -13,31 +14,30 @@ parse_shorts <- function(tokens, optionlist){
     
     if (length(opt) < 1){
       o = Option(r, NULL)
-      optionlist$push(o)
       if (tokens$strict){
-        o = Option(r, value=TRUE)
+        o = Option(r, value=TRUE) # needed for version and help
+      } else {
+        optionlist$push(o)
       }
-      left <- substring(left, 2)
     } else {
       opt = tail(opt, 1)[[1]]
       o <- Option(opt$short, opt$long, opt$argcount, opt$value)
-      left <- substring(left, 2)
       value <- ""
       if (opt$argcount != 0){ 
         if (left == ""){
-          if (tokens.current() %in% c("", "--"))
+          if (tokens$current() %in% c("", "--"))
             tokens.error(o$short, "requires argument")
-          value <- tokens.move()
+          value <- tokens$move()
         } else {
           value <- left
         }
         left = ""
       }
       if (tokens$strict){
-        opt$value <- if (value != "") value else TRUE 
+        o$value <- if (value != "") value else TRUE 
       }
     }
-    parsed <- c(parsed, opt)
+    parsed <- c(parsed, o)
   }
   parsed
 }

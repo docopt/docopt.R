@@ -51,10 +51,6 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
     #         return new Dict([a.name(), a.value] for a in parameters)
       return(dict)
     }
-#   }, error=function(e){
-#         cat(e$message)
-#         NULL
-#   })
   stop(usage)
 }
          
