@@ -40,17 +40,27 @@ print(coef(my_model))
 - **optparse** quite nice, Python inspired
 - `docopt`
 
-## 
+## What is Docopt
+- Command Line Interface spec
+- You specify the help and the parser takes care of everthing.
+- The documntation is the specification.
+- Originated as Python lib (http://docopt.org)
+  [test](http://docopt.org)
+  
 ## Options
 
 - Parse positional arguments
 - Default values
 - Descriptions
+- Optional parameter
+- Commands
+- Ellipses
 - Short/Long option parsing
 - Self describing
 
 ## Getopt
 
+- Basic implementation
 
 ## Implementation
 

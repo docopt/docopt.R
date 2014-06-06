@@ -20,36 +20,41 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
   pot_options <- parse_doc_options(doc)
   formal_pattern <- parse_pattern(formal_usage(usage), pot_options)
   
-  args <- parse_args(args, pot_options)
-  extras(help, version, args, doc)
-  #     [matched, left, argums] = formal_pattern.fix().match argv
-  #fp <- formal_pattern$fix()
-  #print(fp)
-  m <- formal_pattern$fix()$match(args)
-  #m <- formal_pattern$match(args)
-  #     if matched and left.length is 0  # better message if left?
-  
-  if (m$matched && length(m$left) == 0){    
-    cl <- sapply(args, class)
-    options <- args[cl == "Option"] 
-  #         pot_arguments = (a for a in formal_pattern.flat() \
-  #             when a.constructor in [Argument, Command])
-    pot_arguments <- formal_pattern$flat()
-    pot_arguments <- pot_arguments[sapply(pot_arguments, class) %in% 
-                                     c("Argument", "Command")]
+#   tryCatch({
+    args <- parse_args(args, pot_options)
+    extras(help, version, args, doc)
+#     [matched, left, argums] = formal_pattern.fix().match argv
+    #fp <- formal_pattern$fix()
+    #print(fp)
+    m <- formal_pattern$fix()$match(args)
+    #m <- formal_pattern$match(args)
+    #     if matched and left.length is 0  # better message if left?
     
-    arguments <- m$collected
-    arguments <- arguments[sapply(arguments, class) %in% c("Argument", "Command")]
-    
-  #         parameters = [].concat pot_options, options, pot_arguments, argums
-    dict <- list()
-    for(kv in c(pot_options$options, options, pot_arguments, arguments)){
-      value <- kv$value
-      dict[kv$name()] <- list(value)
+    if (m$matched && length(m$left) == 0){    
+      cl <- sapply(args, class)
+      options <- args[cl == "Option"] 
+    #         pot_arguments = (a for a in formal_pattern.flat() \
+    #             when a.constructor in [Argument, Command])
+      pot_arguments <- formal_pattern$flat()
+      pot_arguments <- pot_arguments[sapply(pot_arguments, class) %in% 
+                                       c("Argument", "Command")]
+      
+      arguments <- m$collected
+      arguments <- arguments[sapply(arguments, class) %in% c("Argument", "Command")]
+      
+    #         parameters = [].concat pot_options, options, pot_arguments, argums
+      dict <- list()
+      for(kv in c(pot_options$options, options, pot_arguments, arguments)){
+        value <- kv$value
+        dict[kv$name()] <- list(value)
+      }
+    #         return new Dict([a.name(), a.value] for a in parameters)
+      return(dict)
     }
-  #         return new Dict([a.name(), a.value] for a in parameters)
-    return(dict)
-  }
+#   }, error=function(e){
+#         cat(e$message)
+#         NULL
+#   })
   stop(usage)
 }
          
@@ -57,7 +62,6 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
 help <- function(doc){
   cat(doc)
 }
-                   
                    
 #print version
 version <- function(version=NULL){
@@ -82,7 +86,7 @@ extras <- function(help, version=NULL, options, doc){
   }
   if (!is.null(version) && any(names(opts) %in% "--version")){
     cat(version)
-    if (interactive) stop() else quit(save="no")
+    if (interactive()) stop() else quit(save="no")
   }
 }
 

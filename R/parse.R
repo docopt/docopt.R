@@ -1,71 +1,46 @@
 parse_shorts <- function(tokens, optionlist){
-  raw <- substring(tokens$shift(), 2)
+  left <- substring(tokens$shift(), 2)
   parsed <- list()
-  while(nchar(raw) > 0){
-    r <- paste0("-", substr(raw, 1, 1))
+  while(nchar(left) > 0){
+    r <- paste0("-", substr(left, 1, 1))
     opt <- Filter( function(o){
                  !is.null(o$short) && substring(o$short, 1, 3) == r
                }
                , optionlist$options)
-  if (length(opt) > 1){
-#         if opt.length > 1
-#             tokens.error "-#{raw[0]} is specified ambiguously #{opt.length} times"
-    tokens$error(r, " is specified ambiguously ", length(opt), "times")
-  }
-  
-  if (length(opt) < 1){
-#         if opt.length < 1
-#             if tokens.error is DocoptExit
-#                 throw new tokens.error "-#{raw[0]} is not recognized"
-    if (tokens$strict){
-      tokens$error(r, " is not recognized")
-    } else {
+    if (length(opt) > 1){
+      tokens$error(r, " is specified ambiguously ", length(opt), "times")
+    }
+    
+    if (length(opt) < 1){
       o = Option(r, NULL)
       optionlist$push(o)
-      parsed <- append(parsed, o)
-      raw <- substring(raw, 2)
-      next
-    }
-  }
-
-#         o = opt[0]
-  o = tail(opt, 1)[[1]]
-  opt <- Option(o$short, o$long, o$argcount, o$value)
-  raw <- substring(raw, 2)
-  #         if opt.argcount == 0
-  if (opt$argcount == 0){
-    if (tokens$defining){
-      value <- opt$value
-    } else {
-      value <- if (is.logical(opt$value)){ TRUE} else opt$value + 1
-    }
-  } else {
-#             value = true
-#         else
-#             if raw in ['', null]
-#                 if tokens.current() is null
-#                     throw new tokens.error "-#{opt.short[0]} requires argument"
-#                 raw = tokens.shift()
-#             [value, raw] = [raw, '']
-    if (raw == ""){
-      if (tokens$current()==""){
-        tokens$error("-", substr(opt$short,2,1)," requires argument")
+      if (tokens$strict){
+        o = Option(r, value=TRUE)
       }
-      raw <- tokens$shift()
+      left <- substring(left, 2)
+    } else {
+      opt = tail(opt, 1)[[1]]
+      o <- Option(opt$short, opt$long, opt$argcount, opt$value)
+      left <- substring(left, 2)
+      value <- ""
+      if (opt$argcount != 0){ 
+        if (left == ""){
+          if (tokens.current() %in% c("", "--"))
+            tokens.error(o$short, "requires argument")
+          value <- tokens.move()
+        } else {
+          value <- left
+        }
+        left = ""
+      }
+      if (tokens$strict){
+        opt$value <- if (value != "") value else TRUE 
+      }
     }
-    value <- raw
-    raw <- ''
-  }
-#         opt.value = value
-  o$value <- value
-  opt$value <- value
-#         parsed.push opt
-  parsed <- c(parsed, opt)
+    parsed <- c(parsed, opt)
   }
   parsed
-#     return parsed
 }
-
 starts_with <- function(x, start){
   identical(str_sub(x, 1, nchar(start)), start)
 }

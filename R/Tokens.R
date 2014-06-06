@@ -27,6 +27,11 @@ Tokens <- setRefClass( "Tokens"
        tokens <<- tail(tokens, -1)
        if (length(h)) h else ""
      },
+     move = function(){
+       h <- head(tokens, 1)
+       tokens <<- tail(tokens, -1)
+       if (length(h)) h else ""
+     },
      #     toString: -> ([].slice.apply @).toString()
      toString = function(){
        tokens
