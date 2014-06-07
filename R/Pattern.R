@@ -53,9 +53,7 @@ Pattern <- setRefClass( "Pattern"
 #     fix_list_arguments: ->
 #         """Find arguments that should accumulate values and fix them."""
         fix_repeating_arguments = function(){
-          #         either = (c.children for c in @either().children)
           eith <- lapply(either()$children, function(c) c$children)
-            #         for child in either
           for (child in eith){
             nms <- as.character(sapply(child, as.character))
             #browser()

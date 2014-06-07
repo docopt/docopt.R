@@ -7,7 +7,13 @@ Tokens <- setRefClass( "Tokens"
    , methods=list(
      initialize = function(tokens=character(), error=stop){
        .tokens <- gsub("^\\s+|\\s+$", "", tokens)
-       tokens <<- strsplit(.tokens, "\\s+")[[1]]
+       args <- str_extract_all(.tokens, "<.*?>")[[1]]
+       args_s <- gsub("\\s", "____", args)
+       for (i in seq_along(args)){
+          .tokens <- gsub(args[i], args_s[i], .tokens, fixed = T)
+       }
+       .tokens <- strsplit(.tokens, "\\s+")[[1]]
+       tokens <<- gsub("____", " ", .tokens, fixed=T)
        if (missing(error)){
          strict <<- TRUE
        } else {

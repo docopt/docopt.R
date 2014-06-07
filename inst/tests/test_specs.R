@@ -83,7 +83,6 @@ Options: --all  All.'
     test_that('parsing "--xxx" works',{
 		#$ prog --xxx
 		#"user-error"
-
       expect_error(docopt(doc, '--xxx'))
     })
 
@@ -1135,7 +1134,6 @@ context('doc36')
 doc <- 
 'usage: prog --hello'
 
-  
     test_that('parsing "--hello" works',{
 		#$ prog --hello
 		#{"--hello": true}

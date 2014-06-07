@@ -1,17 +1,18 @@
 parse_shorts <- function(tokens, optionlist){
-  left <- substring(tokens$shift(), 2)
+  left <- substring(tokens$move(), 2)
   parsed <- list()
   while(nchar(left) > 0){
     r <- paste0("-", substr(left, 1, 1))
     left <- substring(left, 2)
-    opt <- Filter( function(o){
+    simular <- Filter( function(o){
                  !is.null(o$short) && substring(o$short, 1, 3) == r
                }
                , optionlist$options)
-    if (length(opt) > 1){
+    if (length(simular) > 1){
+      tokens$error(r, "is specified ambiguously ", length(simular), " times")
     }
     
-    if (length(opt) < 1){
+    if (length(simular) < 1){
       o = Option(r, NULL)
       if (tokens$strict){
         o = Option(r, value=TRUE) # needed for version and help
@@ -19,10 +20,10 @@ parse_shorts <- function(tokens, optionlist){
         optionlist$push(o)
       }
     } else {
-      opt = tail(opt, 1)[[1]]
-      o <- Option(opt$short, opt$long, opt$argcount, opt$value)
+      simular = tail(simular, 1)[[1]]
+      o <- Option(simular$short, simular$long, simular$argcount, simular$value)
       value <- ""
-      if (opt$argcount != 0){ 
+      if (simular$argcount != 0){ 
         if (left == ""){
           if (tokens$current() %in% c("", "--"))
             tokens.error(o$short, "requires argument")
@@ -48,8 +49,6 @@ starts_with <- function(x, start){
 # 
 # parse_long = (tokens, options) ->
 parse_long <- function(tokens, optionlist){
-  #     [_, raw, value] = tokens.current().match(/(.*?)=(.*)/) ? [null,
-  #                                                 tokens.current(), '']
   m <- str_match(tokens$current(), "(.*?)=(.*)")
   if (!any(is.na(m))){
     raw <- m[,2]
@@ -58,63 +57,44 @@ parse_long <- function(tokens, optionlist){
     raw <- tokens$current()
     value <- NULL
   }
-  #     tokens.shift()
-  tokens$shift()
-  #     value = if value == '' then null else value
-  #     opt = (o for o in options when o.long and o.long[0...raw.length] == raw)
+  tokens$move()
   check <- if (tokens$strict) starts_with else identical
-  opt <- Filter(function(o){
+  simular <- Filter(function(o){
     (nchar(o$long) && check(o$long, raw))
   }, optionlist$options)
-  #     if opt.length > 1
-  if (length(opt) > 1){
-    opt <- Filter(function(o){
+  if (length(simular) > 1){
+    simular <- Filter(function(o){
       identical(o$long, raw)
-    }, opt)
-    if (length(opt) != 1){
+    }, simular)
+    if (length(simular) != 1){
       tokens$error(raw, " is specified ambigously")
     }
   }
-  #     if opt.length < 1
-  if (length(opt) < 1){
-  #         if tokens.error is DocoptExit
+  #     if simular.length < 1
+  if (length(simular) < 1){
+    argcount <- if (is.null(value)) 0 else 1
+    o <- Option(NULL, raw, argcount)
     if (tokens$strict){
-  #             throw new tokens.error "#{raw} is not recognized"
-      tokens$error(raw, " is not recognized")
+      o <- Option(NULL, raw, argcount, if (argcount > 0) value else TRUE)
     } else {
-  #         else
-  #             o = new Option(null, raw, +!!value)
-      o <- Option(NULL, raw, if (is.null(value)) 0 else 1)
-  #             options.push(o)
       optionlist$push(o)
-  #             return [o]
-      return(list(o))
-  }}
-  #     o = opt[0]
-  o <- opt[[1]]
-  #     opt = new Option o.short, o.long, o.argcount, o.value
-  opt <- Option(o$short, o$long, o$argcount, o$value)
-  #     if opt.argcount == 1
-  if (opt$argcount == 1){
-  #         if value is null
+    }
+    return(list(o))
+  }
+  simular <- simular[[1]]
+  o <- Option(simular$short, simular$long, simular$argcount, simular$value)
+  if (o$argcount == 1){
     if (is.null(value)){
-  #             if tokens.current() is null
       if (tokens$current() == ""){
-  #                 tokens.error "#{opt.name()} requires argument"
-        tokens$error(opt$name(), " requires argument")
+        tokens$error(o$name(), " requires argument")
       }
-  #             value = tokens.shift()
-      value <- tokens$shift()
+      value <- tokens$move()
     }
   } else if (!is.null(value)){
-  #     else if value is not null
-  #         tokens.error "#{opt.name()} must not have an argument"
-    tokens$error(opt$name(), " must not have an argument")
+    tokens$error(o$name(), " must not have an argument")
   }
-  #     opt.value = value or true
-  opt$value <- if (is.null(value) || identical(value, FALSE)) TRUE else value
-  #     [opt]
-  list(opt)
+  o$value <- if (is.null(value) || identical(value, FALSE)) TRUE else value
+  list(o)
 }
 
 parse_pattern <- function(src, optionlist){
@@ -138,7 +118,7 @@ parse_expr <- function(tokens, optionlist){
   if (length(seq) == 0) optional <- TRUE
   
   while(tokens$current() == "|"){
-    tokens$shift()
+    tokens$move()
     seq <- parse_seq(tokens, optionlist)
     if (length(seq) == 0) optional <- TRUE    
     result <- c(result, if (length(seq)>1)list(Required(seq)) else seq)
@@ -162,7 +142,7 @@ parse_seq <- function(tokens, optionlist){
     atom <- parse_atom(tokens, optionlist)
     if (isTRUE(tokens$current() == '...')){
       atom <- OneOrMore(atom)
-      tokens$shift()
+      tokens$move()
     }
     result <- c(result, atom)
   }
@@ -176,37 +156,37 @@ parse_atom <- function(tokens, optionlist){
   token <- tokens$current()
   result <- list()
   if (token == '('){
-    tokens$shift()
+    tokens$move()
     result <- list(Required(parse_expr(tokens, optionlist)))
-    if (tokens$shift() != ")"){
+    if (tokens$move() != ")"){
       tokens$error("Unmatched '('")
     }
     result
   } else if (token == '['){
-    tokens$shift()
+    tokens$move()
     if (tokens$current() == 'options'){
       result = list(Optional(list(AnyOptions())))
-      tokens$shift()
+      tokens$move()
     } else {
       result <- list(Optional(parse_expr(tokens, optionlist)))
     }
-    if (tokens$shift() != "]"){
+    if (tokens$move() != "]"){
       tokens$error("Unmatched '['")
     }
     result
   } else if (substr(token, 1, 2) == '--' ){
     if (token == '--'){
-      list(Command(tokens$shift()))
+      list(Command(tokens$move()))
     } else {
       parse_long(tokens, optionlist)
     }
   } else if (substr(token,1,1) == '-' && token != '-'){
     parse_shorts(tokens, optionlist)
   } else if (grepl("^<.+>$", token) || grepl("^[^a-z]*[A-Z]+[^a-z]*$", token)){
-    list(Argument(tokens$shift()))
+    list(Argument(tokens$move()))
   } else{
-    #         [new Command tokens.shift()]
-    list(Command(tokens$shift()))
+    #         [new Command tokens.move()]
+    list(Command(tokens$move()))
   }
 }
 
@@ -221,11 +201,11 @@ parse_args <- function(src, optionlist){
   #     while (token = tokens.current()) isnt null
   while ((token <- tokens$current()) != "")
     #         if token is '--'
-    #             #tokens.shift()
-    #             return opts.concat(new Argument null, tokens.shift() while tokens.length)
+    #             #tokens.move()
+    #             return opts.concat(new Argument null, tokens.move() while tokens.length)
     if (token == '--'){
       # ????
-      return(c(opts, Argument(NULL, tokens$shift())))
+      return(c(opts, Argument(NULL, tokens$move())))
     } else if (grepl("^--", token)){
       #         else if token[0...2] is '--'
       #             long = parse_long tokens, options
@@ -239,7 +219,7 @@ parse_args <- function(src, optionlist){
       shorts = parse_shorts(tokens, optionlist)
       opts <- c(opts, shorts)
     } else {
-      opts <- c(opts, Argument(NULL, tokens$shift()))
+      opts <- c(opts, Argument(NULL, tokens$move()))
     }
   return(opts)
 }
