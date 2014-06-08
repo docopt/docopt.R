@@ -1,7 +1,20 @@
-#' docopt commandline parser
+#' Parse \code{args} based on command-line interface described in \code{doc}.
 #' 
-#' docopt helps you to specify a command line interface and generates a parser
-#' for it.
+#' \code{docopt} creates your command-line interface based on its
+#' description that you pass as \code{doc}. 
+#' Such description can contain
+#' --options, <positional-argument>, commands, which could be
+#' [optional], (required), (mutually | exclusive) or repeated...
+#' 
+#' @examples
+#' "Usage: my_program.R [-hso FILE] [--quiet | --verbose] [INPUT ...]
+#'
+#' -h --help    show this
+#' -s --sorted  sorted output
+#' -o FILE      specify output file [default: ./test.txt]
+#' --quiet      print less text
+#' --verbose    print more text" -> doc
+#' docopt(doc, "-s --quiet")
 #' @param doc \code{character} vector with command line specification
 #' @param args \code{character} vector of commandline arguments. 
 #' If \code{args} is missing 
@@ -10,6 +23,8 @@
 #' @param help \code{logical} should "-h" or "--help" generate a usage string?
 #' @param version \code{character}. If supplied the option "-v" generates 
 #' the given version number and stops.
+#' @return named list with all parsed options, arguments and commands.
+#' @references http://docopt.org,
 #' @export
 #' @import stringr methods
 docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
