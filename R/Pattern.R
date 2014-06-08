@@ -34,8 +34,7 @@ Pattern <- setRefClass( "Pattern"
         },
         #Make pattern-tree tips point to same object if they are equal.
         fix_identities = function(uniq=NULL){
-          #         if not @hasOwnProperty 'children' then return @
-          # browser()
+          #browser()
           if (length(children) == 0) {
             return(.self)
           }
@@ -63,7 +62,7 @@ Pattern <- setRefClass( "Pattern"
             #browser()
             counts <- table(nms)
             for (e in child){
-              if (counts[as.character(e)] > 1){
+              if (isTRUE(unname(counts[as.character(e)] > 1))){
                 if (class(e)=="Argument" ||(class(e)=="Option" && e$argcount>0)){
                   if (is.null(e$value)){
                     e$value <- list()
@@ -437,6 +436,10 @@ Either <- setRefClass("Either", contains="Pattern"
        }
     ))
 
+#' as.character.Pattern
+#' 
+#' as.character.Pattern
+#' @keywords internal
 setMethod("as.character", "Pattern", function(x, ...){
  x$toString() 
 })

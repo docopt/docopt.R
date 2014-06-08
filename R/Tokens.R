@@ -53,22 +53,34 @@ Tokens <- setRefClass( "Tokens"
   )
 )
 
+#' index tokens
+#' 
+#' index tokens
+#' @keywords internal
 setMethod("[",
           signature(x = "Tokens"),
-          function (x, i, j, ..., drop = TRUE) 
+          function (x, i, drop = TRUE) 
           {
             x$tokens[i]
           }
 )
 
+#' index tokens
+#' 
+#' index tokens
+#' @keywords internal
 setMethod("[<-",
           signature(x = "Tokens"),
-          function (x, i, j, ..., value) 
+          function (x, i, value) 
           {
             x$tokens[i] <- value
           }
 )
 
+#' to character
+#' 
+#' to character
+#' @keywords internal
 setMethod("as.character", signature(x="Tokens"), function(x, ...){x$tokens})
 
 

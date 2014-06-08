@@ -26,7 +26,7 @@ parse_shorts <- function(tokens, optionlist){
       if (simular$argcount != 0){ 
         if (left == ""){
           if (tokens$current() %in% c("", "--"))
-            tokens.error(o$short, "requires argument")
+            tokens$error(o$short, "requires argument")
           value <- tokens$move()
         } else {
           value <- left

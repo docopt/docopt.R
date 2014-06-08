@@ -6,9 +6,7 @@ Options:
   -r --relax  Relax
   -m --more   More or not?
 " -> doc
-suppressPackageStartupMessages(library(docopt))
+library(docopt, quietly = TRUE)
 
 opts <- docopt(doc)
 print(str(opts))
-
-print(commandArgs())

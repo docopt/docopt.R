@@ -11,6 +11,7 @@
 #' @param version \code{character}. If supplied the option "-v" generates 
 #' the given version number and stops.
 #' @export
+#' @import stringr methods
 docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
   if (missing(args)){
     args <- commandArgs(trailingOnly=TRUE)
@@ -38,6 +39,8 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
     arguments <- m$collected
     arguments <- arguments[sapply(arguments, class) %in% c("Argument", "Command")]
     dict <- list()
+    
+    #for(kv in c(pot_options$options, options, pattern$flat(), m$collected)){
     for(kv in c(pot_options$options, options, pot_arguments, arguments)){
       value <- kv$value
       dict[kv$name()] <- list(value)
