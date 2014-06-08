@@ -18,15 +18,20 @@ docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
   args <- str_c(args, collapse=" ")
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)
-  formal_pattern <- parse_pattern(formal_usage(usage), pot_options)
+  pattern <- parse_pattern(formal_usage(usage), pot_options)
+  
+  for (anyopt in pattern$flat("AnyOptions")){
+    #TODO remove options that are present in pattern
+    if (class(anyopt) == "AnyOptions") anyopt$children <- pot_options$options
+  }
   
   args <- parse_args(args, pot_options)
   extras(help, version, args, doc)
-  m <- formal_pattern$fix()$match(args)
+  m <- pattern$fix()$match(args)
   if (m$matched && length(m$left) == 0){    
     cl <- sapply(args, class)
     options <- args[cl == "Option"] 
-    pot_arguments <- formal_pattern$flat()
+    pot_arguments <- pattern$flat()
     pot_arguments <- pot_arguments[sapply(pot_arguments, class) %in% 
                                      c("Argument", "Command")]
     

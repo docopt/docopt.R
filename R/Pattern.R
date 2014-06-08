@@ -17,11 +17,15 @@ Pattern <- setRefClass( "Pattern"
                   must overload the match method")
         },
                           
-        flat = function(){
+        flat = function(...){
+            types = list(...)
+            if (class(.self) %in% types){
+              return(list(.self))
+            }
             if (length(children) == 0){
               return(list(.self))
             }
-            unlist(lapply(children, function(child){child$flat()}))
+            unlist(lapply(children, function(child){child$flat(...)}))
           },
   
         fix = function(){
@@ -174,14 +178,18 @@ LeafPattern <- setRefClass( "LeafPattern"
   )
 BranchPattern <- setRefClass("BranchPattern", contains="Pattern"
     , methods=list(
-      initialize = function(children){
-        children <<- children
+      initialize = function(.children=list()){
+        children <<- .children
       },
-      flat=function(){
-        if (length(children) == 0){
+      flat=function(...){
+        types <- list(...)
+        if (class(.self) %in% types){
           return(list(.self))
+        }        
+        if (length(children) == 0){
+          return(list())
         }
-        unlist(lapply(children, function(child){child$flat()}))
+        unlist(lapply(children, function(child){child$flat(...)}))
       }
     )
 )
@@ -329,18 +337,6 @@ Option <- setRefClass("Option", contains="Pattern"
          matched(!identical(left_, left), left_, collected)
        }
 ))
-# class AnyOptions extends Pattern
-AnyOptions <- setRefClass("AnyOptions", contains="Pattern"
-     , methods = list(
-#     match: (left, collected=[]) ->
-#         left_ = (l for l in left when l.constructor isnt Option)
-#         [left.join(', ') isnt left_.join(', '), left_, collected]
-       match = function(left, collected=list()){
-         left_ = Filter(function(l){class(l) != "Option"}, left)
-         matched(!identical(left, left_), left_, collected)
-       }                         
-))
-
 
 # class Required extends Pattern
 Required <- setRefClass("Required", contains="Pattern"
@@ -369,6 +365,10 @@ Optional <- setRefClass("Optional", contains="Pattern"
          m
        }
 ))
+
+# class AnyOptions extends Optional
+AnyOptions <- setRefClass("AnyOptions", contains="Optional")
+
 # 
 # class OneOrMore extends Pattern
 OneOrMore <- setRefClass("OneOrMore", contains="Pattern"
