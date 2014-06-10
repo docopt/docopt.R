@@ -34,7 +34,7 @@ The tests can be run using devtools `test()` and can be found in "inst/tests"
 Usage
 -----
 
-docopt uses the description of the commandline interface to parse command line
+docopt uses the description of the command-line interface to parse command line
 arguments.
 
 
@@ -48,7 +48,7 @@ options:
 
 # load the docopt library
 library(docopt)
-# retrieve the command line arguments
+# retrieve the command-line arguments
 opts <- docopt(doc)
 # what are the options?
 str(opts)
