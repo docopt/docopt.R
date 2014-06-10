@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/edwindj/docopt.R.svg?branch=master)](https://travis-ci.org/edwindj/docopt.R)
+
 docopt
 ========================================================
 
@@ -13,8 +15,7 @@ R package `docopt` is an implementation of [docopt](http://docopt.org) in the R 
 Install
 -------
 
-`docopt` is currently in development and not available on CRAN.
-To test it out use
+The latest version of `docopt` can be installed using:
 
 ```S
 library(devtools)  # make sure to have devtools 1.4!
