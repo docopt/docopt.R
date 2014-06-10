@@ -1,7 +1,7 @@
 Package: docopt
 Type: Package
 Title: docopt, commandline interface specification language
-Version: 0.1
+Version: 0.1.1
 Date: 2014-06-07
 Author: Edwin de Jonge (edwindjonge@gmail.com)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
