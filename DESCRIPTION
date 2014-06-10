@@ -1,11 +1,11 @@
 Package: docopt
 Type: Package
-Title: docopt, commandline interface specification language
+Title: docopt, command-line interface specification language
 Version: 0.1.1
 Date: 2014-06-07
 Author: Edwin de Jonge (edwindjonge@gmail.com)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
-Description: docopt lets you define a command line interface by just giving it
+Description: docopt lets you define a command-line interface by just giving it
     a description in the specific format.
 License: MIT +file LICENSE
 Imports:

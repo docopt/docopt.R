@@ -26,8 +26,8 @@ install_github("edwindj/docopt.R")
 It is tested against the tests defined for the reference implementation.
 It passes most tests. It currently fails tests that 
 
-- count arguments: `prog -v -v` should return `list(v=2)`
-- multiple prog statement: i.e. `prog -a \n prog -b`
+- count arguments: `my_prog.R -v -v` should return `list(v=2)`
+- multiple prog statement: i.e. `my_prog.R -a \n prog -b`
 
 The tests can be run using devtools `test()` and can be found in "inst/tests"
 
@@ -39,7 +39,7 @@ arguments.
 
 
 ```S
-'usage: prog [-a -r -m <msg>]
+'usage: my_prog.R [-a -r -m <msg>]
 
 options:
  -a        Add
