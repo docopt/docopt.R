@@ -86,7 +86,7 @@ extras <- function(help, version=NULL, options, doc){
   }
   if (help && any(names(opts) %in% c("-h","--help"))){
     help <- str_replace_all(doc, "^\\s*|\\s*$", "")
-    cat(help)
+    cat(help, '\n')
     if (interactive()) stop() else {
       quit(save="no")
     }
