@@ -1,2 +1,2 @@
 version 0.2.1. 
-- added support for quoted strings as arguments (thanks to @aniketschneider)
+- added support for quoted strings as arguments (thanks to @aniketschneider/issue #4)
