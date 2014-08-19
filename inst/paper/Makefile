@@ -1,5 +1,5 @@
-pdf: docopt_pres.pdf
-tex: docopt_pres.tex
+pdf: user2014.pdf
+tex: user2014.tex
 
 %.pdf: %.md
 #	pandoc -t beamer -V theme=Warsaw --latex-engine=xelatex -o $@ $<
