@@ -27,10 +27,12 @@
 #' @references http://docopt.org,
 #' @export
 #' @import stringr methods
-docopt <- function(doc, args, name=NULL, help=TRUE, version=NULL){
-  if (missing(args)){
-    args <- commandArgs(trailingOnly=TRUE)
+docopt <- function(doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=NULL){
+  # littler compatibility - map argv vector to args
+  if (exists("argv", where = .GlobalEnv, inherits = FALSE)) {
+    args = get("argv", envir = .GlobalEnv);
   }
+  
   args <- str_c(args, collapse=" ")
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)
@@ -86,7 +88,7 @@ extras <- function(help, version=NULL, options, doc){
   }
   if (help && any(names(opts) %in% c("-h","--help"))){
     help <- str_replace_all(doc, "^\\s*|\\s*$", "")
-    cat(help)
+    cat(help,"\n")
     if (interactive()) stop() else {
       quit(save="no")
     }

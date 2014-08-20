@@ -1,2 +1,4 @@
-version 0.2.1. 
+version 0.3
 - added support for quoted strings as arguments (thanks to @aniketschneider/issue #4)
+- added littler support (thanks to @eddelbuettel)
+- added extra "\n" to --help output (thanks to @eddelbuettel)
