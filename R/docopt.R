@@ -69,7 +69,7 @@ docopt <- function(doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=NU
          
 # print help
 help <- function(doc){
-  cat(doc)
+  cat(doc, "\n")
 }
                    
 #print version
