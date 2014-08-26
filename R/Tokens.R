@@ -8,20 +8,24 @@ Tokens <- setRefClass( "Tokens"
                 , defining=function(){!strict}
                 )
    , methods=list(
-     initialize = function(tokens=character(), error=stop){
-       .tokens <- gsub("^\\s+|\\s+$", "", tokens)
-       args <- str_extract_all(.tokens, "<.*?>")[[1]]
-       args <- c(args, str_extract_all(.tokens, QUOTED)[[1]])
-       args <- c(args, str_extract_all(.tokens, DQUOTED)[[1]])       
-       args_s <- gsub("\\s", "____", args)
-       for (i in seq_along(args)){
-          .tokens <- gsub(args[i], args_s[i], .tokens, fixed = T)
+     initialize = function(tokens=character(), error=stop, as_is=FALSE){
+       if (as_is){
+         .tokens <- tokens
+       } else {
+         .tokens <- gsub("^\\s+|\\s+$", "", tokens)
+         args <- str_extract_all(.tokens, "<.*?>")[[1]]
+         args <- c(args, str_extract_all(.tokens, QUOTED)[[1]])
+         args <- c(args, str_extract_all(.tokens, DQUOTED)[[1]])       
+         args_s <- gsub("\\s", "____", args)
+         for (i in seq_along(args)){
+            .tokens <- gsub(args[i], args_s[i], .tokens, fixed = T)
+         }
+         .tokens <- strsplit(.tokens, "\\s+")[[1]]
+         .tokens <- gsub("____", " ", .tokens, fixed=T)
+         # remove quotes from tokens...
+         .tokens <- gsub(QUOTED, "\\1", .tokens)
+         .tokens <- gsub(DQUOTED, "\\1", .tokens)
        }
-       .tokens <- strsplit(.tokens, "\\s+")[[1]]
-       .tokens <- gsub("____", " ", .tokens, fixed=T)
-       # remove quotes from tokens...
-       .tokens <- gsub(QUOTED, "\\1", .tokens)
-       .tokens <- gsub(DQUOTED, "\\1", .tokens)
        tokens <<- .tokens
        if (missing(error)){
          strict <<- TRUE

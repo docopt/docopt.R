@@ -4,7 +4,8 @@
 \title{Parse \code{args} based on command-line interface described in \code{doc}.}
 \usage{
 docopt(doc, args = commandArgs(TRUE), name = NULL, help = TRUE,
-  version = NULL)
+  version = NULL, strict = FALSE, strip_names = !strict,
+  allow_quoted_args = !strict)
 }
 \arguments{
 \item{doc}{\code{character} vector with command line specification}
@@ -19,6 +20,14 @@ If \code{args} is missing
 
 \item{version}{\code{character}. If supplied the option "-v" generates
 the given version number and stops.}
+
+\item{strict}{\code{logical} Should reference implementation of docopt be used: meaning
+\code{strip_names=FALSE} and \code{allow_quoted_args=FALSE}.}
+
+\item{strip_names}{\code{logical} should dashes and angles be removed from
+the names of the resulting list?}
+
+\item{allow_quoted_args}{\code{logical} should `docopt` recognize quoted arguments?}
 }
 \value{
 named list with all parsed options, arguments and commands.
@@ -41,6 +50,6 @@ Such description can contain
 docopt(doc, "-s --quiet")
 }
 \references{
-http://docopt.org,
+\url{http://docopt.org},
 }
 

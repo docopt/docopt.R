@@ -1,4 +1,5 @@
 version 0.3
+- Breaking change! By default names of returned list are stripped (no dashes and angles)
 - added support for quoted strings as arguments (thanks to @aniketschneider/issue #4)
-- added littler support (thanks to @eddelbuettel)
 - added extra "\n" to --help output (thanks to @eddelbuettel)
+- added `strip_names` to docopt (suggestion of @eddelbuettel)

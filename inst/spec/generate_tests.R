@@ -54,7 +54,6 @@ cases <- lapply(cases, function(x){
 
 
 template <- "
-library(testthat)
 {{#cases}}
 
 
@@ -75,12 +74,12 @@ doc <-
     test_that('parsing \"{{{args}}}\" works',{
 {{{test}}}
 {{^error}}
-      res <- docopt(doc, '{{{args}}}')
+      res <- docopt(doc, '{{{args}}}', strict=TRUE)
       expect_equivalent(length(res), {{{len}}})
       expect_equivalent(res[{{{keys}}}], {{{output}}})
 {{/error}}
 {{#error}}
-      expect_error(docopt(doc, '{{{args}}}'))
+      expect_error(docopt(doc, '{{{args}}}', strict=TRUE))
 {{/error}}
     })
   {{/tests}}
