@@ -5,7 +5,7 @@
 \usage{
 docopt(doc, args = commandArgs(TRUE), name = NULL, help = TRUE,
   version = NULL, strict = FALSE, strip_names = !strict,
-  allow_quoted_args = !strict)
+  quoted_args = !strict)
 }
 \arguments{
 \item{doc}{\code{character} vector with command line specification}
@@ -21,13 +21,14 @@ If \code{args} is missing
 \item{version}{\code{character}. If supplied the option "-v" generates
 the given version number and stops.}
 
-\item{strict}{\code{logical} Should reference implementation of docopt be used: meaning
-\code{strip_names=FALSE} and \code{allow_quoted_args=FALSE}.}
+\item{strict}{\code{logical} if \code{TRUE} docopt will conform to docopt.py
+in and output (\code{strip_names=FALSE} and \code{quoted_args=FALSE})}
 
-\item{strip_names}{\code{logical} should dashes and angles be removed from
-the names of the resulting list?}
+\item{strip_names}{if \code{TRUE} it will remove dashes and angles from the
+resulting names. Note that this is different from standard docopt!}
 
-\item{allow_quoted_args}{\code{logical} should `docopt` recognize quoted arguments?}
+\item{quoted_names}{if \code{TRUE} it will accept quoted arguments.
+Note that this is different from standard docopt!}
 }
 \value{
 named list with all parsed options, arguments and commands.

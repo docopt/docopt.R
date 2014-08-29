@@ -23,17 +23,19 @@
 #' @param help \code{logical} should "-h" or "--help" generate a usage string?
 #' @param version \code{character}. If supplied the option "-v" generates
 #' the given version number and stops.
-#' @param strict \code{logical} Should reference implementation of docopt be used: meaning 
-#' \code{strip_names=FALSE} and \code{allow_quoted_args=FALSE}.
-#' @param strip_names \code{logical} should dashes and angles be removed from 
-#' the names of the resulting list?
-#' @param allow_quoted_args \code{logical} should `docopt` recognize quoted arguments?
+#' @param strict \code{logical} if \code{TRUE} docopt will conform to docopt.py 
+#' in and output (\code{strip_names=FALSE} and \code{quoted_args=FALSE})
+#' @param strip_names if \code{TRUE} it will remove dashes and angles from the 
+#' resulting names. Note that this is different from standard docopt! 
+#' @param quoted_names if \code{TRUE} it will accept quoted arguments. 
+#' Note that this is different from standard docopt! 
 #' @return named list with all parsed options, arguments and commands.
 #' @references \url{http://docopt.org},
 #' @export
 #' @import stringr methods
-docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=NULL, 
-                    strict=FALSE, strip_names=!strict, allow_quoted_args=!strict){
+docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=NULL
+                  , strict=FALSE, strip_names=!strict, quoted_args=!strict
+                  ){
   # littler compatibility - map argv vector to args
   if (exists("argv", where = .GlobalEnv, inherits = FALSE)) {
     args = get("argv", envir = .GlobalEnv);
