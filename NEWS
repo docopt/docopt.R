@@ -1,5 +1,6 @@
 version 0.3
-- Breaking change! By default names of returned list are stripped (no dashes and angles)
+- Breaking change! By default stripped names (no dashes and angles) are added to the return list
 - added support for quoted strings as arguments (thanks to @aniketschneider/issue #4)
 - added extra "\n" to --help output (thanks to @eddelbuettel)
 - added `strip_names` to docopt (suggestion of @eddelbuettel)
+- changed "Imports: methods"" into "Depends: methods" (thanks to @pschulam)
