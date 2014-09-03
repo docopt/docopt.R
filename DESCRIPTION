@@ -10,5 +10,6 @@ Description: docopt lets you define a command-line interface by just giving it
 License: MIT +file LICENSE
 URL: https://github.com/edwindj/docopt.R
 Imports:
-    stringr,
+    stringr
+Depends:
     methods
