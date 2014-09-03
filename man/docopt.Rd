@@ -25,10 +25,11 @@ the given version number and stops.}
 in and output (\code{strip_names=FALSE} and \code{quoted_args=FALSE})}
 
 \item{strip_names}{if \code{TRUE} it will remove dashes and angles from the
-resulting names. Note that this is different from standard docopt!}
+resulting names and add these to the resulting list.
+Note that this is different from docopt standard!}
 
-\item{quoted_names}{if \code{TRUE} it will accept quoted arguments.
-Note that this is different from standard docopt!}
+\item{quoted_args}{if \code{TRUE} it will accept quoted arguments.
+Note that this is different from docopt standard!}
 }
 \value{
 named list with all parsed options, arguments and commands.

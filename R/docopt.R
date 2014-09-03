@@ -26,9 +26,10 @@
 #' @param strict \code{logical} if \code{TRUE} docopt will conform to docopt.py 
 #' in and output (\code{strip_names=FALSE} and \code{quoted_args=FALSE})
 #' @param strip_names if \code{TRUE} it will remove dashes and angles from the 
-#' resulting names. Note that this is different from standard docopt! 
-#' @param quoted_names if \code{TRUE} it will accept quoted arguments. 
-#' Note that this is different from standard docopt! 
+#' resulting names and add these to the resulting list. 
+#' Note that this is different from docopt standard! 
+#' @param quoted_args if \code{TRUE} it will accept quoted arguments. 
+#' Note that this is different from docopt standard! 
 #' @return named list with all parsed options, arguments and commands.
 #' @references \url{http://docopt.org},
 #' @export
@@ -71,7 +72,8 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
       dict[kv$name()] <- list(value)
     }
     if (isTRUE(strip_names)){
-      names(dict) <- gsub("(^<)|(^\\-\\-?)|(>$)", "", names(dict))
+      nms <- gsub("(^<)|(^\\-\\-?)|(>$)", "", names(dict))
+      dict[nms] <- dict
     }
     return(dict)
   }
