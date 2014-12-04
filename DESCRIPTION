@@ -13,3 +13,5 @@ Imports:
     stringr
 Depends:
     methods
+Suggests:
+    testthat

@@ -200,12 +200,10 @@ parse_args <- function(src, optionlist){
   opts = list()
   #     while (token = tokens.current()) isnt null
   while ((token <- tokens$current()) != "")
-    #         if token is '--'
-    #             #tokens.move()
-    #             return opts.concat(new Argument null, tokens.move() while tokens.length)
     if (token == '--'){
-      # ????
-      return(c(opts, Argument(NULL, tokens$move())))
+        ## if token is '--' then this and the rest of the arguments
+        ## are positional arguments.
+        return(c(opts, lapply(tokens$tokens, function(x) Argument(NULL, x))))
     } else if (grepl("^--", token)){
       #         else if token[0...2] is '--'
       #             long = parse_long tokens, options
