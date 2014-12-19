@@ -1,5 +1,7 @@
 version 0.3.1
 - Fixed parsing after double -- (thanks to @ljos)
+- Fixed printing multiple usage statements (issue #7, thanks to @rgrannell1)
+
 version 0.3
 - Breaking change! By default stripped names (no dashes and angles) are added to the return list
 - added support for quoted strings as arguments (thanks to @aniketschneider/issue #4)
