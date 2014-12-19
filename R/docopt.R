@@ -77,7 +77,7 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
     }
     return(dict)
   }
-  stop(usage)
+  stop(paste(usage, collapse="\n  "))
 }
          
 # print help
