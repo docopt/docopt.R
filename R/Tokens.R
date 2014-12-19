@@ -23,8 +23,8 @@ Tokens <- setRefClass( "Tokens"
          .tokens <- strsplit(.tokens, "\\s+")[[1]]
          .tokens <- gsub("____", " ", .tokens, fixed=T)
          # remove quotes from tokens...
-         .tokens <- gsub(QUOTED, "\\1", .tokens)
-         .tokens <- gsub(DQUOTED, "\\1", .tokens)
+         #.tokens <- gsub(QUOTED, "\\1", .tokens)
+         #.tokens <- gsub(DQUOTED, "\\1", .tokens)
        }
        tokens <<- .tokens
        if (missing(error)){
@@ -49,6 +49,11 @@ Tokens <- setRefClass( "Tokens"
      move = function(){
        h <- head(tokens, 1)
        tokens <<- tail(tokens, -1)
+       
+       #remove optional quotes...
+       h <- gsub(QUOTED, "\\1", h)
+       h <- gsub(DQUOTED, "\\1", h)
+       
        if (length(h)) h else ""
      },
      #     toString: -> ([].slice.apply @).toString()
