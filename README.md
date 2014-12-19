@@ -50,8 +50,8 @@ options:
 library(docopt)
 # retrieve the command-line arguments
 opts <- docopt(doc)
-# what are the options?
-str(opts)
+# what are the options? Note that stripped versions of the parameters are added to the returned list
+str(opts)  
 ```
 
 ```
@@ -59,6 +59,9 @@ str(opts)
 ##  $ -a: logi FALSE
 ##  $ -r: logi FALSE
 ##  $ -m: chr "<msg>"
+##  $ a: logi FALSE
+##  $ r: logi FALSE
+##  $ m: chr "<msg>"
 ```
 
 ```S
@@ -73,4 +76,9 @@ str(opts)
 ##  $ -a: logi FALSE
 ##  $ -r: logi FALSE
 ##  $ -m: chr "Hello"
+##  $ a: logi FALSE
+##  $ r: logi FALSE
+##  $ m: chr "Hello"
+```
+
 ```

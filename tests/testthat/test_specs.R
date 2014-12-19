@@ -2041,4 +2041,15 @@ other options:
       expect_equivalent(res[c("--foo", "--baz", "--bar", "--egg", "--spam")], list("--foo" = FALSE, "--baz" = TRUE, "--bar" = FALSE, "--egg" = TRUE, ,    "--spam" = FALSE))
     })
 
+#####################
 
+context('doc81')
+doc <-
+"Usage: prog [-f F] [--] [G ...]
+Options: -f F"
+
+test_that('parsing "-f file -- -file other" works', {
+    res <- docopt(doc, '-f file -- -file other')
+    expect_equivalent(res$`-f`, 'file')
+    expect_equivalent(res$G, c('-file', 'other'))
+})
