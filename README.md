@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/edwindj/docopt.R.svg?branch=master)](https://travis-ci.org/edwindj/docopt.R)
+[![Build Status](https://travis-ci.org/docopt/docopt.R.svg?branch=master)](https://travis-ci.org/docopt/docopt.R)
 
 docopt
 ========================================================
@@ -19,7 +19,7 @@ The latest version of `docopt` can be installed using:
 
 ```S
 library(devtools)  # make sure to have devtools 1.4!
-install_github("edwindj/docopt.R")
+install_github("docopt/docopt.R")
 ```
 
 
