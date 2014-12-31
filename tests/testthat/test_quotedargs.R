@@ -18,3 +18,14 @@ test_that("quoted arguments work (#4)", {
   
 })
 
+test_that("multivalued options work (#8)",{
+  "
+Usage:
+    install.r [-r repo]...
+
+Options:
+   -r=repo  Repository
+" -> doc
+  opt <- docopt(doc, "-r repo1 -r repo2")
+  expect_equal(opt$r, c("repo1", "repo2"))
+})
