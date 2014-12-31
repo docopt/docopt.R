@@ -343,7 +343,7 @@ Option <- setRefClass("Option", contains="Pattern"
              return(matched(TRUE, left_, collected))
            }
          }
-         print(ls.str())
+         #print(ls.str())
          matched(TRUE, left_, c(collected,match))
        },
        single_match = function(left){
