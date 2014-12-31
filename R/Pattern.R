@@ -308,23 +308,49 @@ Option <- setRefClass("Option", contains="Pattern"
                          cardinality <<- 1
                        },
                        toString = function(){
-                         paste0("Option(",short,",",long,",",argcount,",", value,")")
+                         val <- value
+                         if (length(val) > 1){
+                           val <- paste0("[",paste0(val, collapse = ","),"]")
+                         }
+                         paste0("Option(",short,",",long,",",argcount,",", val,")")
                        },
-# 
-#     name: -> @long or @short
                        name = function(){
                          if (!is.null(long)) long else short
                        },
-#     match: (left, collected=[]) ->
        match = function(left, collected=list()){
-         #         left_ = (l for l in left when (l.constructor isnt Option \
-         #browser()
-         left_ <- Filter(function(l){
-           class(l) != "Option" || short != l$short || long != l$long
-         }, left)
-         #                  or @short isnt l.short or @long isnt l.long))
-         #         [left.join(', ') isnt left_.join(', '), left_, collected]
-         matched(!identical(left_, left), left_, collected)
+         pos <- single_match(left)
+         if (pos == 0){
+           return(matched(FALSE, left, collected))
+         }
+         match = left[[pos]]
+         left_ = left[-pos]
+         
+         same_name <- Filter( function(l) identical(name(), l$name())
+                            , collected)
+         if (class(value) %in% c("list", "integer")){
+           
+           if (is.integer(value)){
+             match$value <- 1L
+           }
+           
+           if (length(same_name)){  
+             if (is.integer(value)){
+               same_name[[1]]$value <- same_name[[1]]$value + match$value
+             } else {
+               same_name[[1]]$value <- c(same_name[[1]]$value, match$value)
+             }
+             #print(collected)
+             return(matched(TRUE, left_, collected))
+           }
+         }
+         print(ls.str())
+         matched(TRUE, left_, c(collected,match))
+       },
+       single_match = function(left){
+         base::match( name()
+                    , sapply(left, function(l) l$name())
+                    , nomatch = 0
+                    )
        }
 ))
 

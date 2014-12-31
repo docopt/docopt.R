@@ -2,7 +2,7 @@
  
 "
 Usage:
-    install.r [-r repo...]
+    install.r [-r repo]...
 
 Options:
    -r=repo   Repo [default: my_url]

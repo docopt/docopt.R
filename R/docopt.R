@@ -56,8 +56,9 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
   extras(help, version, args, doc)
   m <- pattern$fix()$match(args)
   if (m$matched && length(m$left) == 0){    
-    cl <- sapply(args, class)
-    options <- args[cl == "Option"] 
+    cl <- sapply(m$collected, class)
+    options <- m$collected[cl == "Option"]
+    
     pot_arguments <- pattern$flat()
     pot_arguments <- pot_arguments[sapply(pot_arguments, class) %in% 
                                      c("Argument", "Command")]
