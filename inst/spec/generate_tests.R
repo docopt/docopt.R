@@ -36,7 +36,7 @@ cases <- lapply(cases, function(x){
   case$tests <- apply(tests, 1, function(r){
     if (str_sub(r[3],1,1) == "{"){
       json <- fromJSON(r[3])
-      output <- deparse(json, control="keepNA")
+      output <- deparse(json, control="keepNA", width.cutoff = 500)
       error <- FALSE
     } else {
       json <- list()

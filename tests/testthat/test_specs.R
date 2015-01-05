@@ -1125,7 +1125,7 @@ Options:
 		#{"--drifting": false, "--help": false, "--moored": false, "--speed": "20", "--version": false, "<name>": ["Guardian"], "<x>": "150", "<y>": "300", "mine": false, "move": true, "new": false, "remove": false, "set": false, "ship": true, "shoot": false}
       res <- docopt(doc, 'ship Guardian move 150 300 --speed=20', strict=TRUE)
       expect_equivalent(length(res), 15)
-      expect_equivalent(res[c("--drifting", "--help", "--moored", "--speed", "--version", ,"<name>", "<x>", "<y>", "mine", "move", "new", "remove", "set", ,"ship", "shoot")], list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, ,    "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", ,    "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, ,    new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE))
+      expect_equivalent(res[c("--drifting", "--help", "--moored", "--speed", "--version", ,"<name>", "<x>", "<y>", "mine", "move", "new", "remove", "set", ,"ship", "shoot")], list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE))
     })
 
 #####################
@@ -1784,7 +1784,7 @@ doc <-
 		#{"go": 2, "<direction>": ["left", "right"], "--speed": ["5", "9"]}
       res <- docopt(doc, 'go left --speed=5  go right --speed=9', strict=TRUE)
       expect_equivalent(length(res), 3)
-      expect_equivalent(res[c("go", "<direction>", "--speed")], list(go = 2, "<direction>" = c("left", "right"), "--speed" = c("5", ,"9")))
+      expect_equivalent(res[c("go", "<direction>", "--speed")], list(go = 2, "<direction>" = c("left", "right"), "--speed" = c("5", "9")))
     })
 
 #####################
@@ -2038,18 +2038,7 @@ other options:
 		#{"--foo": false, "--baz": true, "--bar": false, "--egg": true, "--spam": false}
       res <- docopt(doc, '--baz --egg', strict=TRUE)
       expect_equivalent(length(res), 5)
-      expect_equivalent(res[c("--foo", "--baz", "--bar", "--egg", "--spam")], list("--foo" = FALSE, "--baz" = TRUE, "--bar" = FALSE, "--egg" = TRUE, ,    "--spam" = FALSE))
+      expect_equivalent(res[c("--foo", "--baz", "--bar", "--egg", "--spam")], list("--foo" = FALSE, "--baz" = TRUE, "--bar" = FALSE, "--egg" = TRUE, "--spam" = FALSE))
     })
 
-#####################
 
-context('doc81')
-doc <-
-"Usage: prog [-f F] [--] [G ...]
-Options: -f F"
-
-test_that('parsing "-f file -- -file other" works', {
-    res <- docopt(doc, '-f file -- -file other')
-    expect_equivalent(res$`-f`, 'file')
-    expect_equivalent(res$G, c('-file', 'other'))
-})

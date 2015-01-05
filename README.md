@@ -27,7 +27,6 @@ It is tested against the tests defined for the reference implementation.
 It passes most tests. It currently fails tests that 
 
 - count arguments: `my_prog.R -v -v` should return `list(v=2)`
-- multiple prog statement: i.e. `my_prog.R -a \n prog -b`
 
 The tests can be run using devtools `test()` and can be found in "inst/tests"
 

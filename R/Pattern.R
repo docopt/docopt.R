@@ -71,7 +71,7 @@ Pattern <- setRefClass( "Pattern"
                 }
                 if ( class(e) == "Command" 
                   || (class(e) == "Option" && e$argcount == 0)){
-                   e$value <- 0
+                   e$value <- 0L
                 }
               } 
             } 
@@ -79,7 +79,7 @@ Pattern <- setRefClass( "Pattern"
           .self
         },
         either = function(){
-          if (length(children) == 0){
+          if (length(children) == 0L){
             return(Either(list(Required(list(.self)))))
           }
           #browser()
@@ -93,11 +93,11 @@ Pattern <- setRefClass( "Pattern"
             groups <- tail(groups, -1)
             type <- c("Either", "Required","Optional", "OneOrMore", "AnyOptions")
             childtype <- sapply(.children, class)
-            m <- base::match(childtype, type, nomatch=0)
+            m <- base::match(childtype, type, nomatch=0L)
             
             if (any(m > 0)){
               # take first child bigger than zero
-              idx <- which(m > 0)[1]
+              idx <- which(m > 0L)[1]
               child <- .children[[idx]]
               .children <- .children[-idx]
               if (class(child) == "Either"){
@@ -298,14 +298,14 @@ Command <- setRefClass("Command"
 Option <- setRefClass("Option", contains="Pattern"
                      , fields = c("short", "long", "argcount", "value", "cardinality")
                      , methods = list(
-                       initialize= function(short=NULL, long=NULL, argcount=0, value=FALSE){
+                       initialize= function(short=NULL, long=NULL, argcount=0L, value=FALSE){
                          short <<- short
                          long <<- long
                          argcount <<- argcount
                          if (argcount && missing(value)){
                            value <<- NULL
                          } else value <<- value
-                         cardinality <<- 1
+                         cardinality <<- 1L
                        },
                        toString = function(){
                          val <- value
@@ -395,7 +395,7 @@ OneOrMore <- setRefClass("OneOrMore", contains="Pattern"
           #         l_ = []
           l_ <- character()
           #         times = 0
-          times <- 0
+          times <- 0L
           #         while matched
           while (m$matched){
           #             # could it be that something didn't match but changed l or c?
@@ -403,7 +403,7 @@ OneOrMore <- setRefClass("OneOrMore", contains="Pattern"
             m <- children[[1]]$match(m$left, m$collected)
           #             times += if matched then 1 else 0
             if (m$matched){
-              times <- times + 1
+              times <- times + 1L
             }
           #             if l_.join(', ') is l.join(', ') then break
             if (identical(paste0(l_, collapse=", "), paste0(m$left, collapse=", "))){ 
