@@ -265,7 +265,7 @@ parse_option <- function(description){
 # parse_doc_options = (doc) ->
 parse_doc_options <- function(doc){
   #     (Option.parse('-' + s) for s in doc.split(/^\s*-|\n\s*-/)[1..])
-  OptionList(lapply(tail(unlist(str_split(doc, regex("(?i)^\\s*-|\\n\\s*-|Options:\\s*-"))),-1), function(s){
+  OptionList(lapply(tail(unlist(str_split(doc, stringr::regex("(?i)^\\s*-|\\n\\s*-|Options:\\s*-"))),-1), function(s){
     parse_option(paste0('-', s))
   }))
 }
