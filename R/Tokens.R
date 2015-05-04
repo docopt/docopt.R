@@ -13,15 +13,17 @@ Tokens <- setRefClass( "Tokens"
          .tokens <- tokens
        } else {
          .tokens <- gsub("^\\s+|\\s+$", "", tokens)
-         args <- str_extract_all(.tokens, "<.*?>")[[1]]
-         args <- c(args, str_extract_all(.tokens, QUOTED)[[1]])
-         args <- c(args, str_extract_all(.tokens, DQUOTED)[[1]])       
-         args_s <- gsub("\\s", "____", args)
-         for (i in seq_along(args)){
-            .tokens <- gsub(args[i], args_s[i], .tokens, fixed = T)
+         if (length(.tokens) > 0){
+           args <- str_extract_all(.tokens, "<.*?>")[[1]]
+           args <- c(args, str_extract_all(.tokens, QUOTED)[[1]])
+           args <- c(args, str_extract_all(.tokens, DQUOTED)[[1]])       
+           args_s <- gsub("\\s", "____", args)
+           for (i in seq_along(args)){
+              .tokens <- gsub(args[i], args_s[i], .tokens, fixed = T)
+           }
+           .tokens <- strsplit(.tokens, "\\s+")[[1]]
+           .tokens <- gsub("____", " ", .tokens, fixed=T)
          }
-         .tokens <- strsplit(.tokens, "\\s+")[[1]]
-         .tokens <- gsub("____", " ", .tokens, fixed=T)
          # remove quotes from tokens...
          #.tokens <- gsub(QUOTED, "\\1", .tokens)
          #.tokens <- gsub(DQUOTED, "\\1", .tokens)
