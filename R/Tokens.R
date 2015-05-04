@@ -1,6 +1,14 @@
 QUOTED <- "'(.*?)'"
 DQUOTED <- "\"(.*?)\""
 
+extract <- function(s, pat){
+  if (length(s)) {
+    stringr::str_extract_all(s, pat)[[1]]
+  } else {
+    s
+  }
+}
+
 Tokens <- setRefClass( "Tokens"
    , fields=list( tokens="character"
                 , error="function"
@@ -13,10 +21,10 @@ Tokens <- setRefClass( "Tokens"
          .tokens <- tokens
        } else {
          .tokens <- gsub("^\\s+|\\s+$", "", tokens)
-         if (length(.tokens) > 0){
-           args <- str_extract_all(.tokens, "<.*?>")[[1]]
-           args <- c(args, str_extract_all(.tokens, QUOTED)[[1]])
-           args <- c(args, str_extract_all(.tokens, DQUOTED)[[1]])       
+         if (length(.tokens)){
+           args <- extract(.tokens, "<.*?>")
+           args <- c(args, extract(.tokens, QUOTED))
+           args <- c(args, extract(.tokens, DQUOTED))       
            args_s <- gsub("\\s", "____", args)
            for (i in seq_along(args)){
               .tokens <- gsub(args[i], args_s[i], .tokens, fixed = T)
