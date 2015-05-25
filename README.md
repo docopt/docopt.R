@@ -11,6 +11,7 @@ docopt
 For more information see [docopt.org](http://docopt.org)
 
 R package `docopt` is an implementation of [docopt](http://docopt.org) in the R language.
+See my presentation on the [useR! 2014](http://www.slideshare.net/EdwindeJonge1/docopt-user2014) for more details.
 
 Install
 -------
