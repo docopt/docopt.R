@@ -1,3 +1,6 @@
+version 0.4.4
+- Fixed arguments which embed a space (issue #11, thanks to @jennybc)
+
 version 0.4.3.1
 - Fixed stringr dependency thanks to (@eddelbuettel)
 

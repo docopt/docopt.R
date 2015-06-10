@@ -41,7 +41,11 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
   if (exists("argv", where = .GlobalEnv, inherits = FALSE)) {
     args = get("argv", envir = .GlobalEnv);
   }
-  
+  # quote arguments containing a space. commandArgs removes quotes!
+  if (length(args) > 1) {
+    args <- quote_spaced(args)
+  }
+
   args <- str_c(args, collapse=" ")
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)
@@ -138,6 +142,13 @@ formal_usage <- function(printable_usage){
   pu[pu==prog] <- "|"
   formal <- str_c(tail(pu, -1), collapse=" ")
   formal
+}
+
+quote_spaced <- function(x){
+  ifelse( str_detect(x, "\\s")
+        , sQuote(x)
+        , x
+  )
 }
 # 
 # class Dict extends Object

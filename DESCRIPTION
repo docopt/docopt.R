@@ -1,7 +1,7 @@
 Package: docopt
 Type: Package
 Title: Command-Line Interface Specification Language
-Version: 0.4.3.3
+Version: 0.4.4
 Date: 2015-05-03
 Author: Edwin de Jonge (edwindjonge@gmail.com)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>

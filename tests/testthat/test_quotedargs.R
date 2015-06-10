@@ -29,15 +29,3 @@ Options:
   opt <- docopt(doc, "-r repo1 -r repo2")
   expect_equal(opt$r, c("repo1", "repo2"))
 })
-
-
-test_that("strings containing spaces are passed correctly (#11)", {
-  "
-  Usage: foo.R [-i <integers>]
-  
-  Options:
-    -i <integers>, --integers=<integers>  Integers [default: 1]
-  " -> doc
-  opt <- docopt(doc, "-i ' c(1, 8)'")
-  
-})
