@@ -70,6 +70,7 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
     arguments <- m$collected
     arguments <- arguments[sapply(arguments, class) %in% c("Argument", "Command")]
     dict <- list()
+    class(dict) <- c("docopt", "list")
     
     #for(kv in c(pot_options$options, options, pattern$flat(), m$collected)){
     for(kv in c(pot_options$options, options, pot_arguments, arguments)){
@@ -161,3 +162,9 @@ quote_spaced <- function(x){
 #         atts.sort()
 #         '{' + (k + ': ' + @[k] for k in atts).join(',\n ') + '}'
 # 
+
+#' @export
+print.docopt <- function(x, ...) {
+    print(str(x, give.attr=FALSE))           # convenient shortcut
+    invisible(x) 
+}
