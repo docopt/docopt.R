@@ -1,3 +1,6 @@
+version 0.4.5
+- Fixed single argument which embed a space (issue #11, thanks to @malcook)
+
 version 0.4.4
 - Fixed arguments which embed a space (issue #11, thanks to @jennybc)
 - Added `print` method for docopt (issue @12, thanks to @eddelbuettel)

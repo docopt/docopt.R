@@ -40,9 +40,9 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
   # littler compatibility - map argv vector to args
   if (exists("argv", where = .GlobalEnv, inherits = FALSE)) {
     args = get("argv", envir = .GlobalEnv);
-  }
-  # quote arguments containing a space. commandArgs removes quotes!
-  if (length(args) > 1) {
+  } 
+  
+  if (missing(args)) {
     args <- quote_spaced(args)
   }
 
