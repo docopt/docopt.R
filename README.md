@@ -1,3 +1,5 @@
+![version](http://www.r-pkg.org/badges/version/docopt)
+![downloads](http://cranlogs.r-pkg.org/badges/docopt)
 [![Build Status](https://travis-ci.org/docopt/docopt.R.svg?branch=master)](https://travis-ci.org/docopt/docopt.R)
 
 docopt
