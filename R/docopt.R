@@ -37,13 +37,14 @@
 docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=NULL
                   , strict=FALSE, strip_names=!strict, quoted_args=!strict
                   ){
-  # littler compatibility - map argv vector to args
-  if (exists("argv", where = .GlobalEnv, inherits = FALSE)) {
-    args = get("argv", envir = .GlobalEnv);
-  } 
   
   if (missing(args)) {
-    args <- quote_spaced(args)
+    # littler compatibility - map argv vector to args
+    if (exists("argv", where = .GlobalEnv, inherits = FALSE)) {
+      args = get("argv", envir = .GlobalEnv);
+    } else {
+			args <- quote_spaced(args)
+		}
   }
 
   args <- str_c(args, collapse=" ")
