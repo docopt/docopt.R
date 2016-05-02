@@ -1125,7 +1125,7 @@ Options:
 		#{"--drifting": false, "--help": false, "--moored": false, "--speed": "20", "--version": false, "<name>": ["Guardian"], "<x>": "150", "<y>": "300", "mine": false, "move": true, "new": false, "remove": false, "set": false, "ship": true, "shoot": false}
       res <- docopt(doc, 'ship Guardian move 150 300 --speed=20', strict=TRUE)
       expect_equivalent(length(res), 15)
-      expect_equivalent(res[c("--drifting", "--help", "--moored", "--speed", "--version", ,"<name>", "<x>", "<y>", "mine", "move", "new", "remove", "set", ,"ship", "shoot")], list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE))
+      expect_equivalent(res[c("--drifting", "--help", "--moored", "--speed", "--version","<name>", "<x>", "<y>", "mine", "move", "new", "remove", "set", "ship", "shoot")], list("--drifting" = FALSE, "--help" = FALSE, "--moored" = FALSE, "--speed" = "20", "--version" = FALSE, "<name>" = "Guardian", "<x>" = "150", "<y>" = "300", mine = FALSE, move = TRUE, new = FALSE, remove = FALSE, set = FALSE, ship = TRUE, shoot = FALSE))
     })
 
 #####################
