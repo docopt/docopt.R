@@ -11,8 +11,7 @@ License: MIT + file LICENSE
 URL: https://github.com/docopt/docopt.R
 Imports:
     stringr
-Depends:
-    methods
+Depends: methods
 Suggests:
     testthat
 RoxygenNote: 5.0.1

@@ -46,7 +46,6 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
 			args <- quote_spaced(args)
 		}
   }
-
   args <- str_c(args, collapse=" ")
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)
@@ -148,7 +147,7 @@ formal_usage <- function(printable_usage){
 
 quote_spaced <- function(x){
   ifelse( str_detect(x, "\\s")
-        , sQuote(x)
+        , shQuote(x)
         , x
   )
 }
