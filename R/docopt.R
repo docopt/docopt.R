@@ -72,7 +72,6 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
     dict <- list()
     class(dict) <- c("docopt", "list")
     
-    #for(kv in c(pot_options$options, options, pattern$flat(), m$collected)){
     for(kv in c(pot_options$options, options, pot_arguments, arguments)){
       value <- kv$value
       dict[kv$name()] <- list(value)
@@ -83,7 +82,7 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
     }
     return(dict)
   }
-  stop(paste(usage, collapse="\n  "), call. = FALSE)
+  stop(paste("\n",usage, collapse="\n  "), call. = FALSE)
 }
          
 # print help
@@ -108,22 +107,22 @@ extras <- function(help, version=NULL, options, doc){
   if (help && any(names(opts) %in% c("-h","--help"))){
     help <- str_replace_all(doc, "^\\s*|\\s*$", "")
     cat(help,"\n")
-    if (interactive()) stop() else {
+    if (interactive()) stop(call. = FALSE) else {
       quit(save="no")
     }
   }
   if (!is.null(version) && any(names(opts) %in% "--version")){
     cat(version)
-    if (interactive()) stop() else quit(save="no")
+    if (interactive()) stop(call.  = FALSE) else quit(save="no")
   }
 }
 
 printable_usage <- function(doc, name){
   usage_split <- stringr::str_split(doc, stringr::regex("(?i)usage:\\s*"))[[1]]
   if (length(usage_split) < 2){
-    stop("'usage:' (case-insensitive) not found")
+    stop("'usage:' (case-insensitive) not found", call. = FALSE)
   } else if (length(usage_split) > 2){
-    stop('More than one "usage:" (case-insensitive).')
+    stop('More than one "usage:" (case-insensitive).', call. = FALSE)
   }
   usage <- str_split(usage_split[2], "\n\\s*")[[1]]
   firstword <- str_extract(usage, "^\\w+")

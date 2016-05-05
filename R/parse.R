@@ -102,7 +102,7 @@ parse_pattern <- function(src, optionlist){
   tokens <- Tokens(src, cat)
   result <- parse_expr(tokens, optionlist)
   if (tokens$current() != ''){
-    stop("unexpected ending:'", tokens$join(" "),"'")
+    stop("unexpected ending:'", tokens$join(" "),"'", call. = FALSE)
   }
   Required(result)
 }
