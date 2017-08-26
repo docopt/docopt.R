@@ -1,18 +1,27 @@
-# Sample .travis.yml for R projects.
-#
-# See README.md for instructions, or for more configuration options,
-# see the wiki:
-#   https://github.com/craigcitro/r-travis/wiki
+# Run Travis CI for R using https://eddelbuettel.github.io/r-travis/
 
 language: c
-script: ./travis-tool.sh run_tests
+
+sudo: required
+
+dist: trusty
+
 before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
+  - curl -OLs https://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
+  - ./run.sh bootstrap
+
 install:
-  - ./travis-tool.sh install_deps
+  - ./run.sh install_aptget r-cran-stringr r-cran-testthat
+
+script:
+  - ./run.sh run_tests
+
+after_failure:
+  - ./run.sh dump_logs
+
 notifications:
   email:
     on_success: change
     on_failure: change
+
+    
