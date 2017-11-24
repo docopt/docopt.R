@@ -82,7 +82,3 @@ str(opts)
 ##  $ r: logi FALSE
 ##  $ m: chr "Hello"
 ```
-
-## Note
-
-**There is an issue with using `-g` and `-gui` with `docopt.R` as reported on [Stackoverflow](http://stackoverflow.com/questions/30698581/how-to-prevent-command-line-args-from-being-interpreted-by-r-vs-only-by-my-scri/30751839#30751839). `Rscript` filters on `-g` and `-gui` before `docopt.R` can access them.**
