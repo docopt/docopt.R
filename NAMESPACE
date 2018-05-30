@@ -3,6 +3,5 @@
 S3method(print,docopt)
 export(docopt)
 import(methods)
-import(stringr)
 importFrom(utils,str)
 importFrom(utils,tail)

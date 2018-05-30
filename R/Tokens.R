@@ -3,7 +3,7 @@ DQUOTED <- "\"(.*?)\""
 
 extract <- function(s, pat){
   if (length(s)) {
-    stringr::str_extract_all(s, pat)[[1]]
+    str_extract_all(s, pat)[[1]]
   } else {
     s
   }

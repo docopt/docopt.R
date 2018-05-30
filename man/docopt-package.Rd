@@ -11,4 +11,3 @@ automatically generate a parser for it.
 \details{
 For more information see http://docopt.org
 }
-

@@ -55,4 +55,3 @@ docopt(doc, "-s --quiet")
 \references{
 \url{http://docopt.org},
 }
-

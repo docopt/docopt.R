@@ -11,4 +11,3 @@
 to character
 }
 \keyword{internal}
-

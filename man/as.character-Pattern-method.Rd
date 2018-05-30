@@ -11,4 +11,3 @@
 as.character.Pattern
 }
 \keyword{internal}
-

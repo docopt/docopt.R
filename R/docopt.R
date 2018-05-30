@@ -33,7 +33,7 @@
 #' @return named list with all parsed options, arguments and commands.
 #' @references \url{http://docopt.org},
 #' @export
-#' @import methods stringr
+#' @import methods
 docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=NULL
                   , strict=FALSE, strip_names=!strict, quoted_args=!strict
                   ){
@@ -118,7 +118,7 @@ extras <- function(help, version=NULL, options, doc){
 }
 
 printable_usage <- function(doc, name){
-  usage_split <- stringr::str_split(doc, stringr::regex("(?i)usage:\\s*"))[[1]]
+  usage_split <- str_split(doc, "(?i)usage:\\s*")[[1]]
   if (length(usage_split) < 2){
     stop("'usage:' (case-insensitive) not found", call. = FALSE)
   } else if (length(usage_split) > 2){
