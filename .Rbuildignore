@@ -4,3 +4,4 @@
 travis*
 ^issues*
 ^appveyor\.yml$
+revdep
