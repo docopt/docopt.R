@@ -46,7 +46,7 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
 			args <- quote_spaced(args)
 		}
   }
-  browser()
+  #browser()
   args <- str_c(args, collapse=" ")
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)

@@ -64,7 +64,7 @@ str_match <- function(string, pattern){
   cap_start <- attr(ms, "capture.start")
   cap_stop <- cap_start + attr(ms, "capture.length") - 1
   cap_n <- ncol(cap_start)
-  t(
+  m <- t(
     sapply(seq_along(string), function(i){
       s <- string[i]
       c( substr(s, ms[i], ms_stop[i])
@@ -74,6 +74,8 @@ str_match <- function(string, pattern){
        )
     })
   )
+  is.na(m) <- nchar(m) == 0
+  m
 }
 
 text = c("hallo", "test", "baadd")
