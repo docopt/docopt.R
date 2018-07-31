@@ -1,3 +1,6 @@
+version 0.6
+- removed stringr dependency
+
 version 0.4.5
 - Fixed single argument which embed a space (issue #11, thanks to @malcook)
 
