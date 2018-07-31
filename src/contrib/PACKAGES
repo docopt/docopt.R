@@ -1,0 +1,7 @@
+Package: docopt
+Version: 0.6
+Depends: methods
+Suggests: testthat
+License: MIT + file LICENSE
+MD5sum: 73fb60242754cb481f93ecb2ea0466f9
+NeedsCompilation: no
