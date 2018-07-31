@@ -18,8 +18,15 @@ str_extract_all <- function(text, pattern){
     
     rstart[rstart < 0] <- 0
     rstop[rstop < 0] <- 0
-    mapply(function(start, stop){substr(text[[i]],start, stop)}
-          , rstart, rstop)
+    mapply(function(start, stop){
+      s <- substr(text[[i]],start, stop)
+      if (s == ''){
+        character()
+      } else {
+        s
+      }
+    }
+    , rstart, rstop)
   })
 }
 
@@ -32,7 +39,7 @@ str_c <- function(x, ...){
 }
 
 str_split <- function(string, pattern){
-  strsplit(string, split, perl=TRUE)
+  strsplit(string, split = pattern, perl=TRUE)
 }
 
 str_detect <- function(string, pattern){
@@ -52,11 +59,27 @@ str_replace_all <- function(string, pattern, replacement){
 }
 
 str_match <- function(string, pattern){
-  
+  ms <- regexpr(pattern=pattern, text = string, perl = TRUE)
+  ms_stop <- ms + attr(ms, "match.length") - 1
+  cap_start <- attr(ms, "capture.start")
+  cap_stop <- cap_start + attr(ms, "capture.length") - 1
+  cap_n <- ncol(cap_start)
+  t(
+    sapply(seq_along(string), function(i){
+      s <- string[i]
+      c( substr(s, ms[i], ms_stop[i])
+       , sapply(seq_len(cap_n), function(j){
+            substr(s, cap_start[i,j], cap_stop[i,j])
+         })
+       )
+    })
+  )
 }
 
-# text = c("hallo", "test", "baadd")
-# pattern = "(\\w)\\1"
+text = c("hallo", "test", "baadd")
+pattern = "(\\w)\\1(.)"
 # 
-# strextract(text = text, pattern = pattern)
+#str_extract(text = text, pattern = pattern)
 # strextract_all(text = text, pattern = pattern)
+string <- text
+str_match(string, pattern)

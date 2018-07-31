@@ -1,6 +1,7 @@
 ![version](http://www.r-pkg.org/badges/version/docopt)
 ![downloads](http://cranlogs.r-pkg.org/badges/docopt)
 [![Build Status](https://travis-ci.org/docopt/docopt.R.svg?branch=master)](https://travis-ci.org/docopt/docopt.R)
+[![Depsy](http://depsy.org/api/package/cran/docopt/badge.svg)](http://depsy.org/package/r/docopt)
 
 docopt
 ========================================================

@@ -20,6 +20,7 @@ Tokens <- setRefClass( "Tokens"
        if (as_is){
          .tokens <- tokens
        } else {
+         #browser()
          .tokens <- gsub("^\\s+|\\s+$", "", tokens)
          if (length(.tokens)){
            args <- extract(.tokens, "<.*?>")
