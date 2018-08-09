@@ -8,7 +8,7 @@ Description: Define a command-line interface by just giving it
     a description in the specific format.
 License: MIT + file LICENSE
 URL: https://github.com/docopt/docopt.R
-Depends: methods
+Imports: methods
 Suggests:
     testthat
 RoxygenNote: 6.0.1
