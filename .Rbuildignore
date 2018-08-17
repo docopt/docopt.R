@@ -5,3 +5,4 @@ travis*
 ^issues*
 ^appveyor\.yml$
 revdep
+^\.httr-oauth$

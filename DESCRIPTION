@@ -1,7 +1,7 @@
 Package: docopt
 Type: Package
 Title: Command-Line Interface Specification Language
-Version: 0.6
+Version: 0.6.1
 Author: Edwin de Jonge (edwindjonge@gmail.com)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
 Description: Define a command-line interface by just giving it
@@ -11,4 +11,4 @@ URL: https://github.com/docopt/docopt.R
 Depends: methods
 Suggests:
     testthat
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
