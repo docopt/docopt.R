@@ -1,8 +1,8 @@
-[![version](http://www.r-pkg.org/badges/version/docopt)](https://cran.r-project.org/package=docopt)
-![downloads](http://cranlogs.r-pkg.org/badges/docopt)
+[![version](https://www.r-pkg.org/badges/version/docopt)](https://cran.r-project.org/package=docopt)
+![downloads](https://cranlogs.r-pkg.org/badges/docopt)
 [![Build Status](https://travis-ci.org/docopt/docopt.R.svg?branch=master)](https://travis-ci.org/docopt/docopt.R)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/docopt/docopt.R?branch=master&svg=true)](https://ci.appveyor.com/project/docopt/docopt.R)
-[![Depsy](http://depsy.org/api/package/cran/docopt/badge.svg)](http://depsy.org/package/r/docopt)
+[![Depsy](https://depsy.org/api/package/cran/docopt/badge.svg)](https://depsy.org/package/r/docopt)
 
 docopt
 ========================================================

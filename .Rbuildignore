@@ -6,3 +6,4 @@ travis*
 ^appveyor\.yml$
 revdep
 ^\.httr-oauth$
+README.md
