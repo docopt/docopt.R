@@ -35,13 +35,20 @@ library(devtools)  # make sure to have devtools 1.4!
 install_github("docopt/docopt.R")
 ```
 
+## Testing
 
 It is tested against the tests defined for the reference implementation.
 It passes most tests. It currently fails tests that 
 
 - count arguments: `my_prog.R -v -v` should return `list(v=2)`
 
-The tests can be run using devtools `test()` and can be found in "inst/tests"
+The tests can be run using `devtools::test()` and can be found in "tests" directory.
+
+```R
+library(devtools)
+devtools::test()
+```
+
 
 ## Usage
 
