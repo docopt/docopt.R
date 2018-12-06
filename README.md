@@ -11,11 +11,12 @@
 - define an interface for your command-line application, and
 - automatically generate a parser for it.
 
-For more information see [docopt.org](http://docopt.org)
-To try docopt in your browser [try.docopt.org](http://try.docopt.org/)
-
 R package `docopt` is an implementation of [docopt](http://docopt.org) in the R programming language.
 See my presentation on the [useR! 2014](http://www.slideshare.net/EdwindeJonge1/docopt-user2014) for more details.
+
+For more information see [docopt.org](http://docopt.org)
+
+To try docopt in your browser visit [try.docopt.org](http://try.docopt.org/)
 
 
 ## Installation
@@ -157,7 +158,7 @@ List of 23
 
 * In case if provided command-line parameters are inconsistent with the 
   `"Usage: ..."` pattern the error message will be printed along with
-  `"Usage: ..."` pattern examples.
+  usage pattern examples.
 
 ```
 $ Rscript path/to/naval_fate.R ship mine
