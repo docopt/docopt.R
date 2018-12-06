@@ -4,7 +4,7 @@
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/docopt/docopt.R?branch=master&svg=true)](https://ci.appveyor.com/project/docopt/docopt.R)
 [![Depsy](http://depsy.org/api/package/cran/docopt/badge.svg)](http://depsy.org/package/r/docopt)
 
-#docopt
+# docopt
 
 `docopt` helps you to:
 
@@ -16,11 +16,21 @@ For more information see [docopt.org](http://docopt.org)
 R package `docopt` is an implementation of [docopt](http://docopt.org) in the R language.
 See my presentation on the [useR! 2014](http://www.slideshare.net/EdwindeJonge1/docopt-user2014) for more details.
 
-##Installation
+## Installation
 
-The latest version of `docopt` can be installed using:
+The easiest way to get `docopt` is to install from 
+[CRAN](https://cran.r-project.org/web/packages/docopt/index.html):
 
-```S
+```R
+install.packages("docopt")
+library(docopt)
+```
+### Development version
+
+The latest version of `docopt` can be installed from GitHub using 
+[devtools](https://github.com/r-lib/devtools):
+
+```R
 library(devtools)  # make sure to have devtools 1.4!
 install_github("docopt/docopt.R")
 ```
@@ -33,7 +43,7 @@ It passes most tests. It currently fails tests that
 
 The tests can be run using devtools `test()` and can be found in "inst/tests"
 
-##Usage
+## Usage
 
 `docopt` uses the description of the command-line interface to parse command-line
 arguments.
