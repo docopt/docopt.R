@@ -12,9 +12,11 @@
 - automatically generate a parser for it.
 
 For more information see [docopt.org](http://docopt.org)
+To try docopt in your browser [try.docopt.org](http://try.docopt.org/)
 
-R package `docopt` is an implementation of [docopt](http://docopt.org) in the R language.
+R package `docopt` is an implementation of [docopt](http://docopt.org) in the R programming language.
 See my presentation on the [useR! 2014](http://www.slideshare.net/EdwindeJonge1/docopt-user2014) for more details.
+
 
 ## Installation
 
@@ -34,6 +36,7 @@ The latest version of `docopt` can be installed from GitHub using
 library(devtools)  # make sure to have devtools 1.4!
 install_github("docopt/docopt.R")
 ```
+
 
 ## Testing
 
@@ -98,12 +101,12 @@ $ Rscript path/to/naval_fate.R --help
 Naval Fate.
 
 Usage:
-  naval_fate.py ship new <name>...
-  naval_fate.py ship <name> move <x> <y> [--speed=<kn>]
-  naval_fate.py ship shoot <x> <y>
-  naval_fate.py mine (set|remove) <x> <y> [--moored | --drifting]
-  naval_fate.py (-h | --help)
-  naval_fate.py --version
+  naval_fate.R ship new <name>...
+  naval_fate.R ship <name> move <x> <y> [--speed=<kn>]
+  naval_fate.R ship shoot <x> <y>
+  naval_fate.R mine (set|remove) <x> <y> [--moored | --drifting]
+  naval_fate.R (-h | --help)
+  naval_fate.R --version
 
 Options:
   -h --help     Show this screen.
@@ -125,31 +128,31 @@ Naval Fate 2.0
   application.
 
 ```
-$ Rscript path/to/naval_fate.R ship new Guardian
+$ Rscript path/to/naval_fate.R ship Guardian move 10 50 --speed=20
 List of 23
  $ --help    : logi FALSE
  $ --version : logi FALSE
- $ --speed   : chr "10"
+ $ --speed   : chr "20"
  $ --moored  : logi FALSE
  $ --drifting: logi FALSE
  $ ship      : logi TRUE
- $ new       : logi TRUE
+ $ new       : logi FALSE
  $ <name>    : chr "Guardian"
- $ move      : logi FALSE
- $ <x>       : NULL
- $ <y>       : NULL
+ $ move      : logi TRUE
+ $ <x>       : chr "10"
+ $ <y>       : chr "50"
  $ shoot     : logi FALSE
  $ mine      : logi FALSE
  $ set       : logi FALSE
  $ remove    : logi FALSE
  $ help      : logi FALSE
  $ version   : logi FALSE
- $ speed     : chr "10"
+ $ speed     : chr "20"
  $ moored    : logi FALSE
  $ drifting  : logi FALSE
  $ name      : chr "Guardian"
- $ x         : NULL
- $ y         : NULL
+ $ x         : chr "10"
+ $ y         : chr "50"
 ```
 
 * In case if provided command-line parameters are inconsistent with the 
@@ -159,16 +162,16 @@ List of 23
 ```
 $ Rscript path/to/naval_fate.R ship mine
 Error: 
- usage: naval_fate.py ship new <name>...
+ usage: naval_fate.R ship new <name>...
   
- usage: naval_fate.py ship <name> move <x> <y> [--speed=<kn>]
+ usage: naval_fate.R ship <name> move <x> <y> [--speed=<kn>]
   
- usage: naval_fate.py ship shoot <x> <y>
+ usage: naval_fate.R ship shoot <x> <y>
   
- usage: naval_fate.py mine (set|remove) <x> <y> [--moored | --drifting]
+ usage: naval_fate.R mine (set|remove) <x> <y> [--moored | --drifting]
   
- usage: naval_fate.py (-h | --help)
+ usage: naval_fate.R (-h | --help)
   
- usage: naval_fate.py --version
+ usage: naval_fate.R --version
 Execution halted
 ```
