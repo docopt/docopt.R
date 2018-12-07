@@ -1,3 +1,7 @@
+version 0.6.2
+- improved README.md thanks to @andreysmelter
+- improved error message (showing options) issue #24
+
 version 0.6.1
 - changed methods dependency to import (issue #35, thanks to @eddelbuettel). Should
 have be done earlier, but did work with R version <= 3.3

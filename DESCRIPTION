@@ -1,7 +1,7 @@
 Package: docopt
 Type: Package
 Title: Command-Line Interface Specification Language
-Version: 0.6.1
+Version: 0.6.2
 Author: Edwin de Jonge (edwindjonge@gmail.com)
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
 Description: Define a command-line interface by just giving it
