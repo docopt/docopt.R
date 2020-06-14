@@ -57,6 +57,7 @@ parse_long <- function(tokens, optionlist){
     raw <- tokens$current()
     value <- NULL
   }
+  
   tokens$move()
   check <- if (tokens$strict) starts_with else identical
   simular <- Filter(function(o){

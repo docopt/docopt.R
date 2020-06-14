@@ -46,8 +46,10 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
 			args <- quote_spaced(args)
 		}
   }
-  #browser()
+  print(args)
+  args <- fix_quotes(args)
   args <- str_c(args, collapse=" ")
+
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)
   pattern <- parse_pattern(formal_usage(usage), pot_options)
@@ -151,6 +153,11 @@ quote_spaced <- function(x){
         , shQuote(x)
         , x
   )
+}
+
+# fix wrong shell quoting
+fix_quotes <- function(x){
+  x <- sub("'(--?[[:alpha:]]+=)", "\\1'", x)
 }
 # 
 # class Dict extends Object

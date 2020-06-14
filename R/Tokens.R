@@ -9,6 +9,28 @@ extract <- function(s, pat){
   }
 }
 
+# utility function
+store_ws <- function(x, invert=FALSE){
+  if (invert){
+    gsub("___", " ", x, fixed = TRUE)
+  } else {
+    gsub(" ", "___", x, fixed = TRUE)
+  }
+}
+
+# replaces values with white spaces
+ws_replace <- function(pattern, x){
+#  pattern <- "'(.*?)'"
+  m <- gregexpr(pattern, x)
+  ms <- regmatches(x, m)
+  ms <- lapply(ms, function(xs){ 
+    xs <- gsub(pattern, "\\1", xs)
+    store_ws(xs)
+  })
+  regmatches(x, m) <- ms
+  x
+}
+
 Tokens <- setRefClass( "Tokens"
    , fields=list( tokens="character"
                 , error="function"
@@ -20,18 +42,15 @@ Tokens <- setRefClass( "Tokens"
        if (as_is){
          .tokens <- tokens
        } else {
-         #browser()
+         # trimws
          .tokens <- gsub("^\\s+|\\s+$", "", tokens)
+         
          if (length(.tokens)){
-           args <- extract(.tokens, "<.*?>")
-           args <- c(args, extract(.tokens, QUOTED))
-           args <- c(args, extract(.tokens, DQUOTED))       
-           args_s <- gsub("\\s", "____", args)
-           for (i in seq_along(args)){
-              .tokens <- gsub(args[i], args_s[i], .tokens, fixed = T)
-           }
+           .tokens <- ws_replace("(<.*?>)", .tokens)
+           .tokens <- ws_replace(QUOTED, .tokens)
+           .tokens <- ws_replace(DQUOTED, .tokens)
            .tokens <- strsplit(.tokens, "\\s+")[[1]]
-           .tokens <- gsub("____", " ", .tokens, fixed=T)
+           .tokens <- store_ws(.tokens, invert = TRUE)
          }
          # remove quotes from tokens...
          #.tokens <- gsub(QUOTED, "\\1", .tokens)
