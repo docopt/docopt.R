@@ -46,8 +46,8 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
 			args <- quote_spaced(args)
 		}
   }
-  print(args)
-  args <- fix_quotes(args)
+  #print(args)
+  #args <- fix_quotes(args)
   args <- str_c(args, collapse=" ")
 
   usage <- printable_usage(doc, name)

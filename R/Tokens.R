@@ -1,14 +1,6 @@
 QUOTED <- "'(.*?)'"
 DQUOTED <- "\"(.*?)\""
 
-extract <- function(s, pat){
-  if (length(s)) {
-    str_extract_all(s, pat)[[1]]
-  } else {
-    s
-  }
-}
-
 # utility function
 store_ws <- function(x, invert=FALSE){
   if (invert){
@@ -23,10 +15,7 @@ ws_replace <- function(pattern, x){
 #  pattern <- "'(.*?)'"
   m <- gregexpr(pattern, x)
   ms <- regmatches(x, m)
-  ms <- lapply(ms, function(xs){ 
-    xs <- gsub(pattern, "\\1", xs)
-    store_ws(xs)
-  })
+  ms <- lapply(ms, store_ws)
   regmatches(x, m) <- ms
   x
 }
@@ -51,10 +40,10 @@ Tokens <- setRefClass( "Tokens"
            .tokens <- ws_replace(DQUOTED, .tokens)
            .tokens <- strsplit(.tokens, "\\s+")[[1]]
            .tokens <- store_ws(.tokens, invert = TRUE)
+           # remove quotation
+           .tokens <- gsub("^'(.*)'$", "\\1", .tokens)
+           .tokens <- gsub('^"(.*)"$', "\\1", .tokens)
          }
-         # remove quotes from tokens...
-         #.tokens <- gsub(QUOTED, "\\1", .tokens)
-         #.tokens <- gsub(DQUOTED, "\\1", .tokens)
        }
        tokens <<- .tokens
        if (missing(error)){
