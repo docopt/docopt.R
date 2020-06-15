@@ -57,3 +57,15 @@ Options:
   expect_equal(arguments$arg, "bla bla")
   expect_equal(arguments$files, "f1")
 })
+
+test_that("kebab case option to snake case",{
+'
+Usage: foo.R
+
+Options:
+  --do-the-thing=<dtt>  Do the Thing! [default: yeah].
+
+' -> doc
+  opt <- docopt::docopt(doc)
+  expect_equal(names(opt), c("--do-the-thing", "do_the_thing"))
+})

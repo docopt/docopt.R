@@ -83,6 +83,8 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
     }
     if (isTRUE(strip_names)){
       nms <- gsub("(^<)|(^\\-\\-?)|(>$)", "", names(dict))
+      # kebab case to snake case
+      nms <- gsub("-", "_", nms)
       dict[nms] <- dict
     }
     return(dict)
