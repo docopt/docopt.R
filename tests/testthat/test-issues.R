@@ -5,7 +5,8 @@ test_that("quoted arguments work (#2)", {
   Usage:
   exampleScript <arg1>
   "
-  docopt(doc, "\"quoted arg\"")
+  opt <- docopt(doc, "\"quoted arg\"")
+  expect_equal(opt$arg1, "quoted arg")
 })
 
 
@@ -39,5 +40,20 @@ test_that("strings containing spaces are passed correctly (#11)", {
     -i <integers>, --integers=<integers>  Integers [default: 1]
   " -> doc
   opt <- docopt(doc, "-i ' c(1, 8)'")
+  expect_equal(opt$integers, " c(1, 8)")
+})
+
+test_that("quoted options are ok (#19)",{
+  '
+Usage:
+  style_files [--arg=<arg1>] <files>...
+
+Options:
+  --arg=<arg1>  Package where the style guide is stored [default: Arg1].
+
+' -> doc
   
+  arguments <- docopt::docopt(doc, "--arg='bla bla' f1")
+  expect_equal(arguments$arg, "bla bla")
+  expect_equal(arguments$files, "f1")
 })

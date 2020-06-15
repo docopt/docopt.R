@@ -49,16 +49,16 @@ starts_with <- function(x, start){
 # 
 # parse_long = (tokens, options) ->
 parse_long <- function(tokens, optionlist){
-  m <- str_match(tokens$current(), "(.*?)=(.*)")
+  # using move, because it strips quotation (and current not)
+  token <- tokens$move()
+  m <- str_match(token, "(.*?)=(.*)")
   if (!any(is.na(m))){
     raw <- m[,2]
     value <- m[,3]
   } else {
-    raw <- tokens$current()
+    raw <- token
     value <- NULL
   }
-  
-  tokens$move()
   check <- if (tokens$strict) starts_with else identical
   simular <- Filter(function(o){
     (nchar(o$long) && check(o$long, raw))
@@ -196,6 +196,7 @@ parse_atom <- function(tokens, optionlist){
 parse_args <- function(src, optionlist){
 #     tokens = new TokenStream source, DocoptExit
   tokens <- Tokens(src)
+  #browser()
 #     #options = options.slice(0) # shallow copy, not sure if necessary
 #     opts = []
   opts = list()

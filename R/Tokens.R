@@ -41,8 +41,8 @@ Tokens <- setRefClass( "Tokens"
            .tokens <- strsplit(.tokens, "\\s+")[[1]]
            .tokens <- store_ws(.tokens, invert = TRUE)
            # remove quotation
-           .tokens <- gsub("^'(.*)'$", "\\1", .tokens)
-           .tokens <- gsub('^"(.*)"$', "\\1", .tokens)
+           # .tokens <- gsub("^'(.*)'$", "\\1", .tokens)
+           # .tokens <- gsub('^"(.*)"$', "\\1", .tokens)
          }
        }
        tokens <<- .tokens
@@ -72,7 +72,7 @@ Tokens <- setRefClass( "Tokens"
        #remove optional quotes...
        h <- gsub(QUOTED, "\\1", h)
        h <- gsub(DQUOTED, "\\1", h)
-       
+
        if (length(h)) h else ""
      },
      #     toString: -> ([].slice.apply @).toString()

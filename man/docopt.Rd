@@ -4,9 +4,16 @@
 \alias{docopt}
 \title{Parse \code{args} based on command-line interface described in \code{doc}.}
 \usage{
-docopt(doc, args = commandArgs(TRUE), name = NULL, help = TRUE,
-  version = NULL, strict = FALSE, strip_names = !strict,
-  quoted_args = !strict)
+docopt(
+  doc,
+  args = commandArgs(TRUE),
+  name = NULL,
+  help = TRUE,
+  version = NULL,
+  strict = FALSE,
+  strip_names = !strict,
+  quoted_args = !strict
+)
 }
 \arguments{
 \item{doc}{\code{character} vector with command line specification}

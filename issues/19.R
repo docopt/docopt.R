@@ -9,6 +9,7 @@ Options:
 
 ' -> doc
 
-arguments <- docopt::docopt(doc)
+arguments <- docopt::docopt(doc, "--arg='bla bla' f1")
 print(arguments)
-saveRDS(arguments, 'argument.rds')
+
+

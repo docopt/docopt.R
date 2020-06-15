@@ -12,4 +12,4 @@ BugReports: https://github.com/docopt/docopt.R/issues
 Imports: methods
 Suggests:
     testthat
-RoxygenNote: 6.1.0
+RoxygenNote: 7.1.0

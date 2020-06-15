@@ -5,7 +5,8 @@ test_that("quoted arguments work (#2)", {
   Usage:
   exampleScript <arg1>
   "
-  docopt(doc, "\"quoted arg\"")
+  opt <- docopt(doc, "\"quoted arg\"")
+  expect_equal(opt$arg1, "quoted arg")
 })
 
 

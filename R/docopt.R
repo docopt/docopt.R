@@ -47,13 +47,15 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
 		}
   }
   #print(args)
-  #args <- fix_quotes(args)
+  
+  args <- fix_quoted_options(args)
   args <- str_c(args, collapse=" ")
-
+  
+  #print(args)
+  
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)
   pattern <- parse_pattern(formal_usage(usage), pot_options)
-  
   for (anyopt in pattern$flat("AnyOptions")){
     #TODO remove options that are present in pattern
     if (class(anyopt) == "AnyOptions") anyopt$children <- pot_options$options
@@ -156,8 +158,8 @@ quote_spaced <- function(x){
 }
 
 # fix wrong shell quoting
-fix_quotes <- function(x){
-  x <- sub("'(--?[[:alpha:]]+=)", "\\1'", x)
+fix_quoted_options <- function(x){
+  x <- gsub("'(--?[[:alpha:]]+=)", "\\1'", x)
 }
 # 
 # class Dict extends Object
