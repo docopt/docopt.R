@@ -69,3 +69,18 @@ Options:
   opt <- docopt::docopt(doc)
   expect_equal(names(opt), c("--do-the-thing", "do_the_thing"))
 })
+
+test_that("quotes inside options are preserved",{
+  "style files.
+Usage:
+  style_files [--arg=<arg1>] <files>...
+
+Options:
+  --arg=<arg1>  Package where the style guide is stored [default: Arg1].
+
+" -> doc
+  
+  # expected behavior
+  opt = docopt(doc, c("--arg='tidyverse_style(scope= \"none\")'", "R/test.R"))
+  expect_equal(opt$arg, "tidyverse_style(scope= \"none\")")
+})

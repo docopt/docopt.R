@@ -37,7 +37,6 @@
 docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=NULL
                   , strict=FALSE, strip_names=!strict, quoted_args=!strict
                   ){
-  
   if (missing(args)) {
     # littler compatibility - map argv vector to args
     if (exists("argv", where = .GlobalEnv, inherits = FALSE)) {
@@ -46,12 +45,11 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
 			args <- quote_spaced(args)
 		}
   }
-  #print(args)
-  
-  args <- fix_quoted_options(args)
-  args <- str_c(args, collapse=" ")
   
   #print(args)
+  #browser()
+  #args <- fix_quoted_options(args)
+  #args <- str_c(args, collapse=" ")
   
   usage <- printable_usage(doc, name)
   pot_options <- parse_doc_options(doc)

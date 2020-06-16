@@ -31,6 +31,7 @@ Tokens <- setRefClass( "Tokens"
        if (as_is){
          .tokens <- tokens
        } else {
+         # browser()
          # trimws
          .tokens <- gsub("^\\s+|\\s+$", "", tokens)
          
@@ -70,9 +71,12 @@ Tokens <- setRefClass( "Tokens"
        tokens <<- tail(tokens, -1)
        
        #remove optional quotes...
-       h <- gsub(QUOTED, "\\1", h)
-       h <- gsub(DQUOTED, "\\1", h)
-
+       h <- gsub("^'(.*)'$", "\\1", h)
+       h <- gsub("='(.*)'$", "=\\1", h)
+       
+       h <- gsub('^"(.*)"$', "\\1", h)
+       h <- gsub('="(.*)"$', "=\\1", h)
+       
        if (length(h)) h else ""
      },
      #     toString: -> ([].slice.apply @).toString()

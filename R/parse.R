@@ -195,7 +195,12 @@ parse_atom <- function(tokens, optionlist){
 # parse_args = (source, options) ->
 parse_args <- function(src, optionlist){
 #     tokens = new TokenStream source, DocoptExit
-  tokens <- Tokens(src)
+  QUOTED <- "^'(.*?)'$"
+  cmdargs <- length(src) > 1 || any(str_detect(src, QUOTED))
+  if (cmdargs){
+    src <- sub(QUOTED, "\\1", src)
+  }
+  tokens <- Tokens(src, as_is = cmdargs)
   #browser()
 #     #options = options.slice(0) # shallow copy, not sure if necessary
 #     opts = []
