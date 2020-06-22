@@ -12,4 +12,3 @@ Options:
 arguments <- docopt::docopt(doc)
 print(arguments)
 
-

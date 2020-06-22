@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-
 "style files.
 Usage:
   style_files [--arg=<arg1>] <files>...
@@ -10,5 +9,8 @@ Options:
 " -> doc
 
 # expected behavior
-docopt::docopt(doc, c("--arg=tidyverse_style(scope= \"none\")", "R/test.R"))
-docopt::docopt(doc)
+#docopt::docopt(doc, c("--arg=tidyverse_style(scope= \"none\")", "R/test.R"))
+docopt::docopt(doc, "--arg='tidyverse_style(scope= \'none\')' R/test.R")
+
+opt <- docopt::docopt(doc)
+print(opt)

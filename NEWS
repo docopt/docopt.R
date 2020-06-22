@@ -1,3 +1,9 @@
+version 0.7.0
+- activated tests
+- Implemented arguments and options with spaces (quoted) thanks to @ajmazurie and
+@lorenzwalthert
+- options with hyphens in the name are changed into snake_case, thanks to @t-kalinowski
+
 version 0.6.2
 - improved README.md thanks to @andreysmelter
 - improved error message (showing options) issue #24
