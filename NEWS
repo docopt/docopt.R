@@ -1,3 +1,6 @@
+version 0.7.1
+- fixed a debugging statement, thanks to @eddelbuettel
+
 version 0.7.0
 - activated tests
 - Implemented arguments and options with spaces (quoted) thanks to @ajmazurie and
