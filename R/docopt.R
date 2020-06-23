@@ -46,7 +46,7 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
 		}
   }
   
-  print(args)
+  #print(args)
   #browser()
   #args <- fix_quoted_options(args)
   #args <- str_c(args, collapse=" ")
