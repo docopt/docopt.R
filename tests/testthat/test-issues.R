@@ -81,6 +81,6 @@ Options:
 " -> doc
   
   # expected behavior
-  opt = docopt(doc, c("--arg='tidyverse_style(scope= \"none\")'", "R/test.R"))
-  expect_equal(opt$arg, "tidyverse_style(scope= \"none\")")
+  opt = docopt(doc, c("--arg='tidyverse_style(scope = \"none\")'", "R/test.R"))
+  expect_equal(opt$arg, "tidyverse_style(scope = \"none\")")
 })
