@@ -73,12 +73,12 @@ Options:
 test_that("quotes inside options are preserved",{
   "style files.
 Usage:
-  style_files [--style_pkg=<style_guide_pkg>] [--arg=<arg1>] <files>...
+  style_files [--style_pkg=<style_guide_pkg>] [--arg=<arg1>] [--style_fun=<style_guide_fun>] <files>...
 
 Options:
   --style_pkg=<style_guide_pkg>  Package where the style guide is stored [default: styler].
   --arg=<arg1>  Package where the style guide is stored [default: Arg1].
-  
+  --style_fun=<style_guide_fun>  Deprecated in favor or `arg`. The styling function in style_pkg [default: tidyverse_style].
 " -> doc
   
   # expected behavior
