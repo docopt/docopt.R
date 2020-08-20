@@ -73,14 +73,16 @@ Options:
 test_that("quotes inside options are preserved",{
   "style files.
 Usage:
-  style_files [--arg=<arg1>] <files>...
+  style_files [--style_pkg=<style_guide_pkg>] [--arg=<arg1>] <files>...
 
 Options:
+  --style_pkg=<style_guide_pkg>  Package where the style guide is stored [default: styler].
   --arg=<arg1>  Package where the style guide is stored [default: Arg1].
-
+  
 " -> doc
   
   # expected behavior
-  opt = docopt(doc, c("--arg='tidyverse_style(scope = \"none\")'", "R/test.R"))
+  opt = docopt(doc, c("--style_pkg=styler", "--arg='tidyverse_style(scope = \"none\")'", "R/test.R"))
   expect_equal(opt$arg, "tidyverse_style(scope = \"none\")")
+  expect_equal(opt$style_pkg, "styler")
 })
