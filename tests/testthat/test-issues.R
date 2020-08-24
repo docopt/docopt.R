@@ -71,18 +71,18 @@ Options:
 })
 
 test_that("quotes inside options are preserved",{
-  "style files.
+  'style files.
 Usage:
-  style_files [--style_pkg=<style_guide_pkg>] [--arg=<arg1>] [--style_fun=<style_guide_fun>] <files>...
+  style_files [--style_pkg=<style_guide_pkg>] [--stlye_guide_transformer=<style_guide_transformers>] [--style_fun=<style_guide_fun>] <files>...
 
 Options:
   --style_pkg=<style_guide_pkg>  Package where the style guide is stored [default: styler].
-  --arg=<arg1>  Package where the style guide is stored [default: Arg1].
+  --stlye_guide_transformer=<style_guide_transformers> The `transformers` argument supplied to the styling API from the `style_pkg` namespace [default: tidyverse_style()].
   --style_fun=<style_guide_fun>  Deprecated in favor or `arg`. The styling function in style_pkg [default: tidyverse_style].
-" -> doc
+' -> doc
   
   # expected behavior
-  opt = docopt(doc, c("--style_pkg=styler", "--arg='tidyverse_style(scope = \"none\")'", "R/test.R"))
+  opt = docopt(doc, c("--style_pkg=styler", "--stlye_guide_transformer='tidyverse_style(scope = \"none\")'", "R/test.R"))
   expect_equal(opt$arg, "tidyverse_style(scope = \"none\")")
   expect_equal(opt$style_pkg, "styler")
 })
