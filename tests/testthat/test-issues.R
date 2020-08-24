@@ -83,6 +83,6 @@ Options:
   
   # expected behavior
   opt = docopt(doc, c("--style_pkg=styler", "--stlye_guide_transformer='tidyverse_style(scope = \"none\")'", "R/test.R"))
-  expect_equal(opt$arg, "tidyverse_style(scope = \"none\")")
+  expect_equal(opt$stlye_guide_transformer, "tidyverse_style(scope = \"none\")")
   expect_equal(opt$style_pkg, "styler")
 })
