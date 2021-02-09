@@ -7,3 +7,4 @@ travis*
 revdep
 ^\.httr-oauth$
 README.md
+^\.github$
