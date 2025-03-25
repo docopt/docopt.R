@@ -1,3 +1,6 @@
+version 0.7.2
+- fixed cut off of help statement, thanks to @eddelbuettel
+
 version 0.7.1
 - fixed a debugging statement, thanks to @eddelbuettel
 
