@@ -5,7 +5,5 @@
 #' 
 #' For more information see http://docopt.org
 #' 
-#' @name docopt-package
 #' @importFrom utils tail str
-#' @docType package
-{}
+"_PACKAGE"

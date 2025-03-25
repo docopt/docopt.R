@@ -62,15 +62,15 @@ Pattern <- setRefClass( "Pattern"
             counts <- table(nms)
             for (e in child){
               if (isTRUE(unname(counts[as.character(e)] > 1))){
-                if (class(e)=="Argument" ||(class(e)=="Option" && e$argcount>0)){
+                if (inherits(e,"Argument") ||(inherits(e,"Option") && e$argcount>0)){
                   if (is.null(e$value)){
                     e$value <- list()
-                  } else if (class(e$value) != "list"){
+                  } else if (!inherits(e$value,"list")){
                     e$value <- as.list(e$value)
                   }
                 }
-                if ( class(e) == "Command" 
-                  || (class(e) == "Option" && e$argcount == 0)){
+                if ( inherits(e,"Command")
+                  || (inherits(e,"Option") && e$argcount == 0)){
                    e$value <- 0L
                 }
               } 
@@ -100,12 +100,12 @@ Pattern <- setRefClass( "Pattern"
               idx <- which(m > 0L)[1]
               child <- .children[[idx]]
               .children <- .children[-idx]
-              if (class(child) == "Either"){
+              if (inherits(child,"Either")){
                 for (ci in child$children){
                   group <- c(ci, .children)
                   groups[[length(groups)+1]] <- group
                 }
-              } else if (class(child) == "OneOrMore"){
+              } else if (inherits(child,"OneOrMore")){
                 group <- c(child$children, child$children, .children)
                 groups[[length(groups)+1]] <- group
               } else {
@@ -242,7 +242,7 @@ Argument <- setRefClass("Argument", contains="Pattern"
            return(matched(TRUE, left, collected))
          }
          same_name <- Filter(function(a){
-                               class(a) == "Argument" && identical(a$name(), name())
+                               inherits(a,"Argument") && identical(a$name(), name())
                              }
                             , collected)
          if (length(same_name)){

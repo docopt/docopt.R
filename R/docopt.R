@@ -56,7 +56,7 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
   pattern <- parse_pattern(formal_usage(usage), pot_options)
   for (anyopt in pattern$flat("AnyOptions")){
     #TODO remove options that are present in pattern
-    if (class(anyopt) == "AnyOptions") anyopt$children <- pot_options$options
+    if (inherits(anyopt,"AnyOptions")) anyopt$children <- pot_options$options
   }
   
   args <- parse_args(args, pot_options)
@@ -100,9 +100,9 @@ docopt <- function( doc, args=commandArgs(TRUE), name=NULL, help=TRUE, version=N
       return(o$long)
     }
     ""
-  }) |> 
-    sQuote() |>
-    paste(collapse=", ")
+  })
+  
+  m_args <- paste(sQuote(m_args), collapse=", ")
   
   stop("Unknown arguments: ",m_args, call. = FALSE)
   # stop(doc, call. = FALSE)
