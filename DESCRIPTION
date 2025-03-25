@@ -12,4 +12,5 @@ BugReports: https://github.com/docopt/docopt.R/issues
 Imports: methods
 Suggests:
     testthat
-RoxygenNote: 7.1.0
+RoxygenNote: 7.3.2
+Encoding: UTF-8

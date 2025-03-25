@@ -2,6 +2,7 @@
 % Please edit documentation in R/pkg.R
 \docType{package}
 \name{docopt-package}
+\alias{-package}
 \alias{docopt-package}
 \title{Docopt command line specification}
 \description{
