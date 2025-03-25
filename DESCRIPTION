@@ -2,7 +2,9 @@ Package: docopt
 Type: Package
 Title: Command-Line Interface Specification Language
 Version: 0.7.2
-Author: Edwin de Jonge (edwindjonge@gmail.com)
+Authors@R: c(
+  person("Edwin", "de Jonge", email = "edwindjonge@gmail.com", role = c("aut", "cre"), 
+    comment=c(ORCID="0000-0002-6580-4718")))
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
 Description: Define a command-line interface by just giving it
     a description in the specific format.

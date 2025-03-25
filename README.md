@@ -1,8 +1,7 @@
 [![version](https://www.r-pkg.org/badges/version/docopt)](https://cran.r-project.org/package=docopt)
 ![downloads](https://cranlogs.r-pkg.org/badges/docopt)
-[![R build status](https://github.com/docopt/docopt.R/workflows/R-CMD-check/badge.svg)](https://github.com/docopt/docopt.R/actions)
+[![R build status](https://github.com/docopt/docopt.R/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/docopt/docopt.R/actions/workflows/R-CMD-check.yaml)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/docopt/docopt.R?branch=master&svg=true)](https://ci.appveyor.com/project/docopt/docopt.R)
-[![Depsy](http://depsy.org/api/package/cran/docopt/badge.svg)](http://depsy.org/package/r/docopt)
 [![status](https://tinyverse.netlify.com/badge/docopt)](https://CRAN.R-project.org/package=docopt)
 
 
